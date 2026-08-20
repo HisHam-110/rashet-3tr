@@ -1,0 +1,129 @@
+.categories-section {
+  padding: 80px 0;
+  background: var(--bg-sand);
+}
+
+.categories-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 20px;
+}
+
+.category-card {
+  position: relative;
+  height: 220px;
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 20px;
+  text-align: center;
+  border: 2px solid transparent;
+  box-shadow: var(--shadow-sm);
+  transition: var(--transition);
+}
+
+.category-card:hover {
+  transform: translateY(-6px);
+  box-shadow: var(--shadow-md);
+  border-color: var(--primary-gold);
+}
+
+.category-card.active {
+  border-color: var(--accent-brown);
+  box-shadow: 0 0 0 3px rgba(140, 109, 79, 0.2);
+}
+
+.category-img-wrap {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+}
+
+.category-bg-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.5s ease;
+}
+
+.category-card:hover .category-bg-img {
+  transform: scale(1.08);
+}
+
+.category-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(to top, rgba(27, 22, 18, 0.85) 0%, rgba(27, 22, 18, 0.3) 100%);
+}
+
+.category-placeholder-bg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(135deg, var(--bg-card), #d9ccb9);
+  z-index: 0;
+}
+
+.category-content {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+
+.category-icon {
+  font-size: 1.8rem;
+  margin-bottom: 4px;
+}
+
+.category-card .category-name {
+  font-size: 1.05rem;
+  font-weight: 800;
+  color: white;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
+}
+
+.category-placeholder-bg ~ .category-content .category-name {
+  color: var(--text-main);
+  text-shadow: none;
+}
+
+.category-count {
+  font-size: 0.78rem;
+  color: var(--primary-gold-light);
+  font-weight: 500;
+}
+
+.category-placeholder-bg ~ .category-content .category-count {
+  color: var(--accent-brown);
+}
+
+@media (max-width: 1024px) {
+  .categories-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (max-width: 640px) {
+  .categories-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 14px;
+  }
+  
+  .category-card {
+    height: 170px;
+    padding: 14px;
+  }
+}

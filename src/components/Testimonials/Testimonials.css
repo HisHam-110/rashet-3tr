@@ -1,0 +1,535 @@
+/* =========================================
+   NEWSLETTER BANNER
+========================================= */
+
+.newsletter-section {
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  direction: rtl;
+  overflow: hidden;
+}
+
+.newsletter-section .container {
+  width: 100%;
+  max-width: none;
+  margin: 0;
+  padding: 0;
+}
+
+
+/* =========================================
+   BANNER
+========================================= */
+
+.newsletter-card {
+  position: relative;
+
+  width: 100%;
+  height: 340px;
+
+  overflow: hidden;
+
+  background: #905b30;
+
+  border-radius: 0;
+}
+
+
+/* =========================================
+   IMAGE
+========================================= */
+
+.newsletter-card::before {
+  content: "";
+
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+
+  width: 605px;
+
+  background-image: url("../../assets/images/Image Side.svg");
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+
+  z-index: 1;
+  mask-image: linear-gradient(to right, rgba(0, 0, 0, 1) 0%, rgba(0, 0, 0, 0.85) 45%, rgba(0, 0, 0, 0) 100%);
+  -webkit-mask-image: linear-gradient(to right, rgba(0, 0, 0, 1) 0%, rgba(0, 0, 0, 0.85) 45%, rgba(0, 0, 0, 0) 100%);
+}
+
+
+/* التدرج فوق الصورة */
+.newsletter-card::after {
+  content: "";
+
+  position: absolute;
+  inset: 0 auto 0 0;
+
+  width: 605px;
+
+  background: linear-gradient(
+    270deg,
+    #56371D 0%,
+    rgba(86, 55, 29, 0.03) 40%,
+    rgba(86, 55, 29, 0.08) 70%,
+    rgba(86, 55, 29, 0.18) 100%
+  );
+
+  z-index: 2;
+  pointer-events: none;
+}
+/* =========================================
+   IMAGE GRADIENT
+   Gradient خاص بالصورة فقط
+
+   بني غامق ناحية الصورة
+   ثم يفتح تدريجياً
+========================================= */
+
+.newsletter-card::after {
+  content: "";
+
+  position: absolute;
+
+  top: 0;
+  bottom: 0;
+  left: 0;
+
+  width: 72%;
+background: linear-gradient(
+  270deg,
+  #905B30 0%,
+  rgba(86, 55, 29, 0.98) 10%,
+  rgba(86, 55, 29, 0.90) 22%,
+  rgba(86, 55, 29, 0.72) 38%,
+  rgba(86, 55, 29, 0.50) 54%,
+  rgba(86, 55, 29, 0.30) 70%,
+  rgba(86, 55, 29, 0.14) 84%,
+  rgba(86, 55, 29, 0.04) 94%,
+  rgba(86, 55, 29, 0) 100%
+);
+
+  z-index: 2;
+
+  pointer-events: none;
+}
+
+
+/* =========================================
+   CONTENT
+========================================= */
+
+.newsletter-content {
+  position: absolute;
+
+  top: 0;
+  right: 0;
+
+  width: 62%;
+  height: 340px;
+
+  box-sizing: border-box;
+
+  padding: 24px 48px 24px 70px;
+
+  display: flex;
+  flex-direction: column;
+
+  justify-content: center;
+  align-items: flex-end;
+
+  text-align: right;
+
+  z-index: 3;
+
+  /*
+    Gradient خاص بمنطقة الكلام
+
+    شفاف ناحية الصورة
+    بني ناحية اليمين
+  */
+
+  background: linear-gradient(
+    90deg,
+    rgba(144, 91, 48, 0) 0%,
+    rgba(144, 91, 48, 0.20) 18%,
+    rgba(144, 91, 48, 0.55) 48%,
+    #905b30 79.6%,
+    #905b30 100%
+  );
+}
+
+
+/* =========================================
+   TITLE
+========================================= */
+
+.newsletter-title {
+  width: 100%;
+
+  margin: 0 0 18px;
+
+  color: #ffffff;
+
+  font-family: "Cairo", sans-serif;
+
+  font-size: 32px;
+  font-weight: 600;
+
+  line-height: 24px;
+  font-style: semi-bold;
+  
+
+  letter-spacing: 0;
+
+  text-align: right;
+}
+
+
+/* =========================================
+   DESCRIPTION
+========================================= */
+
+.newsletter-desc {
+  width: 100%;
+  max-width: 836px;
+
+  margin: 0 0 24px;
+
+  color: #ffffff;
+
+  font-family: "Cairo", sans-serif;
+
+  font-size: 24px;
+  font-weight: 500;
+
+  line-height: 28px;
+
+  letter-spacing: 0;
+
+  text-align: right;
+}
+
+
+/* =========================================
+   FORM
+========================================= */
+
+.newsletter-form {
+  width: 100%;
+  max-width: 836px;
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 10px;
+
+  direction: rtl;
+}
+
+
+/* =========================================
+   INPUT
+========================================= */
+
+.newsletter-form input {
+  flex: 1;
+
+  min-width: 0;
+
+  height: 52px;
+
+  padding: 0 20px;
+
+  box-sizing: border-box;
+
+  border: 1px solid rgba(255, 255, 255, 0.9);
+
+  border-radius: 16px;
+
+  outline: none;
+
+  background: rgba(255, 255, 255, 0.08);
+
+  color: #ffffff;
+
+  font-family: "Cairo", sans-serif;
+
+  font-size: 16px;
+
+  text-align: right;
+
+  direction: rtl;
+
+  transition:
+    background 0.3s ease,
+    border-color 0.3s ease;
+}
+
+
+.newsletter-form input::placeholder {
+  color: rgba(255, 255, 255, 0.65);
+}
+
+
+.newsletter-form input:focus {
+  background: rgba(255, 255, 255, 0.14);
+
+  border-color: #ffffff;
+}
+
+
+/* =========================================
+   BUTTON
+========================================= */
+
+.newsletter-btn {
+  flex: 0 0 auto;
+
+  width: 135px;
+  height: 50px;
+
+  padding: 0 28px;
+
+  border: none;
+
+  border-radius: 16px;
+
+  background: #905B30;
+
+  color: #ffffff;
+
+  font-family: "Cairo", sans-serif;
+
+  font-size: 16px;
+  font-weight: 600;
+
+  cursor: pointer;
+
+  white-space: nowrap;
+
+  transition:
+    background 0.3s ease,
+    transform 0.3s ease;
+}
+
+
+.newsletter-btn:hover {
+  background: #432a16;
+
+  transform: translateY(-2px);
+}
+
+
+.newsletter-btn:active {
+  transform: translateY(0);
+}
+
+
+/* =========================================
+   SUCCESS
+========================================= */
+
+.subscribed-success {
+  width: 100%;
+  max-width: 836px;
+
+  padding: 18px 20px;
+
+  box-sizing: border-box;
+
+  background: rgba(255, 255, 255, 0.1);
+
+  border: 1px solid rgba(255, 255, 255, 0.35);
+
+  border-radius: 10px;
+
+  color: #ffffff;
+
+  font-family: "Cairo", sans-serif;
+
+  font-size: 16px;
+
+  text-align: right;
+}
+
+
+/* =========================================
+   TABLET
+========================================= */
+
+@media (max-width: 1100px) {
+
+  .newsletter-card {
+    height: 340px;
+  }
+
+  .newsletter-card::before {
+    width: 60%;
+  }
+
+  .newsletter-card::after {
+    width: 75%;
+  }
+
+  .newsletter-content {
+    width: 68%;
+
+    padding: 24px 35px;
+  }
+
+  .newsletter-title {
+    font-size: 28px;
+    line-height: 32px;
+  }
+
+  .newsletter-desc {
+    font-size: 19px;
+    line-height: 27px;
+  }
+
+  .newsletter-form input,
+  .newsletter-btn {
+    height: 54px;
+  }
+
+  .newsletter-btn {
+    width: 160px;
+    font-size: 16px;
+  }
+}
+
+
+/* =========================================
+   MOBILE
+========================================= */
+
+@media (max-width: 768px) {
+
+  .newsletter-card {
+    height: 520px;
+  }
+
+
+  /* الصورة فوق */
+  .newsletter-card::before {
+    top: 0;
+    left: 0;
+
+    width: 100%;
+    height: 100%;
+
+    background-size: cover;
+    background-position: center;
+  }
+
+
+  /* Gradient الصورة */
+  .newsletter-card::after {
+    top: 0;
+    left: 0;
+
+    width: 100%;
+    height: 100%;
+
+    background: linear-gradient(
+      0deg,
+      #56371d 5%,
+      rgba(86, 55, 29, 0.85) 35%,
+      rgba(86, 55, 29, 0.35) 65%,
+      rgba(86, 55, 29, 0) 100%
+    );
+  }
+
+
+  /* المحتوى */
+  .newsletter-content {
+    top: auto;
+    bottom: 0;
+    right: 0;
+
+    width: 100%;
+    height: 65%;
+
+    padding: 30px 22px;
+
+    justify-content: flex-end;
+
+    background: linear-gradient(
+      0deg,
+      #905b30 0%,
+      rgba(144, 91, 48, 0.92) 35%,
+      rgba(144, 91, 48, 0.35) 75%,
+      rgba(144, 91, 48, 0) 100%
+    );
+  }
+
+
+  .newsletter-title {
+    font-size: 26px;
+    line-height: 34px;
+
+    margin-bottom: 14px;
+  }
+
+
+  .newsletter-desc {
+    font-size: 17px;
+    line-height: 27px;
+
+    margin-bottom: 20px;
+  }
+
+
+  .newsletter-form {
+    width: 100%;
+
+    flex-direction: column;
+
+    gap: 10px;
+  }
+
+
+  .newsletter-form input {
+    width: 100%;
+    height: 52px;
+  }
+
+
+  .newsletter-btn {
+    width: 100%;
+    height: 52px;
+  }
+}
+
+
+/* =========================================
+   SMALL MOBILE
+========================================= */
+
+@media (max-width: 480px) {
+
+  .newsletter-card {
+    height: 540px;
+  }
+
+  .newsletter-content {
+    height: 68%;
+
+    padding: 25px 18px;
+  }
+
+  .newsletter-title {
+    font-size: 23px;
+    line-height: 32px;
+  }
+
+  .newsletter-desc {
+    font-size: 15px;
+    line-height: 24px;
+  }
+}

@@ -1,0 +1,253 @@
+/* ═══════════════════════════════════════════════════════════════
+   Collections Section — Pure-CSS Infinite Marquee Carousel
+   ═══════════════════════════════════════════════════════════════ */
+
+/* ── Section wrapper ─────────────────────────────────────────── */
+.collections-section {
+  padding: 72px 0 80px;
+  background-color: #ffffff;
+  border-bottom: 1px solid var(--border-color);
+  width: 100%;
+  overflow: hidden;
+}
+
+/* ── Header ──────────────────────────────────────────────────── */
+.collections-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin-bottom: 44px;
+}
+
+.csc-header-right {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  text-align: right;
+}
+
+.collections-title {
+  font-size: 1.85rem;
+  font-weight: 700;
+  color: var(--accent-brown);
+  margin: 0;
+}
+
+.collections-subtitle {
+  font-size: 0.95rem;
+  color: var(--text-muted);
+  margin: 0;
+}
+
+.view-all-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--accent-brown);
+  font-size: 1rem;
+  font-weight: 600;
+  padding: 6px 10px;
+  border-radius: var(--radius-sm);
+  transition: color 0.25s ease;
+}
+
+.view-all-link:hover { color: var(--primary-gold-dark); }
+
+.arrow-icon { transition: transform 0.3s ease; }
+.view-all-link:hover .arrow-icon { transform: translateX(-5px); }
+
+/* ── Carousel viewport — 100 % wide, clips the track ─────────── */
+.csc-outer {
+  width: 100%;
+  overflow: hidden;
+}
+
+/*
+  Pause animation on hover so users can read card content.
+  Remove this rule if you want perpetual motion.
+*/
+.csc-outer:hover .csc-track {
+  animation-play-state: paused;
+}
+
+/* ── Sliding track ────────────────────────────────────────────── */
+/*
+  - direction: ltr  → translateX(-50%) reliably scrolls LEFT regardless of the
+                       page RTL, giving us a natural left-to-right read for Arabic.
+  - We render 10 cards (2 × 5). Animating to translateX(-50%) moves exactly
+    one full set (5 cards) off-screen; the second set is visually identical to
+    the start, giving a seamless seamless loop with zero JS.
+  - Duration: 5 cards × ≈430 px each = ≈2 150 px at ~40 px/s ≈ 54 s.
+    Adjust `--csc-duration` to taste.
+*/
+.csc-track {
+  display: flex;
+  flex-direction: row;
+  direction: ltr;           /* keeps translate predictable regardless of RTL */
+  width: max-content;
+  will-change: transform;
+  animation: cscMarquee var(--csc-duration, 50s) linear infinite;
+}
+
+/* ── Keyframe: slide track exactly one full set width to the left ── */
+@keyframes cscMarquee {
+  0%   { transform: translate3d(0, 0, 0); }
+  100% { transform: translate3d(-50%, 0, 0); }
+}
+
+/* ── Individual Card ─────────────────────────────────────────── */
+.csc-card {
+  position: relative;
+
+  /* Card dimensions — adjust clamp values to taste */
+  width: clamp(260px, 27vw, 390px);
+  height: 380px;
+  flex: 0 0 auto;
+
+  /* Gap between cards implemented as margin so -50% calc stays exact */
+  margin-right: 36px;
+
+  border-radius: 8px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 26px;
+  box-shadow: var(--shadow-sm);
+  border: 1px solid var(--border-color);
+  box-sizing: border-box;
+  transition: box-shadow 0.35s ease;
+}
+
+.csc-card:hover { box-shadow: var(--shadow-md); }
+
+/* ── Background image ────────────────────────────────────────── */
+.csc-card-bg {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  overflow: hidden;
+}
+
+.csc-card-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  pointer-events: none;
+  transition: transform 0.5s cubic-bezier(0.25, 0.8, 10.25, 1);
+}
+
+.csc-card:hover .csc-card-img { transform: scale(1.05); }
+
+/* ── Dark gradient overlay ───────────────────────────────────── */
+.csc-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to top,
+    rgba(18, 12, 8, 0.72) 0%,
+    rgba(18, 12, 8, 0.28) 55%,
+    rgba(18, 12, 8, 0.05) 100%
+  );
+  z-index: 2;
+}
+
+/* ── Text content (RTL inside the card) ─────────────────────── */
+.csc-card-content {
+  position: relative;
+  z-index: 3;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  text-align: right;
+  direction: rtl;           /* restore RTL for card text */
+  width: 100%;
+}
+
+.csc-card-text { margin-bottom: 16px; width: 100%; }
+
+.csc-card-title {
+  color: #fdfbf7;
+  font-size: 1.2rem;
+  font-weight: 600;
+  margin: 0 0 5px;
+  letter-spacing: 0.15px;
+}
+
+.csc-card-desc {
+  color: rgba(253, 251, 247, 0.82);
+  font-size: 0.84rem;
+  margin: 0;
+  font-weight: 400;
+}
+
+/* ── Card button ─────────────────────────────────────────────── */
+.csc-card-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  background-color: var(--accent-brown);
+  color: #fdfbf7;
+  border: none;
+  padding: 9px 22px;
+  border-radius: 4px;
+  font-size: 0.84rem;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: inherit;
+  transition: background-color 0.3s ease;
+}
+
+.csc-card-btn:hover { background-color: var(--primary-gold-dark); }
+
+/* ── Responsive speed & size adjustments ─────────────────────── */
+@media (max-width: 1199px) {
+  .collections-section { padding: 56px 0 64px; }
+
+  /* Slightly faster on tablets since cards are smaller */
+  .csc-track { --csc-duration: 40s; }
+
+  .csc-card {
+    width: clamp(230px, 35vw, 340px);
+    height: 330px;
+    margin-right: 28px;
+    padding: 22px;
+  }
+
+  .csc-card-title { font-size: 1.1rem; }
+  .collections-header { margin-bottom: 36px; }
+}
+
+@media (max-width: 768px) {
+  .collections-section { padding: 44px 0 52px; }
+
+  .csc-track { --csc-duration: 32s; }
+
+  .csc-card {
+    width: clamp(210px, 68vw, 310px);
+    height: 300px;
+    margin-right: 20px;
+    padding: 18px;
+  }
+
+  .collections-title    { font-size: 1.5rem; }
+  .collections-subtitle { font-size: 0.88rem; }
+  .collections-header   { margin-bottom: 28px; }
+}
+
+@media (max-width: 480px) {
+  .collections-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+  .view-all-link { align-self: flex-end; }
+
+  .csc-track { --csc-duration: 28s; }
+
+  .csc-card {
+    width: clamp(190px, 78vw, 280px);
+    height: 280px;
+    margin-right: 16px;
+  }
+}
