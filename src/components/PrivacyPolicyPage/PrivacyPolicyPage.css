@@ -1,0 +1,467 @@
+/* ===== PRIVACY POLICY PAGE STYLES ===== */
+.privacy-page {
+  background-color: #fdfbf7;
+  min-height: 100vh;
+  font-family: 'Cairo', 'Tajawal', sans-serif;
+  color: #2a1a0e;
+  width: 100%;
+}
+
+.prp-container {
+  max-width: 1140px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+/* TOP BREADCRUMB */
+.prp-top-bar {
+  padding: 16px 0 8px;
+  background-color: #fdfbf7;
+}
+
+.prp-breadcrumb {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.88rem;
+  color: #a89a90;
+}
+
+.prp-bc-link {
+  color: #80634e;
+  cursor: pointer;
+  transition: color 0.2s ease;
+}
+
+.prp-bc-link:hover {
+  color: #905b30;
+}
+
+.prp-bc-sep {
+  color: #c5a880;
+}
+
+.prp-bc-current {
+  color: #a89a90;
+}
+
+/* HERO SECTION */
+.prp-hero-section {
+  padding: 12px 0 24px;
+}
+
+.prp-hero-card {
+  border-radius: 16px;
+  overflow: hidden;
+  background-size: cover;
+  background-position: center;
+  background-color: #ede0cc;
+  border: 1px solid #dcc9b2;
+  padding: 40px 48px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  box-shadow: 0 6px 20px rgba(67, 43, 23, 0.06);
+}
+
+.prp-hero-text {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  text-align: right;
+}
+
+.prp-title-row {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 12px;
+  flex-direction: row;
+}
+
+.prp-lock-badge {
+  font-size: 1.6rem;
+}
+
+.prp-hero-title {
+  font-size: 2.6rem;
+  font-weight: 900;
+  color: #3a2210;
+  margin: 0;
+}
+
+.prp-hero-subtitle {
+  font-size: 0.98rem;
+  color: #6b4c35;
+  line-height: 1.85;
+  font-weight: 600;
+  margin: 0;
+  text-align: right;
+}
+
+.prp-hero-graphic {
+  width: 110px;
+  height: 110px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.prp-blue-shield-circle {
+  width: 90px;
+  height: 90px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.35);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* COMMON SECTION STYLES */
+.prp-intro-section,
+.prp-data-col-section,
+.prp-use-section,
+.prp-share-section,
+.prp-security-section {
+  padding: 24px 0;
+}
+
+.prp-sec-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 16px;
+}
+
+.prp-sec-icon {
+  font-size: 1.4rem;
+}
+
+.prp-sec-title {
+  font-size: 1.6rem;
+  font-weight: 800;
+  color: #2a1a0e;
+  margin: 0;
+}
+
+.prp-sec-p {
+  font-size: 0.98rem;
+  color: #56371d;
+  line-height: 1.85;
+  margin: 0;
+  font-weight: 600;
+}
+
+/* SECTION 1: INTRO CARD */
+.prp-sec-card {
+  background: #ffffff;
+  border-radius: 16px;
+  padding: 32px 36px;
+  border: 1px solid #e5d8cb;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.03);
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  text-align: right;
+}
+
+.prp-intro-title {
+  font-size: 1.85rem;
+  font-weight: 900;
+  color: #3a2210;
+  margin: 0;
+}
+
+.prp-intro-p {
+  font-size: 0.97rem;
+  color: #7a5a42;
+  line-height: 1.9;
+  font-weight: 600;
+  margin: 0;
+}
+
+/* SECTION 2: ACCORDION TABS */
+.prp-accordion-row {
+  display: flex;
+  gap: 16px;
+  margin-top: 16px;
+}
+
+.prp-acc-btn {
+  flex: 1;
+  background: #e6d7c8;
+  border-radius: 14px;
+  padding: 16px 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 1.2rem;
+  font-weight: 800;
+  color: #56371d;
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+.prp-acc-btn.active {
+  background: #ffffff;
+  border: 1.5px solid #905b30;
+  box-shadow: 0 4px 14px rgba(144, 91, 48, 0.1);
+}
+
+.prp-tab-content {
+  background: #ffffff;
+  border-radius: 14px;
+  padding: 20px 24px;
+  margin-top: 14px;
+  border: 1px solid #ead8ca;
+  font-size: 0.96rem;
+  color: #56371d;
+  line-height: 1.8;
+}
+
+/* SECTION 3: HOW WE USE YOUR DATA CARD */
+.prp-use-card {
+  background: #ffffff;
+  border-radius: 18px;
+  padding: 32px;
+  border: 1px solid #ead8ca;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.02);
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  margin-top: 16px;
+}
+
+.prp-use-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 18px;
+}
+
+.prp-use-icon-wrap {
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  background: #f5ede4;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.4rem;
+  flex-shrink: 0;
+}
+
+.prp-use-icon-wrap img {
+  width: 26px;
+  height: 26px;
+  object-fit: contain;
+}
+
+.prp-sec-svg-icon {
+  width: 28px;
+  height: 28px;
+  object-fit: contain;
+  flex-shrink: 0;
+}
+
+.prp-use-info h3 {
+  font-size: 1.05rem;
+  font-weight: 800;
+  color: #2a1a0e;
+  margin: 0 0 4px;
+}
+
+.prp-use-info p {
+  font-size: 0.88rem;
+  color: #80634e;
+  margin: 0;
+  line-height: 1.6;
+}
+
+/* SECTION 4: DATA SHARING (MATCHING EXACT USER SCREENSHOT) */
+.prp-share-section {
+  padding: 36px 0;
+  background-color: #fbf8f3;
+}
+
+.prp-share-header {
+  margin-bottom: 24px;
+  text-align: right;
+}
+
+.prp-share-title {
+  font-size: 2.2rem;
+  font-weight: 900;
+  color: #3a2210;
+  margin: 0;
+}
+
+.prp-share-sub {
+  font-size: 1.05rem;
+  color: #80634e;
+  margin: 8px 0 0;
+  font-weight: 600;
+}
+
+.prp-share-cards {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+}
+
+.prp-share-card {
+  background: #ffffff;
+  border-radius: 12px;
+  padding: 32px 24px;
+  border: 1px solid #f0e6dd;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.03);
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.prp-share-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.07);
+}
+
+.prp-share-icon-wrap {
+  width: 52px;
+  height: 52px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 2px;
+}
+
+.prp-share-card h3 {
+  font-size: 1.25rem;
+  font-weight: 900;
+  color: #3a2210;
+  margin: 0;
+}
+
+.prp-share-card p {
+  font-size: 0.92rem;
+  color: #80634e;
+  margin: 0;
+  font-weight: 600;
+  line-height: 1.6;
+}
+
+
+
+/* SECTION 5: SECURITY & RIGHTS LIST */
+.prp-rights-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 16px;
+}
+
+.prp-right-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 0.92rem;
+  color: #56371d;
+  font-weight: 600;
+}
+
+.prp-check-icon {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: #e8f5e9;
+  color: #2e7d32;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 800;
+  font-size: 0.85rem;
+  flex-shrink: 0;
+}
+
+/* SECTION 6: CONTACT CALLOUT BANNER */
+.prp-cta-banner {
+  position: relative;
+  width: 100%;
+  padding: 56px 0;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  margin-top: 40px;
+}
+
+.prp-cta-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, rgba(86, 55, 29, 0.92) 0%, rgba(144, 91, 48, 0.88) 100%);
+}
+
+.prp-cta-content {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 16px;
+  color: #ffffff;
+}
+
+.prp-cta-content h2 {
+  font-size: 2.1rem;
+  font-weight: 900;
+  margin: 0;
+}
+
+.prp-cta-content p {
+  font-size: 1rem;
+  color: #f2e6dc;
+  margin: 0;
+  max-width: 600px;
+}
+
+.prp-cta-btn {
+  margin-top: 8px;
+  padding: 10px 36px;
+  border-radius: 25px;
+  background: #905b30;
+  color: #ffffff;
+  border: 1.5px solid #ffffff;
+  font-family: inherit;
+  font-size: 0.95rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+.prp-cta-btn:hover {
+  background: #ffffff;
+  color: #905b30;
+}
+
+/* RESPONSIVE BREAKPOINTS */
+@media (max-width: 992px) {
+  .prp-hero-card {
+    flex-direction: column;
+    text-align: center;
+    gap: 24px;
+    padding: 28px;
+  }
+
+  .prp-title-row {
+    justify-content: center;
+  }
+
+  .prp-share-cards {
+    grid-template-columns: 1fr;
+  }
+}
