@@ -10,15 +10,17 @@
 }
 
 .clp-container {
-  max-width: 1240px;
+  max-width: 1380px;
   margin: 0 auto;
-  padding: 0 24px;
+  padding: 0 16px;
 }
 
-/* TOP BREADCRUMB */
-.clp-top-bar {
-  padding: 16px 0 8px;
-  background-color: #fdfbf7;
+/* TOP BREADCRUMB & HERO BANNER */
+.clp-hero-banner {
+  position: relative;
+  padding: 16px 0 16px;
+  background: transparent;
+  overflow: hidden;
 }
 
 .clp-breadcrumb {
@@ -27,6 +29,7 @@
   gap: 8px;
   font-size: 0.88rem;
   color: #a89a90;
+  margin-bottom: 16px;
 }
 
 .clp-bc-link {
@@ -47,70 +50,38 @@
   color: #a89a90;
 }
 
-/* PAGE HERO BANNER WITH SOFT WAVE BACKGROUND */
-.clp-hero-banner {
-  position: relative;
-  padding: 40px 24px 50px;
-  text-align: center;
-  overflow: hidden;
-  background: radial-gradient(circle at 50% 30%, #f7ede2 0%, #fdfbf7 70%);
-}
-
-/* DECORATIVE ELLIPSES */
-.clp-ellipse {
+/* DECORATIVE GRAPHIC TOP-RIGHT */
+.clp-bg-graphic-top-right {
   position: absolute;
-  border-radius: 50%;
+  top: -60px;
+  right: 0;
   pointer-events: none;
+  z-index: 0;
+  max-width: 100%;
+  overflow: hidden;
 }
 
-.clp-ellipse-1 {
-  width: 522px;
-  height: 1413px;
-  top: -126px;
-  left: 436.39px;
-  transform: rotate(-84.08deg);
-  opacity: 0.06;
-  border: 1px solid #925E34;
-  background: transparent;
-}
-
-.clp-ellipse-2 {
-  width: 382.83px;
-  height: 1036.47px;
-  top: -31.43px;
-  left: 644.04px;
-  transform: rotate(-84.08deg);
-  opacity: 0.05;
-  border: 1px solid #925E34;
-  background: transparent;
-}
-
-.clp-ellipse-3 {
-  width: 267.87px;
-  height: 725.65px;
-  top: 42.8px;
-  left: 817.33px;
-  transform: rotate(-84.08deg);
-  opacity: 0.04;
-  border: 1px solid #925E34;
-  background: transparent;
+.clp-bg-graphic-top-right svg {
+  display: block;
+  max-width: 100%;
+  height: auto;
 }
 
 .clp-hero-content {
   position: relative;
   z-index: 2;
-  max-width: 700px;
-  margin: 0 auto;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 12px;
+  text-align: center;
+  margin: 0 auto;
+  gap: 8px;
 }
 
 .clp-page-title {
   font-size: 3.2rem;
   font-weight: 900;
-  color: #a26435;
+  color: #925e34;
   margin: 0;
   letter-spacing: -0.5px;
 }
@@ -124,7 +95,9 @@
 
 /* MAIN CARDS GRID */
 .clp-main-section {
-  padding: 20px 0 60px;
+  position: relative;
+  z-index: 2;
+  padding: 8px 0 60px;
 }
 
 .clp-cards-grid {

@@ -83,8 +83,7 @@ export default function ProductDetailPage({ onAddToCart, onToggleWishlist, wishl
     if (onAddToCart) {
       onAddToCart({ ...product, selectedSize, quantity });
     }
-    setAddedToCart(true);
-    setTimeout(() => setAddedToCart(false), 2000);
+    navigate('/cart');
   };
 
   const scrollToSection = (sectionId) => {

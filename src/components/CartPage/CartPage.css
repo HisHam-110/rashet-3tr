@@ -1,0 +1,691 @@
+/* ===== CART PAGE STYLES ===== */
+.cart-page-wrapper {
+  background-color: #fdfbf7;
+  min-height: 100vh;
+  font-family: 'Cairo', 'Tajawal', sans-serif;
+  color: #2a1a0e;
+  width: 100%;
+}
+
+.cap-container {
+  max-width: 1140px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+/* TOP BREADCRUMB & HEADER */
+.cap-top-bar {
+  padding: 24px 0 16px;
+  background-color: #fdfbf7;
+}
+
+.cap-breadcrumb {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.88rem;
+  color: #a89a90;
+  margin-bottom: 12px;
+}
+
+.cap-bc-link {
+  color: #80634e;
+  cursor: pointer;
+  transition: color 0.2s ease;
+}
+
+.cap-bc-link:hover {
+  color: #905b30;
+}
+
+.cap-bc-sep {
+  color: #c5a880;
+}
+
+.cap-bc-current {
+  color: #a89a90;
+}
+
+.cap-page-title {
+  font-size: 2.4rem;
+  font-weight: 900;
+  color: #8f5c38;
+  margin: 0 0 6px;
+}
+
+.cap-cart-count-desc {
+  font-size: 0.92rem;
+  color: #a89a90;
+  margin: 0;
+  font-weight: 600;
+}
+
+/* MAIN CONTENT GRID */
+.cap-main-content {
+  padding: 20px 24px 60px;
+}
+
+.cap-grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 32px;
+  align-items: start;
+}
+
+/* RIGHT COLUMN - PRODUCTS & SHIPPING */
+.cap-right-col {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+/* Shipping Progress Bar */
+.cap-shipping-banner {
+  background: #ffffff;
+  border-radius: 12px;
+  padding: 20px 24px;
+  border: 1px solid #ead8ca;
+  position: relative;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.02);
+}
+
+.cap-shipping-text {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: #56371d;
+  margin: 0 0 12px;
+  text-align: center;
+}
+
+.cap-shipping-text span {
+  color: #905b30;
+}
+
+.cap-shipping-text.cap-free-success span {
+  color: #2e7d32;
+}
+
+.cap-progress-bar-bg {
+  height: 6px;
+  background: #f2e6dc;
+  border-radius: 4px;
+  overflow: hidden;
+  position: relative;
+}
+
+.cap-progress-bar-fill {
+  height: 100%;
+  background: #905b30;
+  border-radius: 4px;
+  transition: width 0.4s ease;
+}
+
+.cap-delivery-icon {
+  position: absolute;
+  left: 24px;
+  bottom: 12px;
+  font-size: 1.2rem;
+  opacity: 0.8;
+}
+
+/* Items List */
+.cap-items-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.cap-item-card {
+  background: #ffffff;
+  border-radius: 12px;
+  padding: 20px;
+  border: 1px solid #ead8ca;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.02);
+}
+
+.cap-item-image-wrap {
+  width: 90px;
+  height: 90px;
+  border-radius: 8px;
+  overflow: hidden;
+  background-color: #fdfaf6;
+  border: 1px solid #ebd9c8;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.cap-item-image-wrap img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.cap-item-details {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 90px;
+  text-align: right;
+}
+
+.cap-item-name {
+  font-size: 1.15rem;
+  font-weight: 800;
+  color: #2a1a0e;
+  margin: 0 0 4px;
+}
+
+.cap-item-category {
+  font-size: 0.88rem;
+  color: #a89a90;
+  font-weight: 600;
+}
+
+.cap-item-left-block {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  justify-content: space-between;
+  height: 90px;
+  min-width: 120px;
+}
+
+.cap-item-actions {
+  display: flex;
+  gap: 12px;
+  margin-top: auto;
+  direction: ltr;
+}
+
+.cap-action-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 6px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #a89a90;
+  transition: all 0.2s ease;
+}
+
+.cap-action-btn:hover {
+  background: #fdfaf6;
+}
+
+.cap-delete-btn:hover {
+  color: #d32f2f;
+}
+
+.cap-wish-btn:hover,
+.cap-wish-btn.liked {
+  color: #905b30;
+}
+
+/* Quantity controls */
+.cap-qty-section {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 0;
+  margin-top: auto;
+}
+
+.cap-qty-selector {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.cap-qty-selector button {
+  background: #ffffff;
+  border: 1px solid #ebd9c8;
+  border-radius: 6px;
+  width: 32px;
+  height: 32px;
+  font-size: 1.1rem;
+  font-weight: 800;
+  cursor: pointer;
+  color: #905b30;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+  
+}
+
+.cap-qty-selector button:hover {
+  background: #fdfaf6;
+  border-color: #905b30;
+}
+
+.cap-qty-selector button:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+  border-color: #ebd9c8;
+}
+
+.cap-qty-selector span {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  background-color: transparent !important;
+  border: none !important;
+  border-radius: 0 !important;
+  width: 32px !important;
+  height: 32px !important;
+  font-weight: 700 !important;
+  font-size: 0.95rem !important;
+  color: #2a1a0e !important;
+}
+
+/* Price Section */
+.cap-price-section {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 10px;
+}
+
+.cap-item-price {
+  font-size: 1.25rem;
+  font-weight: 900;
+  color: #905b30;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.cap-item-original-price {
+  font-size: 0.9rem;
+  color: #a89a90;
+  text-decoration: line-through;
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+}
+
+/* Riyal Icon */
+.cap-riyal-icon {
+  width: 18px;
+  height: 18px;
+  object-fit: contain;
+}
+
+.cap-riyal-icon-old {
+  width: 14px;
+  height: 14px;
+  opacity: 0.7;
+}
+
+/* Coupon Box */
+.cap-coupon-card {
+  background: #ffffff;
+  border-radius: 12px;
+  padding: 24px;
+  border: 1px solid #ead8ca;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.02);
+}
+
+.cap-coupon-card h3 {
+  font-size: 1.05rem;
+  font-weight: 800;
+  color: #2a1a0e;
+  margin: 0 0 14px;
+}
+
+.cap-coupon-form {
+  display: flex;
+  gap: 12px;
+}
+
+.cap-coupon-form input {
+  flex: 1;
+  border: 1px solid #ebd9c8;
+  border-radius: 8px;
+  padding: 10px 16px;
+  font-family: inherit;
+  font-size: 0.95rem;
+  outline: none;
+  transition: border-color 0.2s;
+  background-color: #fdfdfd;
+}
+
+.cap-coupon-form input:focus {
+  border-color: #905b30;
+}
+
+.cap-coupon-form button {
+  background: #905b30;
+  color: #ffffff;
+  border: none;
+  border-radius: 8px;
+  padding: 10px 28px;
+  font-family: inherit;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.cap-coupon-form button:hover {
+  background: #7a4a25;
+}
+
+/* ORDER SUMMARY (LEFT COLUMN) */
+.cap-summary-card {
+  background-color: #7c583c;
+  color: #ffffff;
+  border-radius: 16px;
+  padding: 32px 28px;
+  box-shadow: 0 6px 20px rgba(67, 43, 23, 0.15);
+}
+
+.cap-summary-card h2 {
+  font-size: 1.45rem;
+  font-weight: 900;
+  margin: 0 0 24px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+  padding-bottom: 14px;
+}
+
+.cap-summary-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+  font-size: 0.95rem;
+  font-weight: 600;
+}
+
+.cap-summary-row span:last-child {
+  font-family: 'Tajawal', sans-serif;
+  font-weight: 700;
+}
+
+.cap-discount-active {
+  color: #a5d6a7;
+}
+
+.cap-summary-total-divider {
+  height: 1px;
+  background: rgba(255, 255, 255, 0.15);
+  margin: 8px 0 16px;
+}
+
+.cap-summary-total {
+  font-size: 1.35rem;
+  font-weight: 900;
+  margin-bottom: 24px;
+}
+
+.cap-checkout-btn {
+  width: 100%;
+  padding: 14px;
+  background: none;
+  border: 1.5px solid #ffffff;
+  color: #ffffff;
+  border-radius: 8px;
+  font-family: inherit;
+  font-size: 1.05rem;
+  font-weight: 800;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  margin-bottom: 24px;
+}
+
+.cap-checkout-btn:hover {
+  background: #ffffff;
+  color: #7c583c;
+}
+
+.cap-secure-badge {
+  text-align: center;
+  font-size: 0.82rem;
+  color: rgba(255, 255, 255, 0.7);
+  font-weight: 600;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+
+.cap-payment-icons {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  align-items: center;
+}
+
+.cap-payment-icons img {
+  height: 28px;
+  background-color: #ffffff;
+  padding: 4px 8px;
+  border-radius: 4px;
+  object-fit: contain;
+}
+
+/* EMPTY CART STYLES */
+.cap-empty-cart {
+  text-align: center;
+  padding: 60px 0;
+  background: #ffffff;
+  border-radius: 16px;
+  border: 1px solid #ead8ca;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.02);
+}
+
+.cap-empty-icon {
+  font-size: 4rem;
+  margin-bottom: 20px;
+}
+
+.cap-empty-cart h2 {
+  font-size: 1.8rem;
+  font-weight: 900;
+  color: #3a2210;
+  margin: 0 0 10px;
+}
+
+.cap-empty-cart p {
+  color: #80634e;
+  font-size: 0.95rem;
+  margin: 0 0 24px;
+  font-weight: 600;
+}
+
+.cap-shop-btn {
+  background: #905b30;
+  color: #ffffff;
+  border: none;
+  border-radius: 25px;
+  padding: 12px 40px;
+  font-family: inherit;
+  font-weight: 700;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.cap-shop-btn:hover {
+  background: #7a4a25;
+}
+
+/* RESPONSIVE DESIGN */
+@media (max-width: 992px) {
+  .cap-grid {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+
+  .cap-item-card {
+    flex-direction: column;
+    text-align: center;
+    gap: 16px;
+  }
+
+  .cap-item-details {
+    height: auto;
+    align-items: center;
+    
+  }
+
+  .cap-item-actions {
+    justify-content: center;
+    margin-top: 10px;
+    direction: ltr;
+    
+  }
+
+  .cap-price-section {
+    text-align: center;
+  }
+}
+
+/* CONFIRMATION MODAL OVERLAY */
+.cap-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  backdrop-filter: blur(4px);
+  animation: fadeIn 0.25s ease-out;
+}
+
+/* CONFIRMATION MODAL CARD */
+.cap-modal-card {
+  background-color: #fbf8f5;
+  border-radius: 18px;
+  width: 90%;
+  max-width: 420px;
+  padding: 32px 24px;
+  text-align: center;
+  position: relative;
+  border: 1px solid #ebd9c8;
+  box-shadow: 0 10px 30px rgba(67, 43, 23, 0.15);
+  animation: scaleUp 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+/* CLOSE ICON (X) */
+.cap-modal-close-btn {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  background: none;
+  border: none;
+  font-size: 1.1rem;
+  color: #a89a90;
+  cursor: pointer;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+}
+
+.cap-modal-close-btn:hover {
+  background-color: #f2e6dc;
+  color: #905b30;
+}
+
+/* TRASH CONTAINER */
+.cap-modal-icon-wrap {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+.cap-modal-icon-circle {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background-color: #ffebee;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.cap-modal-icon-circle svg {
+  width: 26px;
+  height: 26px;
+  stroke: #d32f2f;
+}
+
+/* TITLE & DESC */
+.cap-modal-title {
+  font-size: 1.6rem;
+  font-weight: 900;
+  color: #3a2210;
+  margin: 0 0 10px;
+}
+
+.cap-modal-desc {
+  font-size: 0.95rem;
+  color: #7a5a42;
+  line-height: 1.6;
+  font-weight: 600;
+  margin: 0 0 28px;
+  padding: 0 12px;
+}
+
+/* BUTTONS */
+.cap-modal-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.cap-modal-btn {
+  width: 100%;
+  padding: 12px;
+  border-radius: 10px;
+  font-family: inherit;
+  font-size: 0.98rem;
+  font-weight: 800;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.cap-modal-remove-btn {
+  background-color: #905b30;
+  color: #ffffff;
+  border: none;
+}
+
+.cap-modal-remove-btn:hover {
+  background-color: #7a4a25;
+}
+
+.cap-modal-cancel-btn {
+  background-color: transparent;
+  color: #905b30;
+  border: 1.5px solid #905b30;
+}
+
+.cap-modal-cancel-btn:hover {
+  background-color: #f2e6dc;
+}
+
+/* ANIMATIONS */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes scaleUp {
+  from { transform: scale(0.92); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+

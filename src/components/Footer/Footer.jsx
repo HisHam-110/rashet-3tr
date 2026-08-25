@@ -90,15 +90,15 @@ export default function Footer() {
           </h3>
 
           <ul className="footer-links">
-
+{/* 
             <li>
               <a href="#faq">
                 الأسئلة الشائعة
               </a>
-            </li>
+            </li> */}
 
             <li>
-              <a href="#returns">
+              <a href="/returns-policy">
                 سياسة الاستبدال والاسترجاع
               </a>
             </li>
@@ -122,24 +122,19 @@ export default function Footer() {
           <h3 className="footer-title">
             تواصل معنا
           </h3>
+<div className="contact-row">
+  <span className="contact-icon">
+    <img src="../../public/icons/Vector.svg" alt="Location" />
+  </span>
 
+  <span>
+    الرياض - المملكة العربية السعودية
+  </span>
+</div>
           <div className="contact-row">
 
             <span className="contact-icon">
-              📍
-            </span>
-
-            <span>
-              الرياض - المملكة العربية السعودية
-            </span>
-
-          </div>
-
-
-          <div className="contact-row">
-
-            <span className="contact-icon">
-              📞
+              <img src="../../public/icons/svg.svg" alt="Location" />
             </span>
 
             <span dir="ltr">
@@ -152,7 +147,7 @@ export default function Footer() {
           <div className="contact-row">
 
             <span className="contact-icon">
-              ✉
+              <img src="../../public/icons/email.svg" alt="Location" />
             </span>
 
             <span>
@@ -174,23 +169,23 @@ export default function Footer() {
             <div className="payment-methods">
 
               <span className="payment-item">
-                مدى
+                 <img src="../../public/icons/image 62.svg" alt="Location" />
               </span>
 
               <span className="payment-item apple-pay">
-                Pay
+                 <img src="../../public/icons/image 10.svg" alt="Location" />
               </span>
 
               <span className="payment-item mastercard">
-                Mastercard
+               <img src="../../public/icons/image 59.svg" alt="Location" />
               </span>
 
               <span className="payment-item visa">
-                VISA
+                 <img src="../../public/icons/image 60.svg" alt="Location" />
               </span>
 
               <span className="payment-item">
-                mada
+                <img src="../../public/icons/image 61.svg" alt="Location" />
               </span>
 
             </div>

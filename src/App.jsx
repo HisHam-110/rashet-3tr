@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Routes, Route, useLocation } from 'react-router-dom';
+import { Routes, Route, useLocation, useNavigate } from 'react-router-dom';
 import Navbar from './components/Hero/Navbar';
 import Hero from './components/Hero/Hero';
 import FeaturesBanner from './components/FeaturesBanner/FeaturesBanner';
@@ -17,6 +17,8 @@ import PerfumesPage from './components/PerfumesPage/PerfumesPage';
 import ProductDetailPage from './components/ProductDetailPage/ProductDetailPage';
 import CollectionsPage from './components/CollectionsPage/CollectionsPage';
 import PrivacyPolicyPage from './components/PrivacyPolicyPage/PrivacyPolicyPage';
+import ReturnsPolicyPage from './components/ReturnsPolicyPage/ReturnsPolicyPage';
+import CartPage from './components/CartPage/CartPage';
 import LatestArticles from './components/LatestArticles/LatestArticles';
 
 import { productsData } from './data/perfumesData';
@@ -40,6 +42,7 @@ function App() {
   const [selectedProduct, setSelectedProduct] = useState(null);
 
   const { hash, pathname } = useLocation();
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (hash) {
@@ -181,13 +184,26 @@ function App() {
     <div className="app-container">
       <Navbar
         cartCount={totalCartCount}
-        onOpenCart={() => setIsCartOpen(true)}
+        onOpenCart={() => navigate('/cart')}
         onOpenUser={() => alert('حسابي قريباً')}
       />
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/collections" element={<CollectionsPage />} />
         <Route path="/privacy-policy" element={<PrivacyPolicyPage />} />
+        <Route path="/returns-policy" element={<ReturnsPolicyPage />} />
+        <Route
+          path="/cart"
+          element={
+            <CartPage
+              cartItems={cart}
+              onUpdateQuantity={handleUpdateCartQuantity}
+              onRemoveItem={handleRemoveFromCart}
+              onToggleWishlist={handleToggleWishlist}
+              wishlistIds={wishlistIds}
+            />
+          }
+        />
         <Route
           path="/perfumes"
           element={
@@ -196,7 +212,7 @@ function App() {
               onToggleWishlist={handleToggleWishlist}
               wishlistIds={wishlistIds}
               cartCount={totalCartCount}
-              onOpenCart={() => setIsCartOpen(true)}
+              onOpenCart={() => navigate('/cart')}
             />
           }
         />
