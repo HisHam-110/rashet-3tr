@@ -19,6 +19,10 @@ import CollectionsPage from './components/CollectionsPage/CollectionsPage';
 import PrivacyPolicyPage from './components/PrivacyPolicyPage/PrivacyPolicyPage';
 import ReturnsPolicyPage from './components/ReturnsPolicyPage/ReturnsPolicyPage';
 import CartPage from './components/CartPage/CartPage';
+import CheckoutPage from './components/CheckoutPage/CheckoutPage';
+import ShippingPage from './components/ShippingPage/ShippingPage';
+import PaymentPage from './components/PaymentPage/PaymentPage';
+import ReviewPage from './components/ReviewPage/ReviewPage';
 import LatestArticles from './components/LatestArticles/LatestArticles';
 
 import { productsData } from './data/perfumesData';
@@ -204,6 +208,10 @@ function App() {
             />
           }
         />
+        <Route path="/checkout" element={<CheckoutPage cartItems={cart} />} />
+        <Route path="/checkout/shipping" element={<ShippingPage cartItems={cart} />} />
+        <Route path="/checkout/payment" element={<PaymentPage cartItems={cart} />} />
+        <Route path="/checkout/review" element={<ReviewPage cartItems={cart} />} />
         <Route
           path="/perfumes"
           element={

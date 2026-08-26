@@ -12,7 +12,9 @@ export default function CartPage({
 }) {
   const navigate = useNavigate();
   const [coupon, setCoupon] = useState('RASHAT10');
-  const [discountPercent, setDiscountPercent] = useState(0); // Can be updated if coupon applied
+  const [isCouponApplied, setIsCouponApplied] = useState(false);
+  const [appliedCouponCode, setAppliedCouponCode] = useState('');
+  const [discountPercent, setDiscountPercent] = useState(0);
   const [productToRemove, setProductToRemove] = useState(null);
 
   // Calculations
@@ -29,12 +31,18 @@ export default function CartPage({
 
   const handleApplyCoupon = (e) => {
     e.preventDefault();
-    if (coupon.trim().toUpperCase() === 'RASHAT10') {
+    if (coupon.trim()) {
+      setIsCouponApplied(true);
+      setAppliedCouponCode(coupon.trim().toUpperCase());
       setDiscountPercent(10); // 10% discount
-      alert('تم تطبيق الكوبون بنجاح! خصم 10%');
-    } else {
-      alert('كوبون غير صالح');
     }
+  };
+
+  const handleRemoveCoupon = () => {
+    setIsCouponApplied(false);
+    setAppliedCouponCode('');
+    setDiscountPercent(0);
+    setCoupon('');
   };
 
   return (
@@ -179,27 +187,56 @@ export default function CartPage({
                 })}
               </div>
 
-              {/* Coupon Box */}
-              <div className="cap-coupon-card">
-                <h3>لديك كوبون خصم؟</h3>
-                <form className="cap-coupon-form" onSubmit={handleApplyCoupon}>
-                  <input
-                    type="text"
-                    placeholder="أدخل رمز الكوبون..."
-                    value={coupon}
-                    onChange={(e) => setCoupon(e.target.value)}
-                  />
-                  <button type="submit">تطبيق</button>
-                </form>
-              </div>
-
             </div>
 
-            {/* Left Column: Order Summary */}
+            {/* Left Column: Order Summary Card */}
             <div className="cap-left-col">
               <div className="cap-summary-card">
                 <h2>ملخص الطلب</h2>
+                <div className="cap-summary-title-divider"></div>
                 
+                {/* Coupon Box inside summary */}
+                <div className="cap-summary-coupon">
+                  <label className="cap-coupon-label">
+                    {isCouponApplied ? 'كوبون الخصم' : 'لديك كوبون خصم؟'}
+                  </label>
+
+                  {isCouponApplied ? (
+                    <div className="cap-applied-coupon-wrap">
+                      <div className="cap-applied-coupon-box">
+                        <button 
+                          type="button" 
+                          className="cap-remove-coupon-btn"
+                          onClick={handleRemoveCoupon}
+                          title="إزالة الكوبون"
+                        >
+                          ✕
+                        </button>
+                        <span className="cap-applied-code">{appliedCouponCode}</span>
+                      </div>
+                      <div className="cap-coupon-success-msg">
+                        <span>تم تطبيق الكوبون بنجاح</span>
+                        <span className="cap-success-check-icon">
+                          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3">
+                            <polyline points="20 6 9 17 4 12"></polyline>
+                          </svg>
+                        </span>
+                      </div>
+                    </div>
+                  ) : (
+                    <form className="cap-coupon-form" onSubmit={handleApplyCoupon}>
+                      <input
+                        type="text"
+                        placeholder="أدخل رمز الكوبون"
+                        value={coupon}
+                        onChange={(e) => setCoupon(e.target.value)}
+                      />
+                      <button type="submit">تطبيق</button>
+                    </form>
+                  )}
+                </div>
+
+                {/* Rows Breakdown */}
                 <div className="cap-summary-row">
                   <span>المجموع الفرعي</span>
                   <span>{subtotal} ر.س</span>
@@ -214,7 +251,7 @@ export default function CartPage({
 
                 <div className="cap-summary-row">
                   <span>الشحن</span>
-                  <span>{shipping === 0 ? 'مجاني' : `${shipping} ر.س`}</span>
+                  <span>{shipping === 0 ? '25 ر.س' : `${shipping} ر.س`}</span>
                 </div>
 
                 <div className="cap-summary-total-divider"></div>
@@ -226,17 +263,29 @@ export default function CartPage({
 
                 <button 
                   className="cap-checkout-btn"
-                  onClick={() => alert('جاري الانتقال لإتمام الطلب والدفع...')}
+                  onClick={() => navigate('/checkout')}
                 >
                   إتمام الطلب
                 </button>
 
                 <div className="cap-secure-badge">
-                  <span>تسوق آمن ومضمون 100%</span>
+                  <div className="cap-secure-info">
+                    <span>تسوق آمن ومشفر 100%</span>
+                    <svg className="cap-lock-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#80634e" strokeWidth="2">
+                      <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                      <path d="M7 11V7a5 5 0 0110 0v4"></path>
+                    </svg>
+                  </div>
                   <div className="cap-payment-icons">
-                    <img src="../../public/icons/image 62.svg" alt="Mada" />
-                    <img src="../../public/icons/image 10.svg" alt="Visa" />
-                    <img src="../../public/icons/image 60.svg" alt="Apple Pay" />
+                    <div className="cap-pay-card">
+                      <img src="../../public/icons/image 60.svg" alt="Apple Pay" />
+                    </div>
+                    <div className="cap-pay-card">
+                      <img src="../../public/icons/image 10.svg" alt="Visa" />
+                    </div>
+                    <div className="cap-pay-card">
+                      <img src="../../public/icons/image 62.svg" alt="Mada" />
+                    </div>
                   </div>
                 </div>
               </div>
@@ -253,10 +302,7 @@ export default function CartPage({
             </button>
             <div className="cap-modal-icon-wrap">
               <div className="cap-modal-icon-circle">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#d32f2f" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                  <polyline points="3 6 5 6 21 6"></polyline>
-                  <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
-                </svg>
+                <img src="../../public/icons/delete-03.svg" alt="حذف" width="26" height="26" />
               </div>
             </div>
             <h2 className="cap-modal-title">إزالة المنتج؟</h2>

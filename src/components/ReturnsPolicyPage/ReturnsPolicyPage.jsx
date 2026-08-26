@@ -31,9 +31,7 @@ export default function ReturnsPolicyPage() {
               <div className="rep-deco-shape"></div>
               
               <h1 className="rep-hero-title">سياسة الاسترجاع والاستبدال</h1>
-              <p className="rep-hero-subtitle">
-                نحرص في رشة عطر على أن تكون تجربتك معنا واضحة ومريحة، نلتزم بتقديم أفضل خدمة لعملائنا الكرام.
-              </p>
+              <p className="rep-hero-subtitle">نحرص في رشة عطر على أن تكون تجربتك معنا واضحة ومريحة، نلتزم بتقديم أفضل خدمة لعملائنا الكرام.</p>
 
               {/* Overview Cards */}
               <div className="rep-overview-cards">
@@ -93,7 +91,7 @@ export default function ReturnsPolicyPage() {
             <div className="rep-step-item">
               <div className="rep-step-number">01</div>
               <h3 className="rep-step-title">تأكد من حالة المنتج</h3>
-              <p className="rep-step-desc">تأكد من أن المنتج مطابق لشروط الاسترجاع المذكورة أدناه</p>
+              <p className="rep-step-desc">تأكد من أن المنتج مطابق لشروط الاسترجاع المذكورة أدناه.</p>
             </div>
             
             <div className="rep-step-connector"></div>
@@ -101,7 +99,7 @@ export default function ReturnsPolicyPage() {
             <div className="rep-step-item">
               <div className="rep-step-number">02</div>
               <h3 className="rep-step-title">احتفظ ببيانات طلبك</h3>
-              <p className="rep-step-desc">ستحتاج إلى رقم الطلب والبريد الإلكتروني لإتمام الطلب</p>
+              <p className="rep-step-desc">ستحتاج إلى رقم الطلب والبريد الإلكتروني لإتمام الطلب.</p>
             </div>
 
             <div className="rep-step-connector"></div>
@@ -109,7 +107,7 @@ export default function ReturnsPolicyPage() {
             <div className="rep-step-item">
               <div className="rep-step-number">03</div>
               <h3 className="rep-step-title">تواصل مع خدمة العملاء</h3>
-              <p className="rep-step-desc">ابدأ طلب الاسترجاع عبر قنوات التواصل المعتمدة</p>
+              <p className="rep-step-desc">ابدأ طلب الاسترجاع عبر قنوات التواصل المعتمدة.</p>
             </div>
 
             <div className="rep-step-connector"></div>
@@ -150,7 +148,7 @@ export default function ReturnsPolicyPage() {
                   </li>
                   <li>
                     <span className="rep-check-mark">✓</span>
-                    <span>جميع الهدايا مرفقة</span>
+                    <span>جميع الملحقات مرفقة</span>
                   </li>
                 </ul>
               </div>
