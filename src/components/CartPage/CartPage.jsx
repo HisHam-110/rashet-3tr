@@ -3,6 +3,8 @@ import { useNavigate } from 'react-router-dom';
 import Footer from '../Footer/Footer';
 import './CartPage.css';
 
+const VALID_COUPONS = ['RASHAT10', 'RASHET10', 'RASHAT15', 'RASHET15', 'RASHAT20', 'RASHET20', 'OFF10', 'SAVE10', 'PROMO10'];
+
 export default function CartPage({
   cartItems = [],
   onUpdateQuantity,
@@ -11,7 +13,8 @@ export default function CartPage({
   wishlistIds = [],
 }) {
   const navigate = useNavigate();
-  const [coupon, setCoupon] = useState('RASHAT10');
+  const [coupon, setCoupon] = useState('');
+  const [couponError, setCouponError] = useState('');
   const [isCouponApplied, setIsCouponApplied] = useState(false);
   const [appliedCouponCode, setAppliedCouponCode] = useState('');
   const [discountPercent, setDiscountPercent] = useState(0);
@@ -19,23 +22,28 @@ export default function CartPage({
 
   // Calculations
   const subtotal = cartItems.reduce((acc, item) => acc + (item.price * item.quantity), 0);
-  const shipping = subtotal > 199 || subtotal === 0 ? 0 : 25;
+  const shipping = subtotal >= 1000 || subtotal === 0 ? 0 : 25;
   const discount = subtotal * (discountPercent / 100);
   const total = subtotal - discount + shipping;
 
-  // Free shipping progress calculation (target 199 or 150 as in screen: "باقي 150 ريال للحصول على الشحن المجاني")
-  // Let's use 199 since it's the website policy from announcement bar "شحن مجاني للطلبات فوق 199 ريال"
-  const freeShippingThreshold = 199;
+  const freeShippingThreshold = 1000;
   const remainingForFreeShipping = Math.max(0, freeShippingThreshold - subtotal);
   const progressPercent = Math.min(100, (subtotal / freeShippingThreshold) * 100);
 
   const handleApplyCoupon = (e) => {
     e.preventDefault();
-    if (coupon.trim()) {
-      setIsCouponApplied(true);
-      setAppliedCouponCode(coupon.trim().toUpperCase());
-      setDiscountPercent(10); // 10% discount
+    const cleanCoupon = coupon.trim().toUpperCase();
+    if (!cleanCoupon || !VALID_COUPONS.includes(cleanCoupon)) {
+      setIsCouponApplied(false);
+      setDiscountPercent(0);
+      setCouponError('كود الخصم غير صالح، يرجى التحقق منه');
+      return;
     }
+
+    setIsCouponApplied(true);
+    setAppliedCouponCode(cleanCoupon);
+    setDiscountPercent(10); // 10% discount
+    setCouponError('');
   };
 
   const handleRemoveCoupon = () => {
@@ -43,6 +51,7 @@ export default function CartPage({
     setAppliedCouponCode('');
     setDiscountPercent(0);
     setCoupon('');
+    setCouponError('');
   };
 
   return (
@@ -224,15 +233,26 @@ export default function CartPage({
                       </div>
                     </div>
                   ) : (
-                    <form className="cap-coupon-form" onSubmit={handleApplyCoupon}>
-                      <input
-                        type="text"
-                        placeholder="أدخل رمز الكوبون"
-                        value={coupon}
-                        onChange={(e) => setCoupon(e.target.value)}
-                      />
-                      <button type="submit">تطبيق</button>
-                    </form>
+                    <>
+                      <form className="cap-coupon-form" onSubmit={handleApplyCoupon}>
+                        <input
+                          type="text"
+                          placeholder="أدخل رمز الكوبون"
+                          value={coupon}
+                          onChange={(e) => {
+                            setCoupon(e.target.value);
+                            if (couponError) setCouponError('');
+                          }}
+                          className={couponError ? 'cap-coupon-input-error' : ''}
+                        />
+                        <button type="submit">تطبيق</button>
+                      </form>
+                      {couponError && (
+                        <div className="cap-coupon-error-msg">
+                          <span>{couponError}</span>
+                        </div>
+                      )}
+                    </>
                   )}
                 </div>
 

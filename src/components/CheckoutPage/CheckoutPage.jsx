@@ -9,7 +9,7 @@ export default function CheckoutPage({ cartItems = [] }) {
   const navigate = useNavigate();
   const [form, setForm] = useState({ email: '', phone: '', name: '', region: '', city: '', address: '', notes: '', save: false });
   const subtotal = useMemo(() => cartItems.reduce((sum, item) => sum + item.price * item.quantity, 0), [cartItems]);
-  const shipping = subtotal > 199 ? 0 : 25;
+  const shipping = subtotal >= 1000 ? 0 : 25;
   const total = subtotal + shipping;
 
   const update = (event) => {
@@ -39,7 +39,20 @@ export default function CheckoutPage({ cartItems = [] }) {
             <h1>معلومات الاتصال</h1>
             <form onSubmit={submit}>
               <label>البريد الإلكتروني<input name="email" type="email" value={form.email} onChange={update} placeholder="example@domain.com" required /></label>
-              <label>رقم الجوال<input name="phone" type="tel" value={form.phone} onChange={update} placeholder="5X XXX XXXX" required /></label>
+              <label className="phone-label">
+                رقم الجوال
+                <div className="phone-input-group">
+                  <span className="country-code-badge">+966</span>
+                  <input
+                    name="phone"
+                    type="tel"
+                    value={form.phone}
+                    onChange={update}
+                    placeholder="5X XXX XXXX"
+                    required
+                  />
+                </div>
+              </label>
               <label className="check-label"><input name="save" type="checkbox" checked={form.save} onChange={update} /> أرسل لي العروض الحصرية والأخبار</label>
               <h2>عنوان الشحن</h2>
               <label>الاسم الكامل<input name="name" value={form.name} onChange={update} placeholder="الاسم الكامل" required /></label>

@@ -39,19 +39,21 @@
 
 .products-title {
   margin: 0;
-  color: #56371d;
+  color:#905B30;
   font-family: "Cairo", sans-serif;
-  font-size: 24px;
+  font-size: 28px;
   font-weight: 700;
   line-height: 32px;
-  direction: ltr;
+  direction: rtl;
 }
 
 .products-title-line {
-  width: 48px;
-  height: 2px;
+  width: 67px;
+  height: 3px;
+  border-radius: 8px;
   margin-top: 8px;
-  background: #905b30;
+  background: #905B30;
+  
 }
 
 

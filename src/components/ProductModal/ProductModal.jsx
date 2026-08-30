@@ -2,10 +2,10 @@ import React, { useState } from 'react';
 import './ProductModal.css';
 
 export default function ProductModal({ product, onClose, onAddToCart, isWishlisted, onToggleWishlist }) {
-  if (!product) return null;
-
-  const [selectedSize, setSelectedSize] = useState(product.sizes ? product.sizes[0] : '100 مل');
+  const [selectedSize, setSelectedSize] = useState(product?.sizes?.[0] ?? '100 مل');
   const [quantity, setQuantity] = useState(1);
+
+  if (!product) return null;
 
   const handleAdd = () => {
     onAddToCart({

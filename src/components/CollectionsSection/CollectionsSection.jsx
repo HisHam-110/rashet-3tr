@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { useNavigate } from 'react-router-dom';
 import './CollectionsSection.css';
 
 // Real local assets
@@ -58,6 +59,7 @@ const TRIPLE_CARDS = [
 const START_INDEX = N; // Start at the second set
 
 export default function CollectionsSection() {
+  const navigate = useNavigate();
   const [index, setIndex] = useState(START_INDEX);
   const [stepWidth, setStepWidth] = useState(0);
   const [noTransition, setNoTransition] = useState(false);
@@ -166,7 +168,12 @@ export default function CollectionsSection() {
           onTransitionEnd={handleTransitionEnd}
         >
           {TRIPLE_CARDS.map((item) => (
-            <article key={item.uid} className="csc-card">
+            <article
+              key={item.uid}
+              className="csc-card"
+              onClick={() => navigate(`/perfumes?category=${item.id}`)}
+              style={{ cursor: 'pointer' }}
+            >
               {/* Background Image & Overlay */}
               <div className="csc-card-bg">
                 <img
@@ -187,6 +194,10 @@ export default function CollectionsSection() {
                 <button
                   type="button"
                   className="csc-card-btn"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    navigate(`/perfumes?category=${item.id}`);
+                  }}
                   aria-label={`تسوق الآن من ${item.title}`}
                 >
                   <span>تسوق الآن</span>

@@ -1,4 +1,5 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import './CartDrawer.css';
 
 export default function CartDrawer({
@@ -9,11 +10,10 @@ export default function CartDrawer({
   onRemoveItem,
   onClearCart,
 }) {
+  const navigate = useNavigate();
   if (!isOpen) return null;
 
   const subtotal = cartItems.reduce((acc, item) => acc + item.price * item.quantity, 0);
-  const shipping = subtotal >= 300 || subtotal === 0 ? 0 : 25;
-  const total = subtotal + shipping;
 
   return (
     <div className="cart-backdrop" onClick={onClose}>
@@ -29,25 +29,6 @@ export default function CartDrawer({
           </button>
         </div>
 
-        {/* Free Shipping Progress Bar */}
-        <div className="shipping-progress-box">
-          {subtotal >= 300 ? (
-            <div className="shipping-congrats">
-              <span>🎉 مبروك! حصلت على شحن مجاني</span>
-            </div>
-          ) : (
-            <div className="shipping-remaining">
-              <span>أضف <strong>{300 - subtotal} ر.س</strong> للحصول على الشحن المجاني!</span>
-              <div className="progress-bar-bg">
-                <div
-                  className="progress-bar-fill"
-                  style={{ width: `${Math.min(100, (subtotal / 300) * 100)}%` }}
-                ></div>
-              </div>
-            </div>
-          )}
-        </div>
-
         {/* Cart Items List */}
         <div className="cart-items-list">
           {cartItems.length === 0 ? (
@@ -55,7 +36,13 @@ export default function CartDrawer({
               <span className="empty-icon">🛍️</span>
               <h4>سلتك فارغة حالياً</h4>
               <p>استكشف تشكيلتنا الفاخرة واختر عطرك المفضل</p>
-              <button className="browse-perfumes-btn" onClick={onClose}>
+              <button
+                className="browse-perfumes-btn"
+                onClick={() => {
+                  onClose();
+                  navigate('/perfumes');
+                }}
+              >
                 تصفح العطور الآن
               </button>
             </div>
@@ -67,13 +54,7 @@ export default function CartDrawer({
                 <div className="cart-item-info">
                   <div className="cart-item-top">
                     <h4 className="cart-item-name">{item.name}</h4>
-                    <button
-                      className="cart-item-remove"
-                      onClick={() => onRemoveItem(item.id, item.selectedSize)}
-                      title="حذف من السلة"
-                    >
-                      ✕
-                    </button>
+                    <button className="cart-item-remove" onClick={() => onRemoveItem(item.id, item.selectedSize)} title="حذف من السلة">✕</button>
                   </div>
 
                   <span className="cart-item-size">{item.selectedSize || '100 مل'}</span>
@@ -106,27 +87,27 @@ export default function CartDrawer({
         {cartItems.length > 0 && (
           <div className="cart-footer">
             <div className="cart-summary-row">
-              <span>المجموع الفرعي:</span>
+              <span>الإجمالي:</span>
               <span>{subtotal} ر.س</span>
-            </div>
-            <div className="cart-summary-row">
-              <span>الشحن والتوصيل:</span>
-              <span>{shipping === 0 ? 'مجاناً ✨' : `${shipping} ر.س`}</span>
-            </div>
-            <div className="cart-summary-row total">
-              <span>الإجمالي النهائي:</span>
-              <span className="final-price">{total} ر.س</span>
             </div>
 
             <button
               className="checkout-btn"
-              onClick={() => alert(`شكراً لتسوقك من رشة عطر! الإجمالي: ${total} ر.س`)}
+              onClick={() => {
+                onClose();
+                navigate('/checkout');
+              }}
             >
-              <span>إتمام الطلب والدفع الآمن</span>
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                <line x1="19" y1="12" x2="5" y2="12"></line>
-                <polyline points="12 19 5 12 12 5"></polyline>
-              </svg>
+              <span>إتمام الطلب</span>
+            </button>
+            <button
+              className="view-cart-btn"
+              onClick={() => {
+                onClose();
+                navigate('/cart');
+              }}
+            >
+              عرض السلة
             </button>
           </div>
         )}

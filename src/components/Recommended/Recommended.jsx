@@ -1,8 +1,15 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import "./Recommended.css";
 
-export default function Products() {
-  const products = [
+export default function Products({
+  products: suppliedProducts = [],
+  onAddToCart,
+  onToggleWishlist,
+  wishlistIds = [],
+}) {
+  const navigate = useNavigate();
+  const fallbackProducts = [
     {
       id: 1,
       name: "عطر لوريس | Loris",
@@ -36,6 +43,8 @@ export default function Products() {
       image: "../../src/assets/images/image 16.svg",
     },
   ];
+
+  const products = suppliedProducts.length ? suppliedProducts.slice(0, 4) : fallbackProducts;
 
   /* =========================
      Ratings
@@ -79,6 +88,10 @@ export default function Products() {
   ========================= */
 
   const handleFavorite = (productId) => {
+    if (onToggleWishlist) {
+      onToggleWishlist(productId);
+      return;
+    }
     setFavorites((prev) => ({
       ...prev,
       [productId]: !prev[productId],
@@ -101,16 +114,20 @@ export default function Products() {
 
           {/* عرض الكل */}
 
-          <a
-            href="#"
+          <button
+            type="button"
             className="show-all"
+            onClick={(e) => {
+              e.preventDefault();
+              navigate('/perfumes');
+            }}
           >
             <span>عرض الكل</span>
 
             <span className="show-all-arrow">
               ‹
             </span>
-          </a>
+          </button>
 
           {/* العنوان */}
 
@@ -135,9 +152,28 @@ export default function Products() {
 
           {products.map((product) => (
 
+            (() => {
+              const isWishlisted = onToggleWishlist
+                ? wishlistIds.includes(product.id)
+                : favorites[product.id];
+
+              return (
+
             <article
               className="product-card"
               key={product.id}
+              onClick={(event) => {
+                if (event.target.closest('button')) return;
+                navigate(`/product/${product.id}`);
+              }}
+              role="link"
+              tabIndex={0}
+              onKeyDown={(event) => {
+                if (event.key === "Enter" || event.key === " ") {
+                  event.preventDefault();
+                  navigate(`/product/${product.id}`);
+                }
+              }}
             >
 
               {/* =================================
@@ -153,15 +189,17 @@ export default function Products() {
                 <button
                   type="button"
                   className={`favorite-btn ${
-                    favorites[product.id]
+                    isWishlisted
                       ? "liked"
                       : ""
                   }`}
-                  onClick={() =>
-                    handleFavorite(product.id)
-                  }
+                  onClick={(event) => {
+                    event.stopPropagation();
+                    event.preventDefault();
+                    handleFavorite(product.id);
+                  }}
                   aria-label={
-                    favorites[product.id]
+                    isWishlisted
                       ? "إزالة من المفضلة"
                       : "إضافة إلى المفضلة"
                   }
@@ -172,7 +210,7 @@ export default function Products() {
                     height="22"
                     viewBox="0 0 24 24"
                     fill={
-                      favorites[product.id]
+                      isWishlisted
                         ? "currentColor"
                         : "none"
                     }
@@ -251,12 +289,13 @@ export default function Products() {
                               ? "active"
                               : ""
                           }`}
-                          onClick={() =>
+                          onClick={(event) => {
+                            event.stopPropagation();
                             handleRating(
                               product.id,
                               starNumber
-                            )
-                          }
+                            );
+                          }}
                           aria-label={`تقييم ${starNumber} نجوم`}
                         >
 
@@ -323,6 +362,10 @@ export default function Products() {
 <button
   type="button"
   className="add-to-cart"
+  onClick={(event) => {
+    event.stopPropagation();
+    onAddToCart?.(product);
+  }}
 >
   <span className="add-to-cart-text">
     أضف إلى السلة
@@ -364,6 +407,9 @@ export default function Products() {
               </div>
 
             </article>
+
+              );
+            })()
 
           ))}
 

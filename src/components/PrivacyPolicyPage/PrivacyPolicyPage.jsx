@@ -3,7 +3,6 @@ import { useNavigate } from 'react-router-dom';
 import Footer from '../Footer/Footer';
 import './PrivacyPolicyPage.css';
 
-import shadowBg from '../../assets/images/about-shadow-bg.jpg';
 import perfumeSmokeBg from '../../assets/images/dartistana_create_a_professional_product_shoot_of_3_perfume_bot_3e6bf181-e7e3-410a-96fa-977eb5e88c24 1.svg';
 
 // Icons from public/icons
@@ -14,46 +13,50 @@ const iconUse3 = '/icons/Icon-2.svg';
 
 export default function PrivacyPolicyPage() {
   const navigate = useNavigate();
-  const [activeTab, setActiveTab] = useState('01');
+  const [activeTab, setActiveTab] = useState(null);
 
   return (
     <div className="privacy-page" dir="rtl">
-      {/* Top Header & Breadcrumb */}
-      <div className="prp-top-bar">
-        <div className="prp-container">
-          <div className="prp-breadcrumb">
-            <span className="prp-bc-link" onClick={() => navigate('/')}>الرئيسية</span>
-            <span className="prp-bc-sep">/</span>
-            <span className="prp-bc-current">سياسة الخصوصية</span>
-          </div>
-        </div>
-      </div>
 
-      {/* Hero Banner Section (MATCHING USER SCREENSHOT) */}
+      {/* Hero Banner Section (EXACT MATCH TO USER SCREENSHOT) */}
       <section className="prp-hero-section">
         <div className="prp-container">
-          <div className="prp-hero-card" style={{ backgroundImage: `url(${shadowBg})` }} >
+          <div className="prp-hero-card">
             <div className="prp-hero-text">
-              <div className="prp-title-row">
-                <h1 className="prp-hero-title">سياسة الخصوصية</h1>
-                <span className="prp-lock-badge">🔒</span>
+              {/* Breadcrumb inside the card at top right */}
+              <div className="prp-hero-breadcrumb">
+                <span className="prp-bc-link" onClick={() => navigate('/')}>الرئيسية</span>
+                <span className="prp-bc-sep">/</span>
+                <span className="prp-bc-current">سياسة الخصوصية</span>
               </div>
+
+              {/* Title & Lock Icon */}
+              <div className="prp-title-row">
+                <h1 className="prp-hero-title">
+                  <img src="/icons/Icon.svg" alt="" className="prp-lock-icon" aria-hidden="true" />
+                  <span>سياسة الخصوصية</span>
+                </h1>
+              </div>
+
+              {/* Subtitle / Paragraph */}
               <p className="prp-hero-subtitle">
-                نحن في رشة عطر نلتزم بخصوصيتك. توضح هذه السياسة كيف نجمع بياناتك ونستخدمها ونحميها بأعلى معايير الأمان المتبعة في المملكة العربية السعودية.
+                نحن في رشة عطر نقدر ثقتكم بنا. نوضح هذه السياسة كيف نجمع بياناتك ونستخدمها ونحميها بأعلى معايير الأمان المتبعة في المملكة العربية السعودية.
               </p>
             </div>
+
+            {/* Left Icon: Container privacy.svg */}
             <div className="prp-hero-graphic">
-              <div className="prp-blue-shield-circle">
-                <svg width="42" height="50" viewBox="0 0 24 28" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M12 1L2 5V12C2 18.5 6.3 24.5 12 27C17.7 24.5 22 18.5 22 12V5L12 1Z" fill="#3B82F6" stroke="#2563EB" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                </svg>
-              </div>
+              <img
+                src="../../public/icons/container privacy.svg"
+                alt="سياسة الخصوصية"
+                className="prp-privacy-icon-img"
+              />
             </div>
           </div>
         </div>
       </section>
 
-      {/* Section 1: مقدمة (MATCHING USER SCREENSHOT) */}
+      {/* Section 1: مقدمة */}
       <section className="prp-intro-section">
         <div className="prp-container">
           <div className="prp-sec-card">
@@ -72,32 +75,56 @@ export default function PrivacyPolicyPage() {
             <span className="prp-sec-icon">📝</span>
             <h2 className="prp-sec-title">ما البيانات التي نجمعها؟</h2>
           </div>
-          <div className="prp-accordion-row">
-            <div
-              className={`prp-acc-btn ${activeTab === '01' ? 'active' : ''}`}
-              onClick={() => setActiveTab('01')}
-            >
-              <span>01</span>
-              <span className="prp-chevron">{activeTab === '01' ? '▲' : '▼'}</span>
+          <div className="prp-accordion-row" onMouseLeave={() => setActiveTab(null)}>
+            <div className="prp-acc-item">
+              <button
+                type="button"
+                className={`prp-acc-btn ${activeTab === '01' ? 'active' : ''}`}
+                onMouseEnter={() => setActiveTab('01')}
+                onFocus={() => setActiveTab('01')}
+                onClick={() => setActiveTab(activeTab === '01' ? null : '01')}
+                aria-expanded={activeTab === '01'}
+              >
+                <span>01</span>
+                <span className="prp-chevron">⌄</span>
+              </button>
+              {activeTab === '01' && (
+                <div className="prp-tab-content">
+                  <span className="prp-tab-number">01</span>
+                  <h3>بيانات تقدمها أنت <span className="prp-tab-icon">♙</span></h3>
+                  <ul>
+                    <li>الاسم ورقم الجوال والبريد الإلكتروني</li>
+                    <li>عناوين التوصيل السابقة والحالية</li>
+                    <li>سجل الطلبات والمفضلات</li>
+                  </ul>
+                </div>
+              )}
             </div>
-            <div
-              className={`prp-acc-btn ${activeTab === '02' ? 'active' : ''}`}
-              onClick={() => setActiveTab('02')}
-            >
-              <span>02</span>
-              <span className="prp-chevron">{activeTab === '02' ? '▲' : '▼'}</span>
+            <div className="prp-acc-item">
+              <button
+                type="button"
+                className={`prp-acc-btn ${activeTab === '02' ? 'active' : ''}`}
+                onMouseEnter={() => setActiveTab('02')}
+                onFocus={() => setActiveTab('02')}
+                onClick={() => setActiveTab(activeTab === '02' ? null : '02')}
+                aria-expanded={activeTab === '02'}
+              >
+                <span>02</span>
+                <span className="prp-chevron">⌄</span>
+              </button>
+              {activeTab === '02' && (
+                <div className="prp-tab-content prp-tab-content-alt">
+                  <span className="prp-tab-number">02</span>
+                  <h3>بيانات يتم جمعها تلقائياً <span className="prp-tab-icon">⌁</span></h3>
+                  <ul>
+                    <li>ملفات تعريف الارتباط</li>
+                    <li>منصة التصفح والصفحات المزورة</li>
+                    <li>بيانات الموقع (إذا سمحت بذلك)</li>
+                  </ul>
+                </div>
+              )}
             </div>
           </div>
-          {activeTab === '01' && (
-            <div className="prp-tab-content">
-              <p>نجمع البيانات الأساسية مثل الاسم، رقم الهاتف، عنوان التوصيل، والبريد الإلكتروني لإتمام الطلبات بفاعلية.</p>
-            </div>
-          )}
-          {activeTab === '02' && (
-            <div className="prp-tab-content">
-              <p>بيانات التصفح وملفات الكوكيز وتفضيلات العطور لتحسين تجربة التصفح وتقديم اقتراحات مخصصة لاهتماماتك.</p>
-            </div>
-          )}
         </div>
       </section>
 

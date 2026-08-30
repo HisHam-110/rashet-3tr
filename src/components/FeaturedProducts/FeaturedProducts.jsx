@@ -93,6 +93,8 @@ const DEFAULT_PRODUCTS = [
 export default function FeaturedProducts({
   products = [],
   onAddToCart,
+  onToggleWishlist,
+  wishlistIds = [],
   onOpenProductDetails,
 }) {
   const displayProducts = (products && products.length >= 3) ? products : DEFAULT_PRODUCTS;
@@ -171,16 +173,22 @@ export default function FeaturedProducts({
               else if (isNext) positionClass = 'card-next';
 
               const cardImg = product.image || img69;
+              const isWishlisted = wishlistIds.includes(product.id);
 
               return (
                 <article
                   key={product.id || idx}
                   className={`carousel-product-card ${positionClass}`}
-                  onClick={() => {
-                    if (!isActive) {
-                      setActiveIndex(idx);
-                    } else if (onOpenProductDetails) {
-                      onOpenProductDetails(product);
+                  onClick={(e) => {
+                    if (e.target.closest('button')) return;
+                    onOpenProductDetails?.(product);
+                  }}
+                  role="link"
+                  tabIndex={0}
+                  onKeyDown={(event) => {
+                    if (event.key === 'Enter' || event.key === ' ') {
+                      event.preventDefault();
+                      onOpenProductDetails?.(product);
                     }
                   }}
                 >
@@ -194,6 +202,35 @@ export default function FeaturedProducts({
                     />
                     <div className="card-media-overlay" />
                     
+                    {/* Favorite Heart Button */}
+                    <button
+                      type="button"
+                      className={`featured-fav-btn ${isWishlisted ? 'liked' : ''}`}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        e.preventDefault();
+                        if (onToggleWishlist) onToggleWishlist(product.id);
+                      }}
+                      aria-label={isWishlisted ? "إزالة من المفضلة" : "إضافة إلى المفضلة"}
+                    >
+                      <svg
+                        width="22"
+                        height="22"
+                        viewBox="0 0 24 24"
+                        fill={isWishlisted ? "currentColor" : "none"}
+                        xmlns="http://www.w3.org/2000/svg"
+                        aria-hidden="true"
+                      >
+                        <path
+                          d="M20.84 4.61C19.84 3.61 18.49 3.05 17.09 3.05C15.69 3.05 14.34 3.61 13.34 4.61L12 5.95L10.66 4.61C8.58 2.53 5.21 2.53 3.13 4.61C1.05 6.69 1.05 10.06 3.13 12.14L12 21L20.87 12.14C22.95 10.06 22.95 6.69 20.84 4.61Z"
+                          stroke="currentColor"
+                          strokeWidth="1.6"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        />
+                      </svg>
+                    </button>
+
                     {/* Top Tagline */}
                     <span className="card-top-badge">
                       {product.tagline || product.tag || 'استمتع بالعطور الفاخرة'}
@@ -227,6 +264,7 @@ export default function FeaturedProducts({
                       className="pill-add-cart-btn"
                       onClick={(e) => {
                         e.stopPropagation();
+                        e.preventDefault();
                         if (onAddToCart) onAddToCart(product);
                       }}
                       aria-label={`أضف ${product.name} إلى السلة`}
@@ -254,8 +292,6 @@ export default function FeaturedProducts({
               );
             })}
           </div>
-
-
 
           {/* Dots */}
           <div className="carousel-dots-wrapper">

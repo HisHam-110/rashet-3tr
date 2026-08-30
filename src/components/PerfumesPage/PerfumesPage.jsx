@@ -1,5 +1,5 @@
-import React, { useState, useMemo } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import React, { useState, useEffect, useMemo } from 'react';
+import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 import { perfumeCategoryProducts } from '../../data/perfumesData';
 import Footer from '../Footer/Footer';
 import './PerfumesPage.css';
@@ -14,10 +14,20 @@ export default function PerfumesPage({
   onOpenCart,
 }) {
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+  const categoryParam = searchParams.get('category');
+
   const [searchQuery, setSearchQuery] = useState('');
   const [sortBy, setSortBy] = useState('newest');
   const [currentPage, setCurrentPage] = useState(1);
-  const [selectedCategory, setSelectedCategory] = useState('all');
+  const [selectedCategory, setSelectedCategory] = useState(categoryParam || 'all');
+
+  useEffect(() => {
+    if (categoryParam) {
+      setSelectedCategory(categoryParam);
+      setCurrentPage(1);
+    }
+  }, [categoryParam]);
 
   // Interactive Ratings state
   const [productRatings, setProductRatings] = useState(
@@ -57,8 +67,16 @@ export default function PerfumesPage({
     let result = [...perfumeCategoryProducts];
 
     // 1. Pill Category Filter
-    if (selectedCategory !== 'all') {
-      result = result.filter((p) => p.category === selectedCategory);
+    if (selectedCategory !== 'all' && selectedCategory !== 'full') {
+      if (selectedCategory === 'men' || selectedCategory === 'women' || selectedCategory === 'unisex') {
+        result = result.filter((p) => p.category === selectedCategory);
+      } else if (selectedCategory === 'luxury') {
+        result = result.filter((p) => p.price >= 800 || p.isNew);
+      } else if (selectedCategory === 'summer') {
+        result = result.filter((p) => p.category === 'unisex' || p.category === 'women');
+      } else if (selectedCategory === 'night') {
+        result = result.filter((p) => p.category === 'men' || p.category === 'unisex');
+      }
     } else {
       // 2. Sidebar active category checklist filter (only when selectedCategory is 'all')
       if (activeCategories.length > 0) {
@@ -310,7 +328,22 @@ export default function PerfumesPage({
               {paginatedProducts.map((product) => {
                 const isWishlisted = wishlistIds.includes(product.id);
                 return (
-                  <article key={product.id} className="pp-product-card">
+                  <article
+                    key={product.id}
+                    className="pp-product-card"
+                    onClick={(e) => {
+                      if (e.target.closest('button')) return;
+                      navigate(`/product/${product.id}`);
+                    }}
+                    role="link"
+                    tabIndex={0}
+                    onKeyDown={(event) => {
+                      if (event.key === 'Enter' || event.key === ' ') {
+                        event.preventDefault();
+                        navigate(`/product/${product.id}`);
+                      }
+                    }}
+                  >
                     {/* Image Container */}
                     <div className="pp-card-image-wrap">
                       <img
@@ -324,7 +357,11 @@ export default function PerfumesPage({
                       <button
                         type="button"
                         className={`favorite-btn ${isWishlisted ? 'liked' : ''}`}
-                        onClick={() => onToggleWishlist && onToggleWishlist(product.id)}
+                        onClick={(event) => {
+                          event.stopPropagation();
+                          event.preventDefault();
+                          onToggleWishlist?.(product.id);
+                        }}
                         title={isWishlisted ? 'إزالة من المفضلة' : 'أضف للمفضلة'}
                       >
                         <svg
@@ -395,7 +432,11 @@ export default function PerfumesPage({
                       <button
                         type="button"
                         className="add-to-cart"
-                        onClick={() => navigate(`/product/${product.id}`)}
+                        onClick={(event) => {
+                          event.stopPropagation();
+                          event.preventDefault();
+                          onAddToCart?.(product);
+                        }}
                       >
                         <span className="add-to-cart-text">
                           أضف إلى السلة

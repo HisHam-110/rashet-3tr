@@ -1,5 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
+import { createPortal } from 'react-dom';
 import { Routes, Route, useLocation, useNavigate } from 'react-router-dom';
+import './App.css';
 import Navbar from './components/Hero/Navbar';
 import Hero from './components/Hero/Hero';
 import FeaturesBanner from './components/FeaturesBanner/FeaturesBanner';
@@ -8,7 +10,6 @@ import AboutSection from './components/AboutSection/AboutSection';
 import FeaturedProducts from './components/FeaturedProducts/FeaturedProducts';
 import PerfumeNotes from './components/PerfumeNotes/PerfumeNotes';
 import Recommended from './components/Recommended/Recommended';
-import Testimonials from './components/Testimonials/Testimonials';
 import Newsletter from './components/Newsletter/Newsletter';
 import Footer from './components/Footer/Footer';
 import ProductModal from './components/ProductModal/ProductModal';
@@ -24,6 +25,9 @@ import ShippingPage from './components/ShippingPage/ShippingPage';
 import PaymentPage from './components/PaymentPage/PaymentPage';
 import ReviewPage from './components/ReviewPage/ReviewPage';
 import LatestArticles from './components/LatestArticles/LatestArticles';
+import AuthModal from './components/AuthModal/AuthModal';
+import WhatsAppButton from './components/WhatsAppButton/WhatsAppButton';
+import ContactPage from './components/ContactPage/ContactPage';
 
 import { productsData } from './data/perfumesData';
 
@@ -31,34 +35,47 @@ function App() {
   const [products] = useState(productsData);
   const [activeCategory, setActiveCategory] = useState('all');
   const [searchQuery, setSearchQuery] = useState('');
-  const [cart, setCart] = useState([
-    {
-      id: 1,
-      name: 'توم فورد | Oud Wood',
-      price: 950,
-      image: 'https://images.unsplash.com/photo-1523293182086-7651a899d37f?auto=format&fit=crop&w=800&q=80',
-      quantity: 1,
-      selectedSize: '100 مل',
-    },
-  ]);
+  const [cart, setCart] = useState([]);
   const [wishlistIds, setWishlistIds] = useState([1, 2]);
   const [isCartOpen, setIsCartOpen] = useState(false);
+  const [isAuthOpen, setIsAuthOpen] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState(null);
+  const [toast, setToast] = useState(null);
+  const toastTimerRef = useRef(null);
 
   const { hash, pathname } = useLocation();
   const navigate = useNavigate();
 
+  const showToast = (message, type = 'success', itemDetails = null) => {
+    if (toastTimerRef.current) clearTimeout(toastTimerRef.current);
+    setToast({ message, type, itemDetails });
+    toastTimerRef.current = setTimeout(() => setToast(null), 3800);
+  };
+
+  useEffect(() => () => clearTimeout(toastTimerRef.current), []);
+
+  const prevPathnameRef = useRef(pathname);
+  const prevHashRef = useRef(hash);
+
   useEffect(() => {
-    if (hash) {
-      const targetId = hash.replace('#', '');
-      const element = document.getElementById(targetId);
-      if (element) {
-        setTimeout(() => {
-          element.scrollIntoView({ behavior: 'smooth' });
-        }, 100);
+    const isPathChanged = prevPathnameRef.current !== pathname;
+    const isHashChanged = prevHashRef.current !== hash;
+
+    if (isPathChanged || isHashChanged) {
+      prevPathnameRef.current = pathname;
+      prevHashRef.current = hash;
+
+      if (hash) {
+        const targetId = hash.replace('#', '');
+        const element = document.getElementById(targetId);
+        if (element) {
+          setTimeout(() => {
+            element.scrollIntoView({ behavior: 'smooth' });
+          }, 100);
+        }
+      } else {
+        window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
       }
-    } else {
-      window.scrollTo({ top: 0, behavior: 'smooth' });
     }
   }, [hash, pathname]);
 
@@ -75,14 +92,19 @@ function App() {
 
   // Cart operations
   const handleAddToCart = (product, qty = 1) => {
+    const addQuantity = typeof qty === 'number' ? qty : 1;
+    const targetSize = product.selectedSize || (product.sizes ? product.sizes[0] : '100 مل');
+
     setCart((prevCart) => {
       const existingIndex = prevCart.findIndex(
-        (item) => item.id === product.id && item.selectedSize === (product.selectedSize || '100 مل')
+        (item) => item.id === product.id && item.selectedSize === targetSize
       );
       if (existingIndex > -1) {
-        const newCart = [...prevCart];
-        newCart[existingIndex].quantity += qty;
-        return newCart;
+        return prevCart.map((item, idx) =>
+          idx === existingIndex
+            ? { ...item, quantity: item.quantity + addQuantity }
+            : item
+        );
       }
       return [
         ...prevCart,
@@ -91,12 +113,19 @@ function App() {
           name: product.name,
           price: product.price,
           image: product.image,
-          selectedSize: product.selectedSize || (product.sizes ? product.sizes[0] : '100 مل'),
-          quantity: qty,
+          selectedSize: targetSize,
+          quantity: addQuantity,
         },
       ];
     });
-    setIsCartOpen(true);
+
+    showToast('تمت الإضافة بنجاح', 'success', {
+      name: product.name,
+      image: product.image,
+      price: product.price,
+      size: targetSize,
+      quantity: addQuantity,
+    });
   };
 
   const handleUpdateCartQuantity = (id, selectedSize, newQty) => {
@@ -114,9 +143,22 @@ function App() {
   };
 
   const handleRemoveFromCart = (id, selectedSize) => {
+    // Find item before removing to show toast details
+    const removedItem = cart.find((item) => item.id === id && item.selectedSize === selectedSize);
+
     setCart((prevCart) =>
       prevCart.filter((item) => !(item.id === id && item.selectedSize === selectedSize))
     );
+
+    if (removedItem) {
+      showToast('تمت إزالة المنتج من السلة', 'remove', {
+        name: removedItem.name,
+        image: removedItem.image,
+        price: removedItem.price,
+        size: removedItem.selectedSize,
+        quantity: removedItem.quantity,
+      });
+    }
   };
 
   const handleClearCart = () => {
@@ -125,9 +167,14 @@ function App() {
 
   // Wishlist toggle
   const handleToggleWishlist = (productId) => {
-    setWishlistIds((prev) =>
-      prev.includes(productId) ? prev.filter((id) => id !== productId) : [...prev, productId]
-    );
+    setWishlistIds((prev) => {
+      const isAlreadyWishlisted = prev.includes(productId);
+      showToast(
+        isAlreadyWishlisted ? 'تمت الإزالة من المفضلة' : 'تمت الإضافة إلى المفضلة',
+        'favorite'
+      );
+      return isAlreadyWishlisted ? prev.filter((id) => id !== productId) : [...prev, productId];
+    });
   };
 
   const totalCartCount = cart.reduce((total, item) => total + item.quantity, 0);
@@ -153,7 +200,7 @@ function App() {
         onAddToCart={handleAddToCart}
         onToggleWishlist={handleToggleWishlist}
         wishlistIds={wishlistIds}
-        onOpenProductDetails={(prod) => setSelectedProduct(prod)}
+        onOpenProductDetails={(prod) => navigate(`/product/${prod.id}`)}
         activeCategory={activeCategory}
         onSelectCategory={(catId) => setActiveCategory(catId)}
       />
@@ -161,7 +208,7 @@ function App() {
       {/* 6. Signature Perfume Story & Olfactory Pyramid (Figma Note section) */}
       <PerfumeNotes
         onAddToCart={handleAddToCart}
-        onOpenProductDetails={(prod) => setSelectedProduct(prod)}
+        onOpenProductDetails={(prod) => navigate(`/product/${prod.id}`)}
       />
 
       {/* 7. Recommended Products / You May Also Like */}
@@ -170,7 +217,7 @@ function App() {
         onAddToCart={handleAddToCart}
         onToggleWishlist={handleToggleWishlist}
         wishlistIds={wishlistIds}
-        onOpenProductDetails={(prod) => setSelectedProduct(prod)}
+        onOpenProductDetails={(prod) => navigate(`/product/${prod.id}`)}
       />
 
       {/* 8. Newsletter Subscription Banner */}
@@ -188,12 +235,13 @@ function App() {
     <div className="app-container">
       <Navbar
         cartCount={totalCartCount}
-        onOpenCart={() => navigate('/cart')}
-        onOpenUser={() => alert('حسابي قريباً')}
+        onOpenCart={() => setIsCartOpen(true)}
+        onOpenUser={() => setIsAuthOpen(true)}
       />
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/collections" element={<CollectionsPage />} />
+        <Route path="/contact" element={<ContactPage showToast={showToast} />} />
         <Route path="/privacy-policy" element={<PrivacyPolicyPage />} />
         <Route path="/returns-policy" element={<ReturnsPolicyPage />} />
         <Route
@@ -220,7 +268,7 @@ function App() {
               onToggleWishlist={handleToggleWishlist}
               wishlistIds={wishlistIds}
               cartCount={totalCartCount}
-              onOpenCart={() => navigate('/cart')}
+              onOpenCart={() => setIsCartOpen(true)}
             />
           }
         />
@@ -246,6 +294,66 @@ function App() {
         onClearCart={handleClearCart}
       />
 
+      {/* Auth Modal (Login / Sign Up) */}
+      <AuthModal
+        isOpen={isAuthOpen}
+        onClose={() => setIsAuthOpen(false)}
+        showToast={showToast}
+      />
+
+      {toast && createPortal(
+        <div className={`app-toast app-toast-${toast.type} ${toast.itemDetails ? 'app-toast-rich' : ''}`} role="status" aria-live="polite">
+          {toast.itemDetails ? (
+            <div className="app-toast-product-card">
+              {toast.itemDetails.image && (
+                <img
+                  src={toast.itemDetails.image}
+                  alt={toast.itemDetails.name}
+                  className={`app-toast-product-img ${toast.type === 'remove' ? 'app-toast-img-removed' : ''}`}
+                />
+              )}
+              <div className="app-toast-product-info">
+                <div className="app-toast-status-header">
+                  <span className={`app-toast-check-badge ${toast.type === 'remove' ? 'app-toast-remove-badge' : ''}`}>
+                    {toast.type === 'remove' ? '✕' : '✓'}
+                  </span>
+                  <span className={`app-toast-status-title ${toast.type === 'remove' ? 'app-toast-status-remove' : ''}`}>
+                    {toast.type === 'remove' ? 'تمت إزالة المنتج من السلة' : 'تمت الإضافة إلى السلة'}
+                  </span>
+                </div>
+                <h4 className="app-toast-product-name">{toast.itemDetails.name}</h4>
+                <div className="app-toast-meta-tags">
+                  {toast.itemDetails.size && (
+                    <span className="app-toast-tag">{toast.itemDetails.size}</span>
+                  )}
+                  {toast.itemDetails.quantity > 1 && (
+                    <span className="app-toast-tag">الكمية: {toast.itemDetails.quantity}</span>
+                  )}
+                  {toast.itemDetails.price && (
+                    <span className={`app-toast-price ${toast.type === 'remove' ? 'app-toast-price-removed' : ''}`}>
+                      {toast.itemDetails.price} ر.س
+                    </span>
+                  )}
+                </div>
+              </div>
+              <button
+                className="app-toast-close-btn"
+                onClick={() => setToast(null)}
+                aria-label="إغلاق"
+              >
+                ✕
+              </button>
+            </div>
+          ) : (
+            <>
+              <span className="app-toast-icon">{toast.type === 'favorite' ? '♥' : '✓'}</span>
+              <span>{toast.message}</span>
+            </>
+          )}
+        </div>,
+        document.body
+      )}
+
       {/* Interactive Product Details & Notes Modal (shared) */}
       {selectedProduct && (
         <ProductModal
@@ -256,6 +364,8 @@ function App() {
           onToggleWishlist={handleToggleWishlist}
         />
       )}
+      {/* Floating WhatsApp Button */}
+      <WhatsAppButton phoneNumber="966506540920" />
     </div>
   );
 }

@@ -521,6 +521,26 @@
   direction: ltr;
 }
 
+.cap-coupon-error-msg {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 8px;
+  padding: 8px 12px;
+  background-color: #fef2f2;
+  border: 1px solid #fecaca;
+  border-radius: 8px;
+  color: #dc2626;
+  font-size: 0.85rem;
+  font-weight: 700;
+  text-align: center;
+}
+
+.cap-coupon-input-error {
+  border-color: #dc2626 !important;
+  background-color: #fff5f5 !important;
+}
+
 .cap-success-check-icon {
   display: inline-flex;
   align-items: center;

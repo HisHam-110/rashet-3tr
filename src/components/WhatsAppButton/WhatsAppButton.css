@@ -1,0 +1,104 @@
+.whatsapp-float-btn {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  width: 60px;
+  height: 60px;
+  background-color: #25D366;
+  color: #ffffff;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 18px rgba(37, 211, 102, 0.45);
+  z-index: 9990;
+  cursor: pointer;
+  text-decoration: none;
+  transition: transform 0.25s ease, background-color 0.25s ease, box-shadow 0.25s ease;
+  animation: whatsappPulse 3.5s infinite;
+}
+
+.whatsapp-float-btn:hover {
+  background-color: #20ba5a;
+  transform: scale(1.1) rotate(6deg);
+  box-shadow: 0 8px 24px rgba(37, 211, 102, 0.65);
+}
+
+.whatsapp-pulse-ring {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  border-radius: 50%;
+  border: 2px solid #25D366;
+  animation: ringPulse 3.5s infinite;
+  pointer-events: none;
+}
+
+.whatsapp-icon-svg {
+  filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.15));
+}
+
+/* Keyframe animations for pulse & flashing effect */
+@keyframes whatsappPulse {
+  0% {
+    transform: scale(1);
+    box-shadow: 0 4px 18px rgba(37, 211, 102, 0.45);
+  }
+  70% {
+    transform: scale(1);
+    box-shadow: 0 4px 18px rgba(37, 211, 102, 0.45);
+  }
+  75% {
+    transform: scale(1.12) rotate(-5deg);
+    box-shadow: 0 0 25px rgba(37, 211, 102, 0.85);
+  }
+  80% {
+    transform: scale(1.05) rotate(5deg);
+  }
+  85% {
+    transform: scale(1.1) rotate(-3deg);
+  }
+  90% {
+    transform: scale(1.02) rotate(2deg);
+  }
+  100% {
+    transform: scale(1);
+    box-shadow: 0 4px 18px rgba(37, 211, 102, 0.45);
+  }
+}
+
+@keyframes ringPulse {
+  0% {
+    transform: scale(1);
+    opacity: 0.8;
+  }
+  70% {
+    transform: scale(1);
+    opacity: 0.8;
+  }
+  85% {
+    transform: scale(1.45);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(1.45);
+    opacity: 0;
+  }
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 768px) {
+  .whatsapp-float-btn {
+    bottom: 18px;
+    right: 18px;
+    width: 54px;
+    height: 54px;
+  }
+
+  .whatsapp-icon-svg {
+    width: 30px;
+    height: 30px;
+  }
+}

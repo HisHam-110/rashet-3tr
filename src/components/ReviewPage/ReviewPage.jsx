@@ -8,7 +8,7 @@ export default function ReviewPage({ cartItems = [] }) {
   const [isConfirmationOpen, setIsConfirmationOpen] = useState(false);
   const subtotal = useMemo(() => cartItems.reduce((sum, item) => sum + item.price * item.quantity, 0), [cartItems]);
   const discount = Math.round(subtotal * 0.1);
-  const shipping = 25;
+  const shipping = subtotal >= 1000 ? 0 : 25;
   const total = subtotal - discount + shipping;
   if (!cartItems.length) return <main className="review-empty" dir="rtl"><h1>لا توجد منتجات لمراجعتها</h1><button onClick={() => navigate('/cart')}>العودة إلى السلة</button></main>;
   return <div className="review-page" dir="rtl"><main className="review-container">

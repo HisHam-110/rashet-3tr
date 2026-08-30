@@ -10,7 +10,7 @@ import noteImg1 from '../../assets/images/image 16.svg';
 import noteImg2 from '../../assets/images/image 20.svg';
 import noteImg3 from '../../assets/images/image 21.svg';
 import aboutShadowBg from '../../assets/images/about-shadow-bg.jpg';
-import aboutOudPhoto from '../../assets/images/Image Side.svg';
+import aboutOudPhoto from '../../assets/images/image 64.svg';
 
 const ALL_PRODUCTS = [...productsData, ...perfumeCategoryProducts];
 
@@ -83,7 +83,8 @@ export default function ProductDetailPage({ onAddToCart, onToggleWishlist, wishl
     if (onAddToCart) {
       onAddToCart({ ...product, selectedSize, quantity });
     }
-    navigate('/cart');
+    setAddedToCart(true);
+    setTimeout(() => setAddedToCart(false), 2500);
   };
 
   const scrollToSection = (sectionId) => {
@@ -103,7 +104,7 @@ export default function ProductDetailPage({ onAddToCart, onToggleWishlist, wishl
             <span className="pdp-bc-sep">/</span>
             <span className="pdp-bc-link" onClick={() => navigate('/perfumes')}>العطور الفاخرة</span>
           </div>
-          <h1 className="pdp-page-title">المعطور</h1>
+          <h1 className="pdp-page-title">العطور</h1>
         </div>
       </div>
 
@@ -301,7 +302,7 @@ export default function ProductDetailPage({ onAddToCart, onToggleWishlist, wishl
           <div className="pdp-about-banner-text">
             <h2 className="pdp-about-banner-title">عن العطر</h2>
             <p className="pdp-about-banner-p">
-              يُعد عطر {product.name} أحد أكثر العطور تميزاً في مجموعة Private Blend. يأسرك هذا العطر بمزيجه الدخاني الغامض من العود النادر، يُضفي خشب الورد الفاخر والهيل لمسة من التوابل الدخانية التي تمهد الطريق لمزيج غني من خشب الصندل ونجيل الهند.
+              يُعد عطر عود وود من توم فورد أحد أكثر العطور تميزاً في مجموعة Private Blend. يأسرك هذا العطر بمزيجه الدخاني الغامض من العود النادر، يُضفي خشب الورد الفاخر والهيل لمسة من التوابل الدخانية التي تمهد الطريق لمزيج غني من خشب الصندل ونجيل الهند.
             </p>
             <p className="pdp-about-banner-p">
               تكتمل هذه التحفة العطرية بلمسات دافئة من حبوب التونكا والعنبر، مما يمنحه ثباتاً استثنائياً وجاذبية لا تُقاوم. صُمم هذا العطر خصيصاً للباحثين عن التفرد والأناقة الكلاسيكية بلمسة عصرية جريئة.
@@ -353,7 +354,11 @@ export default function ProductDetailPage({ onAddToCart, onToggleWishlist, wishl
                   <button
                     type="button"
                     className="add-to-cart"
-                    onClick={(e) => { e.stopPropagation(); navigate(`/product/${rel.id}`); }}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      if (onAddToCart) onAddToCart(rel);
+                      else navigate(`/product/${rel.id}`);
+                    }}
                   >
                     <span className="add-to-cart-text">
                       أضف إلى السلة

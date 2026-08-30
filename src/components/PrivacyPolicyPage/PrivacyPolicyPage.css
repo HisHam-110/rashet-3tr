@@ -13,18 +13,54 @@
   padding: 0 24px;
 }
 
-/* TOP BREADCRUMB */
-.prp-top-bar {
-  padding: 16px 0 8px;
-  background-color: #fdfbf7;
+/* Privacy policy hero */
+.prp-hero-section {
+  padding: 0;
+  overflow: hidden;
+  background-color: #E4D5C8;
+  background-image: linear-gradient(90deg, #905B30 0%, #E4D5C8 58.24%);
 }
 
-.prp-breadcrumb {
+.prp-hero-section .prp-container {
+  max-width: none;
+  padding: 0;
+}
+
+.prp-hero-card {
+  width: 100%;
+  height: 269px;
+  overflow: hidden;
+  background: transparent;
+  border: 0;
+  border-bottom: 1px solid rgba(144, 91, 48, 0.16);
+  border-radius: 0 0 8px 8px;
+  padding: 48px 80px;
   display: flex;
   align-items: center;
-  gap: 8px;
-  font-size: 0.88rem;
-  color: #a89a90;
+  justify-content: flex-start;
+  gap: 0;
+  position: relative;
+}
+
+.prp-hero-text {
+  width: 100%;
+  max-width: 1280px;
+  height: 172px;
+  margin: 0 0 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  text-align: right;
+  z-index: 1;
+}
+
+.prp-hero-breadcrumb {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 9px;
+  color: #9A6E4A;
+  margin-bottom: 0;
 }
 
 .prp-bc-link {
@@ -34,90 +70,82 @@
 }
 
 .prp-bc-link:hover {
-  color: #905b30;
+  color: #9A6E4A;
 }
 
 .prp-bc-sep {
-  color: #c5a880;
-}
-
-.prp-bc-current {
   color: #a89a90;
 }
 
-/* HERO SECTION */
-.prp-hero-section {
-  padding: 12px 0 24px;
-}
-
-.prp-hero-card {
-  border-radius: 16px;
-  overflow: hidden;
-  background-size: cover;
-  background-position: center;
-  background-color: #ede0cc;
-  border: 1px solid #dcc9b2;
-  padding: 40px 48px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 24px;
-  box-shadow: 0 6px 20px rgba(67, 43, 23, 0.06);
-}
-
-.prp-hero-text {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  gap: 14px;
-  text-align: right;
+.prp-bc-current {
+  color: #56371D;
+  font-weight: 700;
 }
 
 .prp-title-row {
   display: flex;
   align-items: center;
-  justify-content: flex-end;
-  gap: 12px;
-  flex-direction: row;
-}
-
-.prp-lock-badge {
-  font-size: 1.6rem;
 }
 
 .prp-hero-title {
-  font-size: 2.6rem;
-  font-weight: 900;
-  color: #3a2210;
+  width: 427px;
+  height: 60px;
+  font-family: 'Cairo', sans-serif;
+  font-size: 48px;
+  font-weight: 700;
+  color: #905B30;
   margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: nowrap;
+  line-height: 60px;
+  letter-spacing: 0;
+  text-align: right;
+  vertical-align: middle;
+  white-space: nowrap;
+}
+
+.prp-hero-title span {
+  display: inline-block;
+  white-space: nowrap;
+}
+
+.prp-lock-icon {
+  width: 28px;
+  height: 28px;
+  color: #905B30;
+  flex: 0 0 auto;
 }
 
 .prp-hero-subtitle {
-  font-size: 0.98rem;
-  color: #6b4c35;
-  line-height: 1.85;
-  font-weight: 600;
+  width: 656.73px;
+  height: 64px;
+  max-width: 672px;
+  padding-top: 8px;
+  font-size: 16px;
+  color: #704A30;
+  line-height: 28px;
+  font-weight: 500;
   margin: 0;
-  text-align: right;
 }
 
 .prp-hero-graphic {
-  width: 110px;
-  height: 110px;
-  flex-shrink: 0;
+  position: absolute;
+  bottom: -10px;
+  left: 0;
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
-.prp-blue-shield-circle {
-  width: 90px;
-  height: 90px;
-  border-radius: 50%;
-  background: rgba(255,255,255,0.35);
-  display: flex;
-  align-items: center;
-  justify-content: center;
+.prp-privacy-icon-img {
+  width: 200px;
+  height: 260px;
+  padding-bottom: 10px;
+  opacity: 0.3;
+  object-fit: contain;
+  object-position: left bottom;
 }
 
 /* COMMON SECTION STYLES */
@@ -127,6 +155,20 @@
 .prp-share-section,
 .prp-security-section {
   padding: 24px 0;
+}
+
+.prp-intro-section {
+  min-height: 147.125px;
+  padding: 0;
+  background: #fdfbf7;
+}
+
+.prp-intro-section .prp-container {
+  width: min(100%, 1359px);
+  max-width: 1359px;
+  height: 147.125px;
+  margin: 0 0 0 auto;
+  padding: 0 80px 0 0;
 }
 
 .prp-sec-header {
@@ -157,29 +199,39 @@
 
 /* SECTION 1: INTRO CARD */
 .prp-sec-card {
-  background: #ffffff;
-  border-radius: 16px;
-  padding: 32px 36px;
-  border: 1px solid #e5d8cb;
-  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.03);
+  min-height: 147.125px;
+  background: transparent;
+  border-radius: 0;
+  padding: 16px 0;
+  border: 0;
+  box-shadow: none;
   display: flex;
   flex-direction: column;
-  gap: 14px;
+  gap: 8px;
   text-align: right;
 }
 
 .prp-intro-title {
-  font-size: 1.85rem;
-  font-weight: 900;
-  color: #3a2210;
+  font-family: 'Tajawal', sans-serif;
+  font-size: 36px;
+  font-weight: 700;
+  color: #684224;
+  line-height: 44px;
+  letter-spacing: 0;
+  text-align: right;
+  vertical-align: middle;
   margin: 0;
 }
 
 .prp-intro-p {
-  font-size: 0.97rem;
-  color: #7a5a42;
-  line-height: 1.9;
-  font-weight: 600;
+  font-family: 'Tajawal', sans-serif;
+  font-size: 18px;
+  color: #765d4a;
+  line-height: 29.25px;
+  font-weight: 400;
+  letter-spacing: 0;
+  text-align: right;
+  vertical-align: middle;
   margin: 0;
 }
 
@@ -188,37 +240,115 @@
   display: flex;
   gap: 16px;
   margin-top: 16px;
+  align-items: flex-start;
+  position: relative;
+  z-index: 2;
+}
+
+.prp-acc-item {
+  flex: 1;
+  min-width: 0;
+  position: relative;
 }
 
 .prp-acc-btn {
-  flex: 1;
+  width: 100%;
+  min-height: 73px;
   background: #e6d7c8;
-  border-radius: 14px;
+  border: 1px solid transparent;
+  border-radius: 3px;
   padding: 16px 24px;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  font-size: 1.2rem;
-  font-weight: 800;
-  color: #56371d;
+  font-family: 'Tajawal', sans-serif;
+  font-size: 28px;
+  font-weight: 400;
+  color: #9b6335;
   cursor: pointer;
   transition: all 0.25s ease;
 }
 
+.prp-acc-item:first-child .prp-acc-btn,
 .prp-acc-btn.active {
   background: #ffffff;
-  border: 1.5px solid #905b30;
-  box-shadow: 0 4px 14px rgba(144, 91, 48, 0.1);
+  border-color: #f0e7e0;
+  box-shadow: 0 7px 16px rgba(78, 47, 25, 0.08);
+}
+
+.prp-acc-btn:hover {
+  border-color: #d3b59d;
 }
 
 .prp-tab-content {
+  position: absolute;
+  top: calc(100% - 1px);
+  right: 0;
+  z-index: 3;
+  width: 100%;
   background: #ffffff;
-  border-radius: 14px;
+  min-height: 207px;
+  border-radius: 0;
   padding: 20px 24px;
-  margin-top: 14px;
-  border: 1px solid #ead8ca;
-  font-size: 0.96rem;
-  color: #56371d;
+  margin-top: 0;
+  border: 1px solid #eee7e1;
+  box-shadow: 0 2px 5px rgba(73, 48, 30, 0.08);
+  color: #573a26;
+  line-height: 1.7;
+  text-align: right;
+  transform-origin: top center;
+  animation: prp-details-reveal 220ms ease-out both;
+}
+
+@keyframes prp-details-reveal {
+  from {
+    opacity: 0;
+    transform: translateY(-10px) scaleY(0.92);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scaleY(1);
+  }
+}
+
+.prp-tab-content-alt {
+  background: #e6d4c2;
+  border-color: #e6d4c2;
+}
+
+.prp-tab-number {
+  display: block;
+  color: #9b6335;
+  font-family: 'Tajawal', sans-serif;
+  font-size: 28px;
+  font-weight: 400;
+  line-height: 1;
+  margin-bottom: 14px;
+}
+
+.prp-tab-content h3 {
+  margin: 0 0 9px;
+  color: #573a26;
+  font-family: 'Tajawal', sans-serif;
+  font-size: 19px;
+  font-weight: 700;
+  line-height: 1.4;
+}
+
+.prp-tab-icon {
+  color: #9b6335;
+  font-size: 21px;
+  font-weight: 400;
+  margin-right: 5px;
+}
+
+.prp-tab-content ul {
+  margin: 0;
+  padding: 0 17px 0 0;
+  color: #625044;
+  font-family: 'Tajawal', sans-serif;
+  font-size: 14px;
+  font-weight: 400;
   line-height: 1.8;
 }
 
@@ -280,7 +410,7 @@
   line-height: 1.6;
 }
 
-/* SECTION 4: DATA SHARING (MATCHING EXACT USER SCREENSHOT) */
+/* SECTION 4: DATA SHARING */
 .prp-share-section {
   padding: 36px 0;
   background-color: #fbf8f3;
@@ -354,8 +484,6 @@
   font-weight: 600;
   line-height: 1.6;
 }
-
-
 
 /* SECTION 5: SECURITY & RIGHTS LIST */
 .prp-rights-list {
@@ -450,15 +578,38 @@
 
 /* RESPONSIVE BREAKPOINTS */
 @media (max-width: 992px) {
+  .prp-intro-section .prp-container {
+    width: 100%;
+    height: auto;
+    margin: 0;
+    padding: 0 24px;
+  }
+
   .prp-hero-card {
-    flex-direction: column;
+    flex-direction: column-reverse;
     text-align: center;
     gap: 24px;
     padding: 28px;
   }
 
+  .prp-hero-text {
+    height: auto;
+    align-items: center;
+    text-align: center;
+  }
+
+  .prp-hero-breadcrumb {
+    justify-content: center;
+  }
+
   .prp-title-row {
     justify-content: center;
+  }
+
+  .prp-hero-title,
+  .prp-hero-subtitle {
+    width: auto;
+    max-width: 100%;
   }
 
   .prp-share-cards {

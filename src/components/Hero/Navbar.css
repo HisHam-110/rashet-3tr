@@ -109,24 +109,32 @@
   white-space: nowrap;
 }
 
+.nav-anchor::after {
+  content: '';
+  position: absolute;
+  right: 0;
+  bottom: -4px;
+  width: 100%;
+  height: 2px;
+  border-radius: 2px;
+  background-color: #9a5d2f;
+  transform: scaleX(0);
+  transform-origin: right;
+  transition: transform 0.25s ease;
+}
+
 .nav-anchor:hover {
   color: #9a5d2f;
+}
+
+.nav-anchor:hover::after,
+.nav-anchor.active::after {
+  transform: scaleX(1);
 }
 
 .nav-anchor.active {
   color: #9a5d2f;
   font-weight: 700;
-}
-
-.nav-anchor.active::after {
-  content: '';
-  position: absolute;
-  bottom: -4px;
-  right: 0;
-  width: 100%;
-  height: 2px;
-  background-color: #9a5d2f;
-  border-radius: 2px;
 }
 
 /* Action Icons (Left in RTL) */

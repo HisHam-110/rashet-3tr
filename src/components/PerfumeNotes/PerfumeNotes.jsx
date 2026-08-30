@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import "./PerfumeNotes.css";
 
-export default function ProductShowcase({ products = [] }) {
+export default function ProductShowcase({ products = [], onOpenProductDetails }) {
   const [activeIndex, setActiveIndex] = useState(0);
 
   const items = products.length ? products : [];
@@ -34,7 +34,12 @@ export default function ProductShowcase({ products = [] }) {
         <div className="showcase-slider">
 
           {/* الصورة اليسار */}
-          <div className="showcase-card showcase-left">
+          <div
+            className="showcase-card showcase-left"
+            onClick={() => onOpenProductDetails?.(getItem(-1))}
+            role="link"
+            tabIndex={0}
+          >
             <img
               src={getItem(-1)?.image}
               alt={getItem(-1)?.name || ""}
@@ -59,7 +64,12 @@ export default function ProductShowcase({ products = [] }) {
 
 
           {/* الصورة الأساسية في المنتصف */}
-          <div className="showcase-card showcase-center">
+          <div
+            className="showcase-card showcase-center"
+            onClick={() => onOpenProductDetails?.(getItem(0))}
+            role="link"
+            tabIndex={0}
+          >
             <img
               src={getItem(0)?.image}
               alt={getItem(0)?.name || ""}
@@ -80,7 +90,13 @@ export default function ProductShowcase({ products = [] }) {
                 {getItem(0)?.price || "450"} ر.س
               </span>
 
-              <button className="showcase-cart">
+              <button
+                className="showcase-cart"
+                onClick={(event) => {
+                  event.stopPropagation();
+                  onOpenProductDetails?.(getItem(0));
+                }}
+              >
                 أضف إلى السلة
               </button>
             </div>
@@ -88,7 +104,12 @@ export default function ProductShowcase({ products = [] }) {
 
 
           {/* الصورة اليمين */}
-          <div className="showcase-card showcase-right">
+          <div
+            className="showcase-card showcase-right"
+            onClick={() => onOpenProductDetails?.(getItem(1))}
+            role="link"
+            tabIndex={0}
+          >
             <img
               src={getItem(1)?.image}
               alt={getItem(1)?.name || ""}

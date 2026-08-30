@@ -3,3 +3,193 @@
   display: flex;
   flex-direction: column;
 }
+.app-toast {
+  position: fixed;
+  right: 24px;
+  bottom: 96px;
+  z-index: 99999;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 18px;
+  border-radius: 16px;
+  background: #1c1511;
+  color: #ffffff;
+  direction: rtl;
+  font-family: "Cairo", sans-serif;
+  font-size: 0.95rem;
+  font-weight: 700;
+  border: 1.5px solid #905B30;
+  box-shadow: 0 14px 36px rgba(0, 0, 0, 0.45), 0 0 25px rgba(144, 91, 48, 0.35);
+  animation: toast-slide-in-right 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  max-width: 360px;
+  box-sizing: border-box;
+}
+
+.app-toast-rich {
+  padding: 10px 14px;
+}
+
+.app-toast-favorite {
+  border-color: #c5a880;
+  background: #2a2019;
+  box-shadow: 0 14px 36px rgba(0, 0, 0, 0.45), 0 0 25px rgba(197, 168, 128, 0.45);
+}
+
+.app-toast-remove {
+  border-color: #ef4444;
+  background: #1f0f0f;
+  box-shadow: 0 14px 36px rgba(0, 0, 0, 0.5), 0 0 25px rgba(239, 68, 68, 0.3);
+}
+
+/* Remove badge (red X) */
+.app-toast-remove-badge {
+  color: #ef4444 !important;
+}
+
+.app-toast-status-remove {
+  color: #ef4444 !important;
+}
+
+/* Dimmed image for removed products */
+.app-toast-img-removed {
+  opacity: 0.45;
+  filter: grayscale(60%);
+}
+
+/* Strikethrough price for removed items */
+.app-toast-price-removed {
+  color: #9ca3af !important;
+  text-decoration: line-through;
+}
+
+.app-toast-icon {
+  display: grid;
+  width: 26px;
+  height: 26px;
+  place-items: center;
+  border-radius: 50%;
+  background: #905B30;
+  color: #ffffff;
+  font-size: 0.9rem;
+  font-weight: 800;
+  flex-shrink: 0;
+}
+
+.app-toast-favorite .app-toast-icon {
+  background: #c5a880;
+  color: #1e1915;
+}
+
+/* Rich Product Card inside Toast */
+.app-toast-product-card {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+}
+
+.app-toast-product-img {
+  width: 52px;
+  height: 52px;
+  object-fit: cover;
+  border-radius: 10px;
+  border: 1px solid rgba(144, 91, 48, 0.4);
+  flex-shrink: 0;
+  background-color: #2a2019;
+}
+
+.app-toast-product-info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  flex: 1;
+  min-width: 0;
+}
+
+.app-toast-status-header {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.app-toast-check-badge {
+  color: #22c55e;
+  font-weight: 900;
+  font-size: 0.95rem;
+}
+
+.app-toast-status-title {
+  font-size: 0.8rem;
+  color: #22c55e;
+  font-weight: 700;
+}
+
+.app-toast-product-name {
+  font-size: 0.92rem;
+  font-weight: 700;
+  color: #ffffff;
+  margin: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.app-toast-meta-tags {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 2px;
+}
+
+.app-toast-tag {
+  font-size: 0.76rem;
+  color: #d1d5db;
+  background: rgba(255, 255, 255, 0.1);
+  padding: 1px 7px;
+  border-radius: 6px;
+  font-weight: 600;
+}
+
+.app-toast-price {
+  font-size: 0.82rem;
+  color: #c5a880;
+  font-weight: 800;
+}
+
+.app-toast-close-btn {
+  background: transparent;
+  border: none;
+  color: #9ca3af;
+  font-size: 0.9rem;
+  cursor: pointer;
+  padding: 4px;
+  margin-right: auto;
+  border-radius: 4px;
+  transition: color 0.2s ease;
+  flex-shrink: 0;
+}
+
+.app-toast-close-btn:hover {
+  color: #ffffff;
+}
+
+@keyframes toast-slide-in-right {
+  from {
+    opacity: 0;
+    transform: translateX(30px) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0) scale(1);
+  }
+}
+
+@media (max-width: 480px) {
+  .app-toast {
+    right: 16px;
+    left: 16px;
+    bottom: 86px;
+    max-width: none;
+  }
+}

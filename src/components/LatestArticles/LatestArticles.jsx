@@ -56,7 +56,7 @@ export default function LatestArticles() {
   const visibleArticles = ARTICLES.slice(startIndex, startIndex + VISIBLE);
 
   return (
-    <section className="la-section" dir="rtl">
+    <section className="la-section" id="articles" dir="rtl">
       <div className="la-container">
         {/* Section Header */}
         <div className="la-header">
@@ -91,7 +91,7 @@ export default function LatestArticles() {
                 <div className="la-card-body">
                   <h3 className="la-card-title">{article.title}</h3>
                   <p className="la-card-excerpt">{article.excerpt}</p>
-                  <button className="la-read-more-btn">اقرأ المزيد «</button>
+                  <button className="la-read-more-btn">اقرأ المزيد <span>←</span></button>
                 </div>
               </div>
             ))}

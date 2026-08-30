@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import logoImg from '../../assets/images/1 1.svg';
 import './Navbar.css';
@@ -11,20 +11,54 @@ export default function Navbar({
   const [isMobileOpen, setIsMobileOpen] = useState(false);
   const [isSearchActive, setIsSearchActive] = useState(false);
   const [searchVal, setSearchVal] = useState('');
+  const [activeSection, setActiveSection] = useState('');
   const location = useLocation();
 
   const navItems = [
     { id: 'home', label: 'الرئيسية', href: '/' },
     { id: 'collections', label: 'المجموعة', href: '/collections' },
-    { id: 'about', label: 'عن رشة عطر', href: '/#perfume-story' },
+    { id: 'about', label: 'عن رشة عطر', href: '/#about-brand' },
     { id: 'bestsellers', label: 'الأكثر مبيعاً', href: '/#featured' },
     { id: 'perfumes', label: 'العطور', href: '/perfumes' },
-    { id: 'articles', label: 'المقالات', href: '/#testimonials' },
-    { id: 'contact', label: 'تواصل معنا', href: '/#contact' },
+    { id: 'articles', label: 'المقالات', href: '/#articles' },
+    { id: 'contact', label: 'تواصل معنا', href: '/contact' },
   ];
 
   const currentPath = location.pathname;
   const currentHash = location.hash;
+
+  useEffect(() => {
+    if (currentPath !== '/') {
+      setActiveSection('');
+      return undefined;
+    }
+
+    const updateActiveSection = () => {
+      const marker = 135;
+      const sections = navItems
+        .filter((item) => item.href.startsWith('/#'))
+        .map((item) => ({
+          id: item.id,
+          element: document.getElementById(item.href.slice(2)),
+        }))
+        .filter((section) => section.element);
+
+      const visibleSection = sections.find(({ element }) => {
+        const bounds = element.getBoundingClientRect();
+        return bounds.top <= marker && bounds.bottom > marker;
+      });
+
+      setActiveSection(visibleSection?.id || (window.scrollY < 80 ? 'home' : ''));
+    };
+
+    updateActiveSection();
+    window.addEventListener('scroll', updateActiveSection, { passive: true });
+    window.addEventListener('resize', updateActiveSection);
+    return () => {
+      window.removeEventListener('scroll', updateActiveSection);
+      window.removeEventListener('resize', updateActiveSection);
+    };
+  }, [currentPath]);
 
   return (
     <nav className="site-navbar" role="navigation" aria-label="شريط التنقل الرئيسي">
@@ -44,10 +78,14 @@ export default function Navbar({
         <ul className={`navbar-nav-links ${isMobileOpen ? 'mobile-active' : ''}`}>
           {navItems.map((item) => {
             let isActive = false;
-            if (item.href === '/perfumes') {
+            if (currentPath === '/') {
+              isActive = activeSection === item.id;
+            } else if (item.id === 'perfumes') {
               isActive = currentPath === '/perfumes';
             } else if (item.href === '/collections') {
               isActive = currentPath === '/collections';
+            } else if (item.href === '/contact') {
+              isActive = currentPath === '/contact';
             } else if (item.href === '/') {
               isActive = currentPath === '/' && !currentHash;
             } else {
