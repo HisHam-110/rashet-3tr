@@ -29,18 +29,19 @@ import AuthModal from './components/AuthModal/AuthModal';
 import WhatsAppButton from './components/WhatsAppButton/WhatsAppButton';
 import ContactPage from './components/ContactPage/ContactPage';
 
-import { productsData } from './data/perfumesData';
+import { productsApi, cartApi, wishlistApi, authApi } from './services/storeApi';
 
 function App() {
-  const [products] = useState(productsData);
+  const [products, setProducts] = useState([]);
   const [activeCategory, setActiveCategory] = useState('all');
   const [searchQuery, setSearchQuery] = useState('');
   const [cart, setCart] = useState([]);
-  const [wishlistIds, setWishlistIds] = useState([1, 2]);
+  const [wishlistIds, setWishlistIds] = useState([]);
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [isAuthOpen, setIsAuthOpen] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [toast, setToast] = useState(null);
+  const [currentUser, setCurrentUser] = useState(null);
   const toastTimerRef = useRef(null);
 
   const { hash, pathname } = useLocation();
@@ -53,6 +54,43 @@ function App() {
   };
 
   useEffect(() => () => clearTimeout(toastTimerRef.current), []);
+
+  useEffect(() => {
+    const controller = new AbortController();
+    productsApi.list({}, controller.signal)
+      .then((apiProducts) => { if (Array.isArray(apiProducts)) setProducts(apiProducts); })
+      .catch(() => {});
+
+    cartApi.view()
+      .then((res) => {
+        if (res && res.items) {
+          setCart(res.items.map((i) => ({
+            id: i.product_id || i.id,
+            name: i.name || i.product?.name || 'عطر فاخر',
+            price: Number(i.price || i.product?.price || 0),
+            image: i.image || i.product?.image || '',
+            selectedSize: i.size || '100 مل',
+            quantity: i.quantity || 1,
+            cartItemId: i.id,
+          })));
+        }
+      })
+      .catch(() => {});
+
+    wishlistApi.list()
+      .then((items) => {
+        if (Array.isArray(items)) {
+          setWishlistIds(items.map((item) => item.product_id || item.id));
+        }
+      })
+      .catch(() => {});
+
+    authApi.getProfile()
+      .then((user) => { if (user) setCurrentUser(user); })
+      .catch(() => {});
+
+    return () => controller.abort();
+  }, []);
 
   const prevPathnameRef = useRef(pathname);
   const prevHashRef = useRef(hash);
@@ -80,13 +118,14 @@ function App() {
   }, [hash, pathname]);
 
   // Filter products by category and search
-  const filteredProducts = products.filter((item) => {
+  const filteredProducts = (products || []).filter((item) => {
+    if (!item) return false;
     const matchesCat = activeCategory === 'all' || item.category === activeCategory;
-    const matchesSearch =
-      searchQuery.trim() === '' ||
-      item.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      item.brand.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      (item.description && item.description.toLowerCase().includes(searchQuery.toLowerCase()));
+    const q = searchQuery.trim().toLowerCase();
+    const nameStr = String(item.name || '').toLowerCase();
+    const brandStr = String(item.brand || '').toLowerCase();
+    const descStr = String(item.description || '').toLowerCase();
+    const matchesSearch = !q || nameStr.includes(q) || brandStr.includes(q) || descStr.includes(q);
     return matchesCat && matchesSearch;
   });
 
@@ -94,6 +133,12 @@ function App() {
   const handleAddToCart = (product, qty = 1) => {
     const addQuantity = typeof qty === 'number' ? qty : 1;
     const targetSize = product.selectedSize || (product.sizes ? product.sizes[0] : '100 مل');
+
+    cartApi.add({
+      product_id: product.id,
+      size: targetSize,
+      quantity: addQuantity,
+    }).catch(() => {});
 
     setCart((prevCart) => {
       const existingIndex = prevCart.findIndex(
@@ -133,6 +178,10 @@ function App() {
       handleRemoveFromCart(id, selectedSize);
       return;
     }
+    const targetItem = cart.find((item) => item.id === id && item.selectedSize === selectedSize);
+    if (targetItem?.cartItemId) {
+      cartApi.update(targetItem.cartItemId, newQty).catch(() => {});
+    }
     setCart((prevCart) =>
       prevCart.map((item) =>
         item.id === id && item.selectedSize === selectedSize
@@ -143,8 +192,10 @@ function App() {
   };
 
   const handleRemoveFromCart = (id, selectedSize) => {
-    // Find item before removing to show toast details
     const removedItem = cart.find((item) => item.id === id && item.selectedSize === selectedSize);
+    if (removedItem?.cartItemId) {
+      cartApi.remove(removedItem.cartItemId).catch(() => {});
+    }
 
     setCart((prevCart) =>
       prevCart.filter((item) => !(item.id === id && item.selectedSize === selectedSize))
@@ -169,6 +220,11 @@ function App() {
   const handleToggleWishlist = (productId) => {
     setWishlistIds((prev) => {
       const isAlreadyWishlisted = prev.includes(productId);
+      if (isAlreadyWishlisted) {
+        wishlistApi.remove(productId).catch(() => {});
+      } else {
+        wishlistApi.add(productId).catch(() => {});
+      }
       showToast(
         isAlreadyWishlisted ? 'تمت الإزالة من المفضلة' : 'تمت الإضافة إلى المفضلة',
         'favorite'
@@ -178,6 +234,12 @@ function App() {
   };
 
   const totalCartCount = cart.reduce((total, item) => total + item.quantity, 0);
+
+  // Products with valid images only (filter test/placeholder products from backend)
+  const productsWithImages = products.filter((p) => p.image && typeof p.image === 'string' && p.image.length > 0);
+
+  // Best sellers: all products with valid API images for full slider carousel
+  const bestSellerProducts = productsWithImages.length > 0 ? productsWithImages : products;
 
   // Home page content (extracted from the original App return)
   const HomePage = () => (
@@ -196,7 +258,7 @@ function App() {
 
       {/* 5. Featured / Best Selling Products Grid */}
       <FeaturedProducts
-        products={filteredProducts}
+        products={bestSellerProducts}
         onAddToCart={handleAddToCart}
         onToggleWishlist={handleToggleWishlist}
         wishlistIds={wishlistIds}
@@ -213,7 +275,7 @@ function App() {
 
       {/* 7. Recommended Products / You May Also Like */}
       <Recommended
-        products={products}
+        products={productsWithImages}
         onAddToCart={handleAddToCart}
         onToggleWishlist={handleToggleWishlist}
         wishlistIds={wishlistIds}

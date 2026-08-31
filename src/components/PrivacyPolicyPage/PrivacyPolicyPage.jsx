@@ -11,9 +11,18 @@ const iconUse1 = '/icons/Icon (1).svg';
 const iconUse2 = '/icons/Icon-1.svg';
 const iconUse3 = '/icons/Icon-2.svg';
 
+import { pagesApi } from '../../services/storeApi';
+
 export default function PrivacyPolicyPage() {
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState(null);
+  const [pageData, setPageData] = useState(null);
+
+  React.useEffect(() => {
+    pagesApi.getPrivacyPolicy()
+      .then((res) => { if (res) setPageData(res); })
+      .catch(() => {});
+  }, []);
 
   return (
     <div className="privacy-page" dir="rtl">

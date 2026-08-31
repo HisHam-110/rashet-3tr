@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { perfumeCategoryProducts, productsData } from '../../data/perfumesData';
 import Footer from '../Footer/Footer';
 import Newsletter from '../Newsletter/Newsletter';
 import './ProductDetailPage.css';
@@ -12,7 +11,6 @@ import noteImg3 from '../../assets/images/image 21.svg';
 import aboutShadowBg from '../../assets/images/about-shadow-bg.jpg';
 import aboutOudPhoto from '../../assets/images/image 64.svg';
 
-const ALL_PRODUCTS = [...productsData, ...perfumeCategoryProducts];
 
 const CUSTOMER_REVIEWS = [
   {
@@ -44,12 +42,15 @@ const CUSTOMER_REVIEWS = [
   },
 ];
 
+import { productsApi } from '../../services/storeApi';
+
 export default function ProductDetailPage({ onAddToCart, onToggleWishlist, wishlistIds = [] }) {
   const { id } = useParams();
   const navigate = useNavigate();
   const productId = parseInt(id, 10) || 101;
 
-  const product = ALL_PRODUCTS.find((p) => p.id === productId) || ALL_PRODUCTS[0];
+  const [product, setProduct] = useState(null);
+  const [relatedProducts, setRelatedProducts] = useState([]);
   const [selectedSize, setSelectedSize] = useState('');
   const [quantity, setQuantity] = useState(1);
   const [activeThumb, setActiveThumb] = useState(0);
@@ -59,25 +60,36 @@ export default function ProductDetailPage({ onAddToCart, onToggleWishlist, wishl
 
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
+    const controller = new AbortController();
+    productsApi.get(productId, controller.signal)
+      .then((data) => {
+        if (data) setProduct(data);
+      })
+      .catch(() => {});
+
+    productsApi.list({}, controller.signal)
+      .then((products) => setRelatedProducts(products.filter((item) => item.id !== productId).slice(0, 4)))
+      .catch(() => setRelatedProducts([]));
+
+    return () => controller.abort();
+  }, [id, productId]);
+
+  useEffect(() => {
     if (product) {
       const sizes = product.sizes || ['50 مل', '100 مل', '150 مل', '200 مل'];
       setSelectedSize(sizes[1] || sizes[0]);
     }
-  }, [id, product]);
+  }, [product]);
 
   if (!product) return null;
 
   const sizes = product.sizes || ['50 مل', '100 مل', '150 مل', '200 مل'];
 
-  // Main gallery thumbs
-  const thumbs = [
-    product.image,
-    `${product.image}&sat=-20`,
-    `${product.image}&flip=h`,
-    `${product.image}&bri=10`,
-  ];
+  // Main gallery thumbs from API images array
+  const thumbs = (product.images && product.images.length > 0)
+    ? product.images
+    : (product.image ? [product.image] : []);
 
-  const relatedProducts = ALL_PRODUCTS.filter((p) => p.id !== product.id).slice(0, 4);
 
   const handleAddToCart = () => {
     if (onAddToCart) {

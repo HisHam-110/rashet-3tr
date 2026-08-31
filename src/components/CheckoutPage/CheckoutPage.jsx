@@ -3,6 +3,8 @@ import { useNavigate } from 'react-router-dom';
 import Footer from '../Footer/Footer';
 import './CheckoutPage.css';
 
+import { checkoutApi } from '../../services/storeApi';
+
 const regions = ['الرياض', 'مكة المكرمة', 'المدينة المنورة', 'المنطقة الشرقية', 'القصيم'];
 
 export default function CheckoutPage({ cartItems = [] }) {
@@ -17,9 +19,21 @@ export default function CheckoutPage({ cartItems = [] }) {
     setForm((current) => ({ ...current, [name]: type === 'checkbox' ? checked : value }));
   };
 
-  const submit = (event) => {
+  const submit = async (event) => {
     event.preventDefault();
     if (!cartItems.length) return navigate('/cart');
+    try {
+      await checkoutApi.saveShippingAddress({
+        customer_name: form.name,
+        customer_email: form.email,
+        customer_phone: form.phone,
+        shipping_city: form.city || form.region,
+        shipping_street: form.address,
+        shipping_notes: form.notes,
+      });
+    } catch (err) {
+      // Proceed gracefully
+    }
     navigate('/checkout/shipping');
   };
 

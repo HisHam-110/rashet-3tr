@@ -1316,3 +1316,130 @@
   background-color: rgba(144, 91, 48, 0.03);
 }
 
+/* ========= SKELETON LOADING LOADER ========= */
+.pp-skeleton-card {
+  background: #fdfbf7;
+  border: 1px solid rgba(228, 213, 200, 0.4);
+  border-radius: 16px;
+  overflow: hidden;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  animation: skeletonPulse 1.5s ease-in-out infinite alternate;
+}
+
+.pp-skeleton-img {
+  width: 100%;
+  height: 220px;
+  background: linear-gradient(90deg, #f3ede6 0%, #e6dcd0 50%, #f3ede6 100%);
+  background-size: 200% 100%;
+  animation: skeletonShimmer 1.8s infinite;
+  border-radius: 12px;
+}
+
+.pp-skeleton-text {
+  height: 16px;
+  width: 70%;
+  background: linear-gradient(90deg, #f3ede6 0%, #e6dcd0 50%, #f3ede6 100%);
+  background-size: 200% 100%;
+  animation: skeletonShimmer 1.8s infinite;
+  border-radius: 6px;
+}
+
+.pp-skeleton-text-short {
+  height: 14px;
+  width: 40%;
+  background: linear-gradient(90deg, #f3ede6 0%, #e6dcd0 50%, #f3ede6 100%);
+  background-size: 200% 100%;
+  animation: skeletonShimmer 1.8s infinite;
+  border-radius: 6px;
+}
+
+.pp-skeleton-price {
+  height: 24px;
+  width: 50%;
+  background: linear-gradient(90deg, #e4d5c8 0%, #d8c3b2 50%, #e4d5c8 100%);
+  background-size: 200% 100%;
+  animation: skeletonShimmer 1.8s infinite;
+  border-radius: 8px;
+}
+
+@keyframes skeletonShimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+@keyframes skeletonPulse {
+  0% { opacity: 0.6; }
+  100% { opacity: 1; }
+}
+
+/* ========= ANIMATED PERFUME BOTTLE LOADER ========= */
+.pp-loading-container {
+  width: 100%;
+  padding: 80px 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+}
+
+.pp-bottle-spinner {
+  position: relative;
+  width: 100px;
+  height: 120px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.pp-bottle-svg {
+  width: 80px;
+  height: 100px;
+  filter: drop-shadow(0 10px 24px rgba(144, 91, 48, 0.3));
+  animation: bottleFloat 2.4s ease-in-out infinite alternate;
+}
+
+.pp-bottle-liquid {
+  transform-origin: bottom center;
+  animation: liquidWave 2s ease-in-out infinite alternate;
+}
+
+.pp-bottle-mist {
+  opacity: 0;
+  animation: mistRise 2s ease-out infinite;
+}
+
+.pp-loading-text {
+  font-family: inherit;
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #905b30;
+  letter-spacing: 0.5px;
+  animation: textPulse 1.6s ease-in-out infinite alternate;
+}
+
+@keyframes bottleFloat {
+  0% { transform: translateY(0px) rotate(0deg); }
+  50% { transform: translateY(-10px) rotate(1.5deg); }
+  100% { transform: translateY(0px) rotate(-1.5deg); }
+}
+
+@keyframes liquidWave {
+  0% { opacity: 0.75; transform: scaleY(0.92); }
+  100% { opacity: 1; transform: scaleY(1.08); }
+}
+
+@keyframes mistRise {
+  0% { opacity: 0; transform: translateY(12px) scale(0.5); }
+  50% { opacity: 0.85; }
+  100% { opacity: 0; transform: translateY(-24px) scale(1.5); }
+}
+
+@keyframes textPulse {
+  0% { opacity: 0.5; }
+  100% { opacity: 1; }
+}
+

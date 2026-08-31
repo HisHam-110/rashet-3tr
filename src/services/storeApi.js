@@ -1,0 +1,15 @@
+export {
+  mapProduct,
+  authService as authApi,
+  productsService as productsApi,
+  categoriesService as categoriesApi,
+  cartService as cartApi,
+  checkoutService as checkoutApi,
+  wishlistService as wishlistApi,
+  articlesService as articlesApi,
+  formsService as formsApi,
+  pagesService as pagesApi,
+  bannersService as bannersApi,
+  settingsService as settingsApi,
+  adminService as adminApi,
+} from './apiServices';

@@ -4,6 +4,8 @@ import { perfumeCategoryProducts } from '../../data/perfumesData';
 import Footer from '../Footer/Footer';
 import './PerfumesPage.css';
 
+import { productsApi } from '../../services/storeApi';
+
 const PRODUCTS_PER_PAGE = 8;
 
 export default function PerfumesPage({
@@ -17,10 +19,34 @@ export default function PerfumesPage({
   const [searchParams] = useSearchParams();
   const categoryParam = searchParams.get('category');
 
+  const [productsList, setProductsList] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState('');
   const [sortBy, setSortBy] = useState('newest');
   const [currentPage, setCurrentPage] = useState(1);
   const [selectedCategory, setSelectedCategory] = useState(categoryParam || 'all');
+
+  useEffect(() => {
+    const controller = new AbortController();
+    setIsLoading(true);
+    productsApi.list({}, controller.signal)
+      .then((data) => {
+        if (Array.isArray(data)) {
+          // Keep all 20 API products, displaying products with images first (page 1) and others at the end (pages 2 & 3)
+          const sortedAll = [...data].sort((a, b) => {
+            const aHasImg = a.image && typeof a.image === 'string' && a.image.length > 0;
+            const bHasImg = b.image && typeof b.image === 'string' && b.image.length > 0;
+            if (aHasImg && !bHasImg) return -1;
+            if (!aHasImg && bHasImg) return 1;
+            return 0;
+          });
+          setProductsList(sortedAll);
+        }
+      })
+      .catch(() => {})
+      .finally(() => setIsLoading(false));
+    return () => controller.abort();
+  }, []);
 
   useEffect(() => {
     if (categoryParam) {
@@ -30,23 +56,20 @@ export default function PerfumesPage({
   }, [categoryParam]);
 
   // Interactive Ratings state
-  const [productRatings, setProductRatings] = useState(
-    Object.fromEntries(
-      perfumeCategoryProducts.map((p) => [p.id, p.rating])
-    )
-  );
+  const [productRatings, setProductRatings] = useState({});
 
-  // Filter Drawer active states
-  const [activeCategories, setActiveCategories] = useState(['men', 'women', 'unisex']);
-  const [minPrice, setMinPrice] = useState(200);
-  const [maxPrice, setMaxPrice] = useState(2500);
+  // Filter Drawer active states — include ALL possible category values
+  const ALL_CATS = ['men', 'women', 'unisex', 'luxury', 'niche', 'oriental', 'summer', 'night'];
+  const [activeCategories, setActiveCategories] = useState(ALL_CATS);
+  const [minPrice, setMinPrice] = useState(0);
+  const [maxPrice, setMaxPrice] = useState(9999);
   const [activeRatings, setActiveRatings] = useState([5, 4, 3, 2, 1]);
 
   // Drawer open / temp states
   const [isFilterOpen, setIsFilterOpen] = useState(false);
-  const [tempCategories, setTempCategories] = useState(['men', 'women', 'unisex']);
-  const [tempMinPrice, setTempMinPrice] = useState(200);
-  const [tempMaxPrice, setTempMaxPrice] = useState(2500);
+  const [tempCategories, setTempCategories] = useState(ALL_CATS);
+  const [tempMinPrice, setTempMinPrice] = useState(0);
+  const [tempMaxPrice, setTempMaxPrice] = useState(9999);
   const [tempRatings, setTempRatings] = useState([5, 4, 3, 2, 1]);
 
   // Drawer Section Expansion states
@@ -64,24 +87,25 @@ export default function PerfumesPage({
 
   // Filter by search, category drawer, price and ratings
   const filtered = useMemo(() => {
-    let result = [...perfumeCategoryProducts];
+    let result = [...productsList];
 
     // 1. Pill Category Filter
     if (selectedCategory !== 'all' && selectedCategory !== 'full') {
-      if (selectedCategory === 'men' || selectedCategory === 'women' || selectedCategory === 'unisex') {
-        result = result.filter((p) => p.category === selectedCategory);
-      } else if (selectedCategory === 'luxury') {
-        result = result.filter((p) => p.price >= 800 || p.isNew);
-      } else if (selectedCategory === 'summer') {
-        result = result.filter((p) => p.category === 'unisex' || p.category === 'women');
-      } else if (selectedCategory === 'night') {
-        result = result.filter((p) => p.category === 'men' || p.category === 'unisex');
-      }
-    } else {
-      // 2. Sidebar active category checklist filter (only when selectedCategory is 'all')
-      if (activeCategories.length > 0) {
-        result = result.filter((p) => activeCategories.includes(p.category));
-      }
+      result = result.filter((p) => {
+        if (selectedCategory === 'men') {
+          return p.category === 'men' || p.category === 'unisex';
+        }
+        if (selectedCategory === 'women') {
+          return p.category === 'women' || p.category === 'unisex';
+        }
+        if (selectedCategory === 'unisex') {
+          return p.category === 'unisex';
+        }
+        if (selectedCategory === 'luxury') {
+          return p.category === 'luxury' || p.price >= 500;
+        }
+        return p.category === selectedCategory;
+      });
     }
 
     // 3. Search Query
@@ -89,8 +113,8 @@ export default function PerfumesPage({
       const q = searchQuery.trim().toLowerCase();
       result = result.filter(
         (p) =>
-          p.name.toLowerCase().includes(q) ||
-          p.brand.toLowerCase().includes(q)
+          String(p.name || '').toLowerCase().includes(q) ||
+          String(p.brand || '').toLowerCase().includes(q)
       );
     }
 
@@ -99,7 +123,8 @@ export default function PerfumesPage({
 
     // 5. Star Ratings
     result = result.filter((p) => {
-      const currentRating = Math.floor(productRatings[p.id] || p.rating);
+      const rawRating = productRatings[p.id] || p.rating || 5;
+      const currentRating = Math.max(1, Math.min(5, Math.floor(rawRating)));
       return activeRatings.includes(currentRating);
     });
 
@@ -116,17 +141,21 @@ export default function PerfumesPage({
         break;
       case 'newest':
       default:
-        // isNew first, then by id desc
+        // Products WITH images first, then isNew, then id ascending
         result.sort((a, b) => {
+          const aHasImg = Boolean(a.image && typeof a.image === 'string' && a.image.trim().length > 0);
+          const bHasImg = Boolean(b.image && typeof b.image === 'string' && b.image.trim().length > 0);
+          if (aHasImg && !bHasImg) return -1;
+          if (!aHasImg && bHasImg) return 1;
           if (a.isNew && !b.isNew) return -1;
           if (!a.isNew && b.isNew) return 1;
-          return b.id - a.id;
+          return a.id - b.id;
         });
         break;
     }
 
     return result;
-  }, [searchQuery, sortBy, selectedCategory, activeCategories, minPrice, maxPrice, activeRatings, productRatings]);
+  }, [productsList, searchQuery, sortBy, selectedCategory, activeCategories, minPrice, maxPrice, activeRatings, productRatings]);
 
   // Pagination
   const totalPages = Math.max(1, Math.ceil(filtered.length / PRODUCTS_PER_PAGE));
@@ -154,6 +183,13 @@ export default function PerfumesPage({
 
   const handleCategoryChange = (val) => {
     setSelectedCategory(val);
+    if (val === 'all') {
+      setActiveCategories(ALL_CATS);
+      setTempCategories(ALL_CATS);
+    } else {
+      setActiveCategories([val]);
+      setTempCategories([val]);
+    }
     setCurrentPage(1);
   };
 
@@ -287,25 +323,25 @@ export default function PerfumesPage({
               className={`pp-category-pill ${selectedCategory === 'all' ? 'active' : ''}`}
               onClick={() => handleCategoryChange('all')}
             >
-              الكل
+              الكل ({productsList.length})
             </button>
             <button
               className={`pp-category-pill ${selectedCategory === 'men' ? 'active' : ''}`}
               onClick={() => handleCategoryChange('men')}
             >
-              رجالي
+              رجالي ({productsList.filter(p => p.category === 'men' || p.category === 'unisex').length})
             </button>
             <button
               className={`pp-category-pill ${selectedCategory === 'women' ? 'active' : ''}`}
               onClick={() => handleCategoryChange('women')}
             >
-              نسائية
+              نسائية ({productsList.filter(p => p.category === 'women' || p.category === 'unisex').length})
             </button>
             <button
               className={`pp-category-pill ${selectedCategory === 'unisex' ? 'active' : ''}`}
               onClick={() => handleCategoryChange('unisex')}
             >
-              يونيسكس
+              يونيسكس ({productsList.filter(p => p.category === 'unisex').length})
             </button>
           </div>
         </div>
@@ -314,7 +350,40 @@ export default function PerfumesPage({
       {/* ========= PRODUCTS GRID ========= */}
       <section className="pp-products-section">
         <div className="pp-container">
-          {paginatedProducts.length === 0 ? (
+          {isLoading ? (
+            <div className="pp-loading-container">
+              <div className="pp-bottle-spinner">
+                <svg className="pp-bottle-svg" viewBox="0 0 64 84" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  {/* Fragrance Mist */}
+                  <circle className="pp-bottle-mist" cx="32" cy="10" r="4" fill="#905b30" />
+                  <circle className="pp-bottle-mist" cx="24" cy="6" r="2.5" fill="#e4d5c8" style={{ animationDelay: '0.4s' }} />
+                  <circle className="pp-bottle-mist" cx="40" cy="8" r="3" fill="#905b30" style={{ animationDelay: '0.8s' }} />
+                  
+                  {/* Bottle Cap */}
+                  <rect x="25" y="16" width="14" height="10" rx="3" fill="#905b30" />
+                  <rect x="28" y="26" width="8" height="4" fill="#d4af37" />
+                  
+                  {/* Bottle Body Outer */}
+                  <rect x="12" y="30" width="40" height="50" rx="10" stroke="#905b30" strokeWidth="3" fill="#fffcf7" />
+                  
+                  {/* Bottle Liquid Inner */}
+                  <rect className="pp-bottle-liquid" x="16" y="44" width="32" height="32" rx="6" fill="url(#goldGradient)" />
+                  
+                  {/* Gold Label */}
+                  <rect x="22" y="48" width="20" height="12" rx="2" fill="#ffffff" stroke="#905b30" strokeWidth="1" />
+                  <line x1="26" y1="54" x2="38" y2="54" stroke="#905b30" strokeWidth="1.5" strokeLinecap="round" />
+                  
+                  <defs>
+                    <linearGradient id="goldGradient" x1="16" y1="44" x2="48" y2="76" gradientUnits="userSpaceOnUse">
+                      <stop stopColor="#e4d5c8" />
+                      <stop offset="1" stopColor="#905b30" />
+                    </linearGradient>
+                  </defs>
+                </svg>
+              </div>
+              <span className="pp-loading-text">جاري تحميل العطور الفاخرة...</span>
+            </div>
+          ) : paginatedProducts.length === 0 ? (
             <div className="pp-empty-state">
               <span className="pp-empty-icon">🔍</span>
               <h3>لم نجد نتائج</h3>
@@ -346,12 +415,13 @@ export default function PerfumesPage({
                   >
                     {/* Image Container */}
                     <div className="pp-card-image-wrap">
-                      <img
-                        src={product.image}
-                        alt={product.name}
-                        className="pp-card-image"
-                        loading="lazy"
-                      />
+                      {product.image && (
+                        <img
+                          src={product.image}
+                          alt={product.name}
+                          className="pp-card-image"
+                        />
+                      )}
 
                       {/* Wishlist Button */}
                       <button
@@ -545,7 +615,7 @@ export default function PerfumesPage({
                 {isCategoriesExpanded && (
                   <div className="pp-checkbox-list">
                     <label className="pp-checkbox-item">
-                      <span className="pp-checkbox-count">({perfumeCategoryProducts.filter(p => p.category === 'men').length})</span>
+                      <span className="pp-checkbox-count">({productsList.filter(p => p.category === 'men' || p.category === 'unisex').length})</span>
                       <span className="pp-checkbox-label">رجالي</span>
                       <input
                         type="checkbox"
@@ -560,7 +630,7 @@ export default function PerfumesPage({
                       />
                     </label>
                     <label className="pp-checkbox-item">
-                      <span className="pp-checkbox-count">({perfumeCategoryProducts.filter(p => p.category === 'women').length})</span>
+                      <span className="pp-checkbox-count">({productsList.filter(p => p.category === 'women' || p.category === 'unisex').length})</span>
                       <span className="pp-checkbox-label">نسائي</span>
                       <input
                         type="checkbox"
@@ -575,7 +645,7 @@ export default function PerfumesPage({
                       />
                     </label>
                     <label className="pp-checkbox-item">
-                      <span className="pp-checkbox-count">({perfumeCategoryProducts.filter(p => p.category === 'unisex').length})</span>
+                      <span className="pp-checkbox-count">({productsList.filter(p => p.category === 'unisex').length})</span>
                       <span className="pp-checkbox-label">يونيسكس</span>
                       <input
                         type="checkbox"
@@ -679,7 +749,7 @@ export default function PerfumesPage({
                     {[5, 4, 3, 2, 1].map((stars) => (
                       <label key={stars} className="pp-checkbox-item">
                         <span className="pp-checkbox-count">
-                          ({perfumeCategoryProducts.filter(p => Math.floor(productRatings[p.id] || p.rating) === stars).length})
+                          ({productsList.filter(p => Math.floor(productRatings[p.id] || p.rating) === stars).length})
                         </span>
                         <span className="pp-checkbox-label">{stars} نجوم</span>
                         <input

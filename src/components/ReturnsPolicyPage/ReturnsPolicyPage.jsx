@@ -6,8 +6,17 @@ import './ReturnsPolicyPage.css';
 import shadowBg from '../../assets/images/about-shadow-bg.jpg';
 import perfumeSmokeBg from '../../assets/images/dartistana_create_a_professional_product_shoot_of_3_perfume_bot_3e6bf181-e7e3-410a-96fa-977eb5e88c24 1.svg';
 
+import { pagesApi } from '../../services/storeApi';
+
 export default function ReturnsPolicyPage() {
   const navigate = useNavigate();
+  const [pageData, setPageData] = React.useState(null);
+
+  React.useEffect(() => {
+    pagesApi.getReturnPolicy()
+      .then((res) => { if (res) setPageData(res); })
+      .catch(() => {});
+  }, []);
 
   return (
     <div className="returns-page" dir="rtl">

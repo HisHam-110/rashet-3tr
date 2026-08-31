@@ -3,6 +3,8 @@ import { useNavigate } from 'react-router-dom';
 import Footer from '../Footer/Footer';
 import './PaymentPage.css';
 
+import { checkoutApi, cartApi } from '../../services/storeApi';
+
 const VALID_COUPONS = ['RASHAT10', 'RASHET10', 'RASHAT15', 'RASHET15', 'RASHAT20', 'RASHET20', 'OFF10', 'SAVE10', 'PROMO10'];
 
 export default function PaymentPage({ cartItems = [] }) {
@@ -16,16 +18,32 @@ export default function PaymentPage({ cartItems = [] }) {
   const shipping = subtotal >= 1000 ? 0 : 25;
   const total = Math.max(0, subtotal - discount + shipping);
 
-  const handleApplyCoupon = (e) => {
+  const handleApplyCoupon = async (e) => {
     e.preventDefault();
     const clean = couponCode.trim().toUpperCase();
-    if (!clean || !VALID_COUPONS.includes(clean)) {
-      setDiscount(0);
-      setCouponError('كود الخصم غير صالح، يرجى التحقق منه');
-      return;
+    if (!clean) return;
+    try {
+      await cartApi.applyCoupon(clean);
+      setDiscount(Math.round(subtotal * 0.1));
+      setCouponError('');
+    } catch (err) {
+      if (VALID_COUPONS.includes(clean)) {
+        setDiscount(Math.round(subtotal * 0.1));
+        setCouponError('');
+      } else {
+        setDiscount(0);
+        setCouponError(err.message || 'كود الخصم غير صالح، يرجى التحقق منه');
+      }
     }
-    setDiscount(Math.round(subtotal * 0.1));
-    setCouponError('');
+  };
+
+  const handleContinue = async () => {
+    try {
+      await checkoutApi.savePaymentMethod(method);
+    } catch (err) {
+      // Proceed gracefully
+    }
+    navigate('/checkout/review');
   };
 
   if (!cartItems.length) return <main className="payment-empty" dir="rtl"><h1>لا توجد منتجات لإتمام الطلب</h1><button onClick={() => navigate('/cart')}>العودة إلى السلة</button></main>;
@@ -37,7 +55,7 @@ export default function PaymentPage({ cartItems = [] }) {
       <label className={`payment-option ${method === 'mada' ? 'selected' : ''}`}><input type="radio" name="payment" checked={method === 'mada'} onChange={() => setMethod('mada')} /><span className="mada-logo">مدى</span><b>مدى</b></label>
       <div className={`card-payment ${method === 'card' ? 'selected' : ''}`}><label className="card-heading"><input type="radio" name="payment" checked={method === 'card'} onChange={() => setMethod('card')} /><span className="visa-logo">VISA</span><b>البطاقة البنكية</b></label>{method === 'card' && <div className="card-fields"><label>رقم البطاقة<input inputMode="numeric" placeholder="1234 5678 9012 3456" /></label><div><label>تاريخ الانتهاء<input placeholder="MM/YY" /></label><label>رمز التحقق (CVV)<input placeholder="•••" /></label></div><label className="save-card"><input type="checkbox" /> حفظ بيانات البطاقة لعمليات الدفع المستقبلية</label></div>}</div>
       <label className={`payment-option cash ${method === 'cash' ? 'selected' : ''}`}><input type="radio" name="payment" checked={method === 'cash'} onChange={() => setMethod('cash')} /><span>🛵</span><b>الدفع عند الاستلام</b></label>
-      <button className="review-button" onClick={() => navigate('/checkout/review')}>متابعة المراجعة <span>←</span></button><small className="secure-text">🔒 دفع آمن ومشفّر 100%</small>
+      <button className="review-button" onClick={handleContinue}>متابعة المراجعة <span>←</span></button><small className="secure-text">🔒 دفع آمن ومشفّر 100%</small>
     </section>
     <aside className="payment-summary">
       <h2>ملخص الطلب</h2>

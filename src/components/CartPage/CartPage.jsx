@@ -3,6 +3,8 @@ import { useNavigate } from 'react-router-dom';
 import Footer from '../Footer/Footer';
 import './CartPage.css';
 
+import { cartApi } from '../../services/storeApi';
+
 const VALID_COUPONS = ['RASHAT10', 'RASHET10', 'RASHAT15', 'RASHET15', 'RASHAT20', 'RASHET20', 'OFF10', 'SAVE10', 'PROMO10'];
 
 export default function CartPage({
@@ -30,20 +32,28 @@ export default function CartPage({
   const remainingForFreeShipping = Math.max(0, freeShippingThreshold - subtotal);
   const progressPercent = Math.min(100, (subtotal / freeShippingThreshold) * 100);
 
-  const handleApplyCoupon = (e) => {
+  const handleApplyCoupon = async (e) => {
     e.preventDefault();
     const cleanCoupon = coupon.trim().toUpperCase();
-    if (!cleanCoupon || !VALID_COUPONS.includes(cleanCoupon)) {
-      setIsCouponApplied(false);
-      setDiscountPercent(0);
-      setCouponError('كود الخصم غير صالح، يرجى التحقق منه');
-      return;
+    if (!cleanCoupon) return;
+    try {
+      await cartApi.applyCoupon(cleanCoupon);
+      setIsCouponApplied(true);
+      setAppliedCouponCode(cleanCoupon);
+      setDiscountPercent(10);
+      setCouponError('');
+    } catch (err) {
+      if (VALID_COUPONS.includes(cleanCoupon)) {
+        setIsCouponApplied(true);
+        setAppliedCouponCode(cleanCoupon);
+        setDiscountPercent(10);
+        setCouponError('');
+      } else {
+        setIsCouponApplied(false);
+        setDiscountPercent(0);
+        setCouponError(err.message || 'كود الخصم غير صالح، يرجى التحقق منه');
+      }
     }
-
-    setIsCouponApplied(true);
-    setAppliedCouponCode(cleanCoupon);
-    setDiscountPercent(10); // 10% discount
-    setCouponError('');
   };
 
   const handleRemoveCoupon = () => {

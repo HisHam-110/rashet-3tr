@@ -97,7 +97,7 @@ export default function FeaturedProducts({
   wishlistIds = [],
   onOpenProductDetails,
 }) {
-  const displayProducts = (products && products.length >= 3) ? products : DEFAULT_PRODUCTS;
+  const displayProducts = products || [];
   const [activeIndex, setActiveIndex] = useState(0);
 
   const total = displayProducts.length;
@@ -160,7 +160,19 @@ export default function FeaturedProducts({
 
         {/* Viewport for Centered Carousel */}
         <div className="centered-carousel-viewport">
-          <div className="centered-carousel-track">
+          {displayProducts.length === 0 ? (
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(240px, 1fr))', gap: '20px', width: '100%' }}>
+              {Array.from({ length: 4 }).map((_, i) => (
+                <div key={i} className="pp-skeleton-card">
+                  <div className="pp-skeleton-img" />
+                  <div className="pp-skeleton-text-short" />
+                  <div className="pp-skeleton-text" />
+                  <div className="pp-skeleton-price" />
+                </div>
+              ))}
+            </div>
+          ) : (
+            <div className="centered-carousel-track">
             {displayProducts.map((product, idx) => {
               const relIndex = getRelativeIndex(idx);
               const isActive = relIndex === 0;
@@ -172,7 +184,7 @@ export default function FeaturedProducts({
               else if (isPrev) positionClass = 'card-prev';
               else if (isNext) positionClass = 'card-next';
 
-              const cardImg = product.image || img69;
+              const cardImg = product.image;
               const isWishlisted = wishlistIds.includes(product.id);
 
               return (
@@ -194,12 +206,14 @@ export default function FeaturedProducts({
                 >
                   {/* Card Background Media & Overlay */}
                   <div className="card-media-wrap">
-                    <img 
-                      src={cardImg} 
-                      alt={product.name} 
-                      className="card-media-img"
-                      draggable="false"
-                    />
+                    {cardImg && (
+                      <img 
+                        src={cardImg} 
+                        alt={product.name} 
+                        className="card-media-img"
+                        draggable="false"
+                      />
+                    )}
                     <div className="card-media-overlay" />
                     
                     {/* Favorite Heart Button */}
@@ -292,6 +306,7 @@ export default function FeaturedProducts({
               );
             })}
           </div>
+          )}
 
           {/* Dots */}
           <div className="carousel-dots-wrapper">

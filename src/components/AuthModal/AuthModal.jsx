@@ -1,22 +1,36 @@
 import React, { useState } from 'react';
+import { authApi } from '../../services/storeApi';
 import './AuthModal.css';
 
-export default function AuthModal({ isOpen, onClose, showToast }) {
+export default function AuthModal({ isOpen, onClose, showToast, onLoginSuccess }) {
   const [isSignUp, setIsSignUp] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [rememberMe, setRememberMe] = useState(false);
   const [name, setName] = useState('');
+  const [loading, setLoading] = useState(false);
 
   if (!isOpen) return null;
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    if (showToast) {
-      showToast(isSignUp ? 'تم إنشاء الحساب بنجاح!' : 'تم تسجيل الدخول بنجاح!');
+    setLoading(true);
+    try {
+      if (isSignUp) {
+        await authApi.register({ name, email, password });
+        if (showToast) showToast('تم إنشاء الحساب بنجاح!');
+      } else {
+        await authApi.loginCustomer({ email, password });
+        if (showToast) showToast('تم تسجيل الدخول بنجاح!');
+      }
+      if (onLoginSuccess) onLoginSuccess();
+      onClose();
+    } catch (err) {
+      if (showToast) showToast(err.message || 'حدث خطأ أثناء العملية', 'error');
+    } finally {
+      setLoading(false);
     }
-    onClose();
   };
 
   const handleGoogleSignIn = () => {
@@ -162,8 +176,8 @@ export default function AuthModal({ isOpen, onClose, showToast }) {
             </div>
           )}
 
-          <button type="submit" className="auth-submit-btn">
-            {isSignUp ? 'إنشاء الحساب' : 'تسجيل الدخول'}
+          <button type="submit" className="auth-submit-btn" disabled={loading}>
+            {loading ? 'جاري التحميل...' : isSignUp ? 'إنشاء الحساب' : 'تسجيل الدخول'}
           </button>
         </form>
 

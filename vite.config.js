@@ -8,6 +8,12 @@ export default defineConfig({
     watch: {
       ignored: ['**/public/icons/**'],
     },
+    proxy: {
+      '/api': {
+        target: 'https://rashet-etr.growfet.com',
+        changeOrigin: true,
+        secure: false,
+      },
+    },
   },
 })
-

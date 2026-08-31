@@ -44,7 +44,7 @@ export default function Products({
     },
   ];
 
-  const products = suppliedProducts.length ? suppliedProducts.slice(0, 4) : fallbackProducts;
+  const products = suppliedProducts || [];
 
   /* =========================
      Ratings

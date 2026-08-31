@@ -3,6 +3,8 @@ import { useNavigate } from 'react-router-dom';
 import Footer from '../Footer/Footer';
 import './ContactPage.css';
 
+import { formsApi } from '../../services/storeApi';
+
 export default function ContactPage({ showToast }) {
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
@@ -21,8 +23,19 @@ export default function ContactPage({ showToast }) {
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    try {
+      await formsApi.contact({
+        name: `${formData.firstName} ${formData.lastName}`.trim(),
+        email: formData.email,
+        phone: formData.phone,
+        subject: formData.subject,
+        message: formData.message,
+      });
+    } catch (err) {
+      // Fallback display if offline
+    }
     setSubmitted(true);
     if (showToast) {
       showToast('تم إرسال رسالتك بنجاح! سنتواصل معك قريباً.');

@@ -6,6 +6,8 @@ import article2Img from '../../assets/images/image 69.svg';
 import article3Img from '../../assets/images/image 72.svg';
 import article4Img from '../../assets/images/image 68.svg';
 
+import { articlesApi } from '../../services/storeApi';
+
 const ARTICLES = [
   {
     id: 1,
@@ -40,9 +42,25 @@ const ARTICLES = [
 const VISIBLE = 2; // how many cards visible at once
 
 export default function LatestArticles() {
+  const [articlesList, setArticlesList] = useState(ARTICLES);
   const [startIndex, setStartIndex] = useState(0);
 
-  const canGoNext = startIndex + VISIBLE < ARTICLES.length;
+  React.useEffect(() => {
+    articlesApi.getLatest(4)
+      .then((data) => {
+        if (data && data.length) {
+          setArticlesList(data.map((item, idx) => ({
+            id: item.id || idx + 1,
+            title: item.title || item.title_ar || ARTICLES[idx % ARTICLES.length].title,
+            excerpt: item.excerpt || item.excerpt_ar || item.content || ARTICLES[idx % ARTICLES.length].excerpt,
+            image: item.image || item.cover || ARTICLES[idx % ARTICLES.length].image,
+          })));
+        }
+      })
+      .catch(() => {});
+  }, []);
+
+  const canGoNext = startIndex + VISIBLE < articlesList.length;
   const canGoPrev = startIndex > 0;
 
   const goNext = () => {
@@ -53,7 +71,7 @@ export default function LatestArticles() {
     if (canGoPrev) setStartIndex((prev) => prev - 1);
   };
 
-  const visibleArticles = ARTICLES.slice(startIndex, startIndex + VISIBLE);
+  const visibleArticles = articlesList.slice(startIndex, startIndex + VISIBLE);
 
   return (
     <section className="la-section" id="articles" dir="rtl">

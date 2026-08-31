@@ -1,13 +1,20 @@
 import React, { useState } from 'react';
 import '../Testimonials/Testimonials.css';
 
+import { formsApi } from '../../services/storeApi';
+
 export default function Newsletter() {
   const [email, setEmail] = useState('');
   const [isSubscribed, setIsSubscribed] = useState(false);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (email.trim()) {
+      try {
+        await formsApi.subscribeNewsletter(email);
+      } catch (err) {
+        // Fallback display if offline
+      }
       setIsSubscribed(true);
       setEmail('');
     }
