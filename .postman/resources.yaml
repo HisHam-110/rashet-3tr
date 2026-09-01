@@ -1,0 +1,7 @@
+# Use this workspace to collaborate
+workspace:
+  id: 234d65dd-4327-4cee-8d68-6646a7893523
+
+localResources:
+  collections:
+    - ../rashet_3tr_all_collection.postman_collection.json

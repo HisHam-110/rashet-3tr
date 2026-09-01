@@ -93,7 +93,7 @@
   font-size: 0.95rem;
   font-weight: 700;
   color: #56371d;
-  margin: 0 0 12px;
+  margin: 0 0 16px;
   text-align: center;
 }
 
@@ -103,6 +103,13 @@
 
 .cap-shipping-text.cap-free-success span {
   color: #2e7d32;
+  font-weight: 800;
+}
+
+.cap-progress-bar-wrapper {
+  position: relative;
+  padding: 10px 0;
+  margin: 0 10px;
 }
 
 .cap-progress-bar-bg {
@@ -117,15 +124,24 @@
   height: 100%;
   background: #905b30;
   border-radius: 4px;
-  transition: width 0.4s ease;
+  transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-.cap-delivery-icon {
+.cap-delivery-truck {
   position: absolute;
-  left: 24px;
-  bottom: 12px;
-  font-size: 1.2rem;
-  opacity: 0.8;
+  top: -1px;
+  transform: translateY(-50%) scaleX(-1); /* Flips truck to face the direction of motion (right to left in RTL) */
+  transition: right 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.12));
+}
+
+.cap-free-shipping-tag {
+  color: #2e7d32 !important;
+  font-weight: 800;
 }
 
 /* Items List */

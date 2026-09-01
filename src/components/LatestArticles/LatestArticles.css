@@ -81,8 +81,8 @@
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
-  width: 44px;
-  height: 44px;
+  width: 40px;
+  height: 40px;
   border-radius: 50%;
   background-color: #835b3c;
   color: #ffffff;
@@ -96,6 +96,13 @@
   z-index: 10;
   transition: all 0.25s ease;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+  padding: 0;
+}
+
+.la-arrow-icon {
+  width: 22px;
+  height: 22px;
+  flex-shrink: 0;
 }
 
 .la-arrow:hover:not(.la-arrow-disabled) {
@@ -104,11 +111,11 @@
 }
 
 .la-arrow-left {
-  left: -54px;
+  left: -68px;
 }
 
 .la-arrow-right {
-  right: -54px;
+  right: -68px;
 }
 
 .la-arrow-disabled {

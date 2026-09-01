@@ -105,15 +105,24 @@ export default function CartPage({
                     تهانينا! لقد حصلت على <span>شحن مجاني</span> لطلبك! 🎉
                   </p>
                 )}
-                <div className="cap-progress-bar-bg">
+                <div className="cap-progress-bar-wrapper">
+                  <div className="cap-progress-bar-bg">
+                    <div 
+                      className="cap-progress-bar-fill" 
+                      style={{ width: `${progressPercent}%` }}
+                    ></div>
+                  </div>
                   <div 
-                    className="cap-progress-bar-fill" 
-                    style={{ width: `${progressPercent}%` }}
-                  ></div>
-                </div>
-                <div className="cap-delivery-icon">
-                  <img src="../../public/icons/shipping-truck-02.svg" alt="Apple Pay" />
-
+                    className="cap-delivery-truck"
+                    style={{ right: `calc(${progressPercent}% - 14px)` }}
+                  >
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M16 3H1V16H16V3Z" fill="#905b30" stroke="#905b30" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                      <path d="M16 8H20L23 11V16H16V8Z" fill="#905b30" stroke="#905b30" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                      <circle cx="5.5" cy="18.5" r="2.5" fill="#ffffff" stroke="#905b30" strokeWidth="1.5"/>
+                      <circle cx="18.5" cy="18.5" r="2.5" fill="#ffffff" stroke="#905b30" strokeWidth="1.5"/>
+                    </svg>
+                  </div>
                 </div>
               </div>
 
@@ -281,7 +290,9 @@ export default function CartPage({
 
                 <div className="cap-summary-row">
                   <span>الشحن</span>
-                  <span>{shipping === 0 ? '25 ر.س' : `${shipping} ر.س`}</span>
+                  <span className={shipping === 0 && subtotal > 0 ? 'cap-free-shipping-tag' : ''}>
+                    {subtotal === 0 ? '0 ر.س' : shipping === 0 ? 'مجاني' : `${shipping} ر.س`}
+                  </span>
                 </div>
 
                 <div className="cap-summary-total-divider"></div>

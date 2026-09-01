@@ -96,7 +96,9 @@ export default function LatestArticles() {
             onClick={goNext}
             aria-label="السابق"
           >
-            ›
+            <svg className="la-arrow-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+              <polyline points="15 18 9 12 15 6" />
+            </svg>
           </button>
 
           {/* Cards */}
@@ -121,7 +123,9 @@ export default function LatestArticles() {
             onClick={goPrev}
             aria-label="التالي"
           >
-            ‹
+            <svg className="la-arrow-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+              <polyline points="9 18 15 12 9 6" />
+            </svg>
           </button>
         </div>
       </div>

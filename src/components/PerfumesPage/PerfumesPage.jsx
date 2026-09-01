@@ -1,10 +1,17 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { Link, useNavigate, useSearchParams } from 'react-router-dom';
-import { perfumeCategoryProducts } from '../../data/perfumesData';
 import Footer from '../Footer/Footer';
 import './PerfumesPage.css';
 
 import { productsApi } from '../../services/storeApi';
+
+const CATEGORY_LABELS = {
+  men:    { label: 'رجالي',   color: '#3b6ea5' },
+  women:  { label: 'نسائي',   color: '#a5527a' },
+  unisex: { label: 'يونيسكس', color: '#6b7c5c' },
+  luxury: { label: 'فاخر',    color: '#8b6914' },
+  niche:  { label: 'نيش',     color: '#5a4a6b' },
+};
 
 const PRODUCTS_PER_PAGE = 8;
 
@@ -28,11 +35,15 @@ export default function PerfumesPage({
 
   useEffect(() => {
     const controller = new AbortController();
+    let retryTimer;
     setIsLoading(true);
-    productsApi.list({}, controller.signal)
-      .then((data) => {
-        if (Array.isArray(data)) {
-          // Keep all 20 API products, displaying products with images first (page 1) and others at the end (pages 2 & 3)
+
+    const loadProducts = () => {
+      productsApi.list({}, controller.signal)
+        .then((data) => {
+          if (!Array.isArray(data)) return;
+
+          // Keep all API products, displaying products with images first.
           const sortedAll = [...data].sort((a, b) => {
             const aHasImg = a.image && typeof a.image === 'string' && a.image.length > 0;
             const bHasImg = b.image && typeof b.image === 'string' && b.image.length > 0;
@@ -41,11 +52,20 @@ export default function PerfumesPage({
             return 0;
           });
           setProductsList(sortedAll);
-        }
-      })
-      .catch(() => {})
-      .finally(() => setIsLoading(false));
-    return () => controller.abort();
+          setIsLoading(false);
+        })
+        .catch((error) => {
+          if (error.name !== 'AbortError') {
+            retryTimer = window.setTimeout(loadProducts, 2000);
+          }
+        });
+    };
+
+    loadProducts();
+    return () => {
+      controller.abort();
+      window.clearTimeout(retryTimer);
+    };
   }, []);
 
   useEffect(() => {
@@ -55,8 +75,8 @@ export default function PerfumesPage({
     }
   }, [categoryParam]);
 
-  // Interactive Ratings state
   const [productRatings, setProductRatings] = useState({});
+  const [imgLoaded, setImgLoaded] = useState({});
 
   // Filter Drawer active states — include ALL possible category values
   const ALL_CATS = ['men', 'women', 'unisex', 'luxury', 'niche', 'oriental', 'summer', 'night'];
@@ -93,13 +113,13 @@ export default function PerfumesPage({
     if (selectedCategory !== 'all' && selectedCategory !== 'full') {
       result = result.filter((p) => {
         if (selectedCategory === 'men') {
-          return p.category === 'men' || p.category === 'unisex';
+          return p.category === 'men';          // رجالي بس
         }
         if (selectedCategory === 'women') {
-          return p.category === 'women' || p.category === 'unisex';
+          return p.category === 'women';        // نسائي بس
         }
         if (selectedCategory === 'unisex') {
-          return p.category === 'unisex';
+          return p.category === 'unisex';       // مشترك بس
         }
         if (selectedCategory === 'luxury') {
           return p.category === 'luxury' || p.price >= 500;
@@ -329,13 +349,13 @@ export default function PerfumesPage({
               className={`pp-category-pill ${selectedCategory === 'men' ? 'active' : ''}`}
               onClick={() => handleCategoryChange('men')}
             >
-              رجالي ({productsList.filter(p => p.category === 'men' || p.category === 'unisex').length})
+              رجالي ({productsList.filter(p => p.category === 'men').length})
             </button>
             <button
               className={`pp-category-pill ${selectedCategory === 'women' ? 'active' : ''}`}
               onClick={() => handleCategoryChange('women')}
             >
-              نسائية ({productsList.filter(p => p.category === 'women' || p.category === 'unisex').length})
+              نسائية ({productsList.filter(p => p.category === 'women').length})
             </button>
             <button
               className={`pp-category-pill ${selectedCategory === 'unisex' ? 'active' : ''}`}
@@ -351,37 +371,21 @@ export default function PerfumesPage({
       <section className="pp-products-section">
         <div className="pp-container">
           {isLoading ? (
-            <div className="pp-loading-container">
-              <div className="pp-bottle-spinner">
-                <svg className="pp-bottle-svg" viewBox="0 0 64 84" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  {/* Fragrance Mist */}
-                  <circle className="pp-bottle-mist" cx="32" cy="10" r="4" fill="#905b30" />
-                  <circle className="pp-bottle-mist" cx="24" cy="6" r="2.5" fill="#e4d5c8" style={{ animationDelay: '0.4s' }} />
-                  <circle className="pp-bottle-mist" cx="40" cy="8" r="3" fill="#905b30" style={{ animationDelay: '0.8s' }} />
-                  
-                  {/* Bottle Cap */}
-                  <rect x="25" y="16" width="14" height="10" rx="3" fill="#905b30" />
-                  <rect x="28" y="26" width="8" height="4" fill="#d4af37" />
-                  
-                  {/* Bottle Body Outer */}
-                  <rect x="12" y="30" width="40" height="50" rx="10" stroke="#905b30" strokeWidth="3" fill="#fffcf7" />
-                  
-                  {/* Bottle Liquid Inner */}
-                  <rect className="pp-bottle-liquid" x="16" y="44" width="32" height="32" rx="6" fill="url(#goldGradient)" />
-                  
-                  {/* Gold Label */}
-                  <rect x="22" y="48" width="20" height="12" rx="2" fill="#ffffff" stroke="#905b30" strokeWidth="1" />
-                  <line x1="26" y1="54" x2="38" y2="54" stroke="#905b30" strokeWidth="1.5" strokeLinecap="round" />
-                  
-                  <defs>
-                    <linearGradient id="goldGradient" x1="16" y1="44" x2="48" y2="76" gradientUnits="userSpaceOnUse">
-                      <stop stopColor="#e4d5c8" />
-                      <stop offset="1" stopColor="#905b30" />
-                    </linearGradient>
-                  </defs>
-                </svg>
+            <div className="pp-loading-container" role="status" aria-live="polite">
+              <div className="pp-perfume-loader" aria-hidden="true">
+                <span className="pp-loader-mist pp-loader-mist-one" />
+                <span className="pp-loader-mist pp-loader-mist-two" />
+                <span className="pp-loader-mist pp-loader-mist-three" />
+                <div className="pp-loader-bottle">
+                  <span className="pp-loader-cap" />
+                  <span className="pp-loader-neck" />
+                  <span className="pp-loader-glass">
+                    <span className="pp-loader-liquid" />
+                    <span className="pp-loader-label">R</span>
+                  </span>
+                </div>
               </div>
-              <span className="pp-loading-text">جاري تحميل العطور الفاخرة...</span>
+              <span className="pp-loading-text">جاري تحميل العطور...</span>
             </div>
           ) : paginatedProducts.length === 0 ? (
             <div className="pp-empty-state">
@@ -415,11 +419,17 @@ export default function PerfumesPage({
                   >
                     {/* Image Container */}
                     <div className="pp-card-image-wrap">
+                      {/* Keep the card data visible while its image is still downloading. */}
+                      {!imgLoaded[product.id] && (
+                        <div className="pp-img-skeleton" />
+                      )}
                       {product.image && (
                         <img
                           src={product.image}
                           alt={product.name}
-                          className="pp-card-image"
+                          className={`pp-card-image ${imgLoaded[product.id] ? 'pp-img-visible' : 'pp-img-hidden'}`}
+                          onLoad={() => setImgLoaded(prev => ({ ...prev, [product.id]: true }))}
+                          onError={() => setImgLoaded(prev => ({ ...prev, [product.id]: true }))}
                         />
                       )}
 
@@ -460,7 +470,17 @@ export default function PerfumesPage({
 
                     {/* Card Info */}
                     <div className="pp-card-info">
-                      <span className="pp-card-brand">{product.brand}</span>
+                      <div className="pp-card-top-row">
+                        <span className="pp-card-brand">{product.brand}</span>
+                        {CATEGORY_LABELS[product.category] && (
+                          <span
+                            className="pp-card-category-badge"
+                            style={{ '--cat-color': CATEGORY_LABELS[product.category].color }}
+                          >
+                            {CATEGORY_LABELS[product.category].label}
+                          </span>
+                        )}
+                      </div>
                       <h3 className="pp-card-name">{product.name}</h3>
 
                       {/* Rating */}
