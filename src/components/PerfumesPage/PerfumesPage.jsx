@@ -25,10 +25,12 @@ export default function PerfumesPage({
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const categoryParam = searchParams.get('category');
+  const categoryIdParam = searchParams.get('categoryId');
+  const searchParam = searchParams.get('search') || '';
 
   const [productsList, setProductsList] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
-  const [searchQuery, setSearchQuery] = useState('');
+  const [searchQuery, setSearchQuery] = useState(searchParam);
   const [sortBy, setSortBy] = useState('newest');
   const [currentPage, setCurrentPage] = useState(1);
   const [selectedCategory, setSelectedCategory] = useState(categoryParam || 'all');
@@ -75,6 +77,15 @@ export default function PerfumesPage({
     }
   }, [categoryParam]);
 
+  useEffect(() => {
+    if (categoryIdParam) setCurrentPage(1);
+  }, [categoryIdParam]);
+
+  useEffect(() => {
+    setSearchQuery(searchParam);
+    setCurrentPage(1);
+  }, [searchParam]);
+
   const [productRatings, setProductRatings] = useState({});
   const [imgLoaded, setImgLoaded] = useState({});
 
@@ -108,6 +119,10 @@ export default function PerfumesPage({
   // Filter by search, category drawer, price and ratings
   const filtered = useMemo(() => {
     let result = [...productsList];
+
+    if (categoryIdParam) {
+      result = result.filter((p) => String(p.category_id) === String(categoryIdParam));
+    }
 
     // 1. Pill Category Filter
     if (selectedCategory !== 'all' && selectedCategory !== 'full') {
@@ -175,7 +190,7 @@ export default function PerfumesPage({
     }
 
     return result;
-  }, [productsList, searchQuery, sortBy, selectedCategory, activeCategories, minPrice, maxPrice, activeRatings, productRatings]);
+  }, [productsList, searchQuery, sortBy, selectedCategory, categoryIdParam, activeCategories, minPrice, maxPrice, activeRatings, productRatings]);
 
   // Pagination
   const totalPages = Math.max(1, Math.ceil(filtered.length / PRODUCTS_PER_PAGE));
@@ -313,10 +328,15 @@ export default function PerfumesPage({
               </div>
             </div>
 
-            {/* Left side: Sort Dropdown */}
+            {/* Left side: Sort Dropdown matching target screenshot */}
             <div className="pp-sort-wrap">
               <span className="pp-sort-label">ترتيب حسب:</span>
               <div className="pp-sort-select-container">
+                <span className="pp-sort-chevron-inline">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                    <polyline points="6 9 12 15 18 9" />
+                  </svg>
+                </span>
                 <select
                   id="pp-sort"
                   className="pp-sort-select"
@@ -328,11 +348,6 @@ export default function PerfumesPage({
                   <option value="price-desc">السعر: من الأعلى للأقل</option>
                   <option value="rating">الأعلى تقييماً</option>
                 </select>
-                <span className="pp-sort-chevron">
-                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                    <polyline points="6 9 12 15 18 9" />
-                  </svg>
-                </span>
               </div>
             </div>
           </div>

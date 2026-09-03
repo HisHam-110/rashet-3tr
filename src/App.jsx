@@ -28,10 +28,16 @@ import LatestArticles from './components/LatestArticles/LatestArticles';
 import AuthModal from './components/AuthModal/AuthModal';
 import WhatsAppButton from './components/WhatsAppButton/WhatsAppButton';
 import ContactPage from './components/ContactPage/ContactPage';
+import AboutPage from './components/AboutPage/AboutPage';
+import WishlistPage from './components/WishlistPage/WishlistPage';
+import NotFoundPage from './components/NotFoundPage/NotFoundPage';
 
 import { productsApi, cartApi, wishlistApi, authApi } from './services/storeApi';
 
 function App() {
+  // A route loaded directly from the browser address bar is intentionally not
+  // exposed. Internal SPA navigation does not remount App, so site links still work.
+  const [isDirectRouteAccess] = useState(() => window.location.pathname !== '/');
   const [products, setProducts] = useState([]);
   const [activeCategory, setActiveCategory] = useState('all');
   const [searchQuery, setSearchQuery] = useState('');
@@ -293,15 +299,33 @@ function App() {
     </>
   );
 
+  if (isDirectRouteAccess) {
+    return <NotFoundPage />;
+  }
+
   return (
     <div className="app-container">
       <Navbar
         cartCount={totalCartCount}
+        wishlistCount={wishlistIds.length}
         onOpenCart={() => setIsCartOpen(true)}
         onOpenUser={() => setIsAuthOpen(true)}
       />
       <Routes>
         <Route path="/" element={<HomePage />} />
+        <Route path="/about" element={<AboutPage />} />
+        <Route path="/about-brand" element={<AboutPage />} />
+        <Route
+          path="/wishlist"
+          element={
+            <WishlistPage
+              products={products}
+              wishlistIds={wishlistIds}
+              onToggleWishlist={handleToggleWishlist}
+              onAddToCart={handleAddToCart}
+            />
+          }
+        />
         <Route path="/collections" element={<CollectionsPage />} />
         <Route path="/contact" element={<ContactPage showToast={showToast} />} />
         <Route path="/privacy-policy" element={<PrivacyPolicyPage />} />
@@ -344,6 +368,7 @@ function App() {
             />
           }
         />
+        <Route path="*" element={<NotFoundPage />} />
       </Routes>
 
       {/* Interactive Cart Drawer (shared across all pages) */}

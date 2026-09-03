@@ -75,33 +75,40 @@ export default function ContactPage({ showToast }) {
             </div>
 
             <div className="cn-info-list">
+              {/* Phone */}
               <div className="cn-info-item">
+                <div className="cn-info-text-wrap">
+                  <span className="cn-info-text ltr-text">+966506540920</span>
+                </div>
                 <div className="cn-icon-box">
-                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                    <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z" />
+                  <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+                    <path d="M4.521 0.673C4.311 0.164 3.756 -0.107 3.225 0.038L0.819 0.695C0.343 0.826 0.012 1.258 0.012 1.75C0.012 8.515 5.498 14 12.262 14C12.755 14 13.187 13.669 13.318 13.193L13.974 10.787C14.119 10.257 13.848 9.702 13.34 9.491L10.715 8.397C10.269 8.211 9.752 8.34 9.449 8.715L8.344 10.063C6.419 9.152 4.861 7.593 3.95 5.668L5.298 4.567C5.673 4.26 5.801 3.746 5.615 3.301L4.521 0.676V0.673Z" fill="#905B30"/>
                   </svg>
                 </div>
-                <span className="cn-info-text ltr-text">+966506540920</span>
               </div>
 
+              {/* Email */}
               <div className="cn-info-item">
+                <div className="cn-info-text-wrap">
+                  <span className="cn-info-text">RashatEtr@gmail.com</span>
+                </div>
                 <div className="cn-icon-box">
-                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                    <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" />
-                    <polyline points="22,6 12,13 2,6" />
+                  <svg width="14" height="11" viewBox="0 0 14 11" fill="none">
+                    <path d="M1.312 0.75C0.588 0.75 0 1.338 0 2.062C0 2.475 0.195 2.864 0.525 3.112L6.475 7.575C6.787 7.807 7.213 7.807 7.525 7.575L13.475 3.112C13.806 2.864 14 2.475 14 2.062C14 1.338 13.412 0.75 12.688 0.75H1.312ZM0 3.812V9.5C0 10.465 0.785 11.25 1.75 11.25H12.25C13.215 11.25 14 10.465 14 9.5V3.812L8.05 8.275C7.427 8.743 6.573 8.743 5.95 8.275L0 3.812Z" fill="#905B30"/>
                   </svg>
                 </div>
-                <span className="cn-info-text">RashatEtr@gmail.com</span>
               </div>
 
+              {/* Address */}
               <div className="cn-info-item">
+                <div className="cn-info-text-wrap">
+                  <span className="cn-info-text">الرياض - المملكة العربية السعودية</span>
+                </div>
                 <div className="cn-icon-box">
-                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                    <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
-                    <circle cx="12" cy="10" r="3" />
+                  <svg width="11" height="14" viewBox="0 0 11 14" fill="none">
+                    <path d="M5.898 13.65C7.301 11.895 10.5 7.64 10.5 5.25C10.5 2.352 8.148 0 5.25 0C2.352 0 0 2.352 0 5.25C0 7.64 3.199 11.895 4.602 13.65C4.938 14.068 5.562 14.068 5.898 13.65ZM5.25 3.5C5.714 3.5 6.159 3.684 6.487 4.013C6.816 4.341 7 4.786 7 5.25C7 5.714 6.816 6.159 6.487 6.487C6.159 6.816 5.714 7 5.25 7C4.786 7 4.341 6.816 4.013 6.487C3.684 6.159 3.5 5.714 3.5 5.25C3.5 4.786 3.684 4.341 4.013 4.013C4.341 3.684 4.786 3.5 5.25 3.5Z" fill="#905B30"/>
                   </svg>
                 </div>
-                <span className="cn-info-text">الرياض - المملكة العربية السعودية</span>
               </div>
             </div>
 
@@ -113,17 +120,13 @@ export default function ContactPage({ showToast }) {
 
             {/* Social Media Links */}
             <div className="cn-social-links">
+              {/* Instagram Group2.svg */}
               <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" className="cn-social-btn" title="إنستغرام">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                  <rect x="2" y="2" width="20" height="20" rx="5" ry="5" />
-                  <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" />
-                  <line x1="17.5" y1="6.5" x2="17.51" y2="6.5" />
-                </svg>
+                <img src="/icons/Group2.svg" alt="إنستغرام" />
               </a>
+              {/* WhatsApp Group.svg */}
               <a href="https://wa.me/966506540920" target="_blank" rel="noopener noreferrer" className="cn-social-btn" title="واتساب">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                  <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z" />
-                </svg>
+                <img src="/icons/Group.svg" alt="واتساب" />
               </a>
             </div>
           </div>

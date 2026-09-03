@@ -24,7 +24,7 @@ export default function Footer() {
             <li><a href="/#articles">أحدث المقالات</a></li>
             <li><a href="/collections">المجموعات</a></li>
             <li><a href="/#featured">الأكثر مبيعاً</a></li>
-            <li><a href="/#about-brand">عن رشة عطر</a></li>
+            <li><a href="/about">عن رشة عطر</a></li>
             <li><a href="/contact">تواصل معنا</a></li>
           </ul>
         </div>

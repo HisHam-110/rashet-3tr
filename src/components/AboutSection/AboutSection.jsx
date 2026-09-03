@@ -1,8 +1,10 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import './AboutSection.css';
 import aboutImg from '../../assets/images/About.svg';
 
 export default function AboutSection() {
+  const navigate = useNavigate();
   return (
     <section className="about-section" id="about-brand">
       <div className="about-container">
@@ -18,7 +20,7 @@ export default function AboutSection() {
             لنمنحك تجربة عطرية استثنائية تناسب كل لحظة.
           </p>
 
-          <button className="about-btn" aria-label="اقرأ المزيد عن رشة عطر">
+          <button className="about-btn" onClick={() => navigate('/about')} aria-label="اقرأ المزيد عن رشة عطر">
             اقرأ المزيد
           </button>
         </div>

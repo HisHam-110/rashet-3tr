@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Footer from '../Footer/Footer';
 import './CollectionsPage.css';
@@ -11,7 +11,7 @@ import fullCollImg from '../../assets/images/image 69.svg';
 import luxuryImg from '../../assets/images/image 72.svg';
 import summerImg from '../../assets/images/image 68.svg';
 
-const COLLECTIONS_LIST = [
+const FALLBACK_COLLECTIONS = [
   {
     id: 'women',
     title: 'عطور نسائية',
@@ -58,9 +58,22 @@ const COLLECTIONS_LIST = [
 
 export default function CollectionsPage() {
   const navigate = useNavigate();
+  const [collections, setCollections] = useState([]);
 
-  const handleCardClick = (catId) => {
-    navigate(`/perfumes?category=${catId}`);
+  useEffect(() => {
+    setCollections(FALLBACK_COLLECTIONS);
+  }, []);
+
+  const handleCardClick = (collection) => {
+    const slug = collection.slug || '';
+    const name = collection.name_ar || collection.title || '';
+    if (slug === 'womens' || name.includes('نسائية')) {
+      navigate('/perfumes?category=women');
+    } else if (slug === 'for-you-and-her' || name.includes('لك ولها')) {
+      navigate('/perfumes?category=unisex');
+    } else {
+      navigate('/perfumes?category=__empty');
+    }
   };
 
   return (
@@ -100,18 +113,18 @@ export default function CollectionsPage() {
       <div className="clp-main-section">
         <div className="clp-container">
           <div className="clp-cards-grid">
-            {COLLECTIONS_LIST.map((col) => (
+            {collections.map((col) => (
               <div
                 key={col.id}
                 className="clp-card"
-                onClick={() => handleCardClick(col.id)}
+                onClick={() => handleCardClick(col)}
               >
-                <img src={col.image || col.fallback} alt={col.title} className="clp-card-img" />
+                <img src={col.image || col.fallback} alt={col.name_ar || col.title} className="clp-card-img" />
                 <div className="clp-card-overlay"></div>
                 <div className="clp-card-content">
-                  <h3 className="clp-card-title">{col.title}</h3>
-                  <p className="clp-card-subtitle">{col.subtitle}</p>
-                  <button className="clp-card-btn" onClick={(e) => { e.stopPropagation(); handleCardClick(col.id); }}>
+                  <h3 className="clp-card-title">{col.name_ar || col.title}</h3>
+                  <p className="clp-card-subtitle">{col.description_ar || col.subtitle}</p>
+                  <button className="clp-card-btn" onClick={(e) => { e.stopPropagation(); handleCardClick(col); }}>
                     <span>تسوق الآن</span>
                     <span className="clp-arrow">←</span>
                   </button>

@@ -12,7 +12,7 @@
   background: #fdfbf7;
   border: 1px solid rgba(229, 222, 210, 0.9);
   border-radius: 10px;
-  box-shadow: 0 10px 30px rgba(70, 50, 30, 0.07);
+  box-shadow: none;
   display: flex;
   align-items: center;
   justify-content: space-between;

@@ -64,6 +64,11 @@ img {
   display: block;
 }
 
+/* Prevent fixed desktop elements from creating horizontal scrolling. */
+main, section, article, aside, header, footer, div {
+  min-width: 0;
+}
+
 .container {
   width: 100%;
   max-width: 1280px;
@@ -74,6 +79,25 @@ img {
 @media (max-width: 768px) {
   .container {
     padding: 0 16px;
+  }
+
+  .section-header {
+    margin-bottom: 28px;
+  }
+
+  .section-title {
+    font-size: 1.7rem;
+  }
+
+  .section-subtitle {
+    font-size: .95rem;
+    line-height: 1.75;
+  }
+}
+
+@media (max-width: 480px) {
+  .container {
+    padding: 0 12px;
   }
 }
 

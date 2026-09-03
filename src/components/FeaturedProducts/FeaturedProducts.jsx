@@ -185,8 +185,6 @@ export default function FeaturedProducts({
               else if (isNext) positionClass = 'card-next';
 
               const cardImg = product.image;
-              const isWishlisted = wishlistIds.includes(product.id);
-
               return (
                 <article
                   key={product.id || idx}
@@ -216,39 +214,6 @@ export default function FeaturedProducts({
                     )}
                     <div className="card-media-overlay" />
                     
-                    {/* Favorite Heart Button */}
-                    <button
-                      type="button"
-                      className={`featured-fav-btn ${isWishlisted ? 'liked' : ''}`}
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        e.preventDefault();
-                        if (onToggleWishlist) onToggleWishlist(product.id);
-                      }}
-                      aria-label={isWishlisted ? "إزالة من المفضلة" : "إضافة إلى المفضلة"}
-                    >
-                      <svg
-                        width="22"
-                        height="22"
-                        viewBox="0 0 24 24"
-                        fill={isWishlisted ? "currentColor" : "none"}
-                        xmlns="http://www.w3.org/2000/svg"
-                        aria-hidden="true"
-                      >
-                        <path
-                          d="M20.84 4.61C19.84 3.61 18.49 3.05 17.09 3.05C15.69 3.05 14.34 3.61 13.34 4.61L12 5.95L10.66 4.61C8.58 2.53 5.21 2.53 3.13 4.61C1.05 6.69 1.05 10.06 3.13 12.14L12 21L20.87 12.14C22.95 10.06 22.95 6.69 20.84 4.61Z"
-                          stroke="currentColor"
-                          strokeWidth="1.6"
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                        />
-                      </svg>
-                    </button>
-
-                    {/* Top Tagline */}
-                    <span className="card-top-badge">
-                      {product.tagline || product.tag || 'استمتع بالعطور الفاخرة'}
-                    </span>
                   </div>
 
                   {/* Card Content at Bottom */}

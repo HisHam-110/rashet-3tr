@@ -56,7 +56,7 @@ export const mapProduct = (item = {}) => {
     isBestSeller: item.is_best_seller || item.isBestSeller || false,
     isFeatured: item.is_featured || item.isFeatured || false,
     isNew: item.is_new !== undefined ? item.is_new : false,
-    category_id: item.category_id || item.categoryId || null,
+    category_id: item.category_id || item.categoryId || item.categories?.[0]?.id || null,
   };
 };
 

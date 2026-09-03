@@ -122,11 +122,10 @@ export default function Products({
               navigate('/perfumes');
             }}
           >
-            <span>عرض الكل</span>
-
             <span className="show-all-arrow">
               ‹
             </span>
+            <span>عرض الكل</span>
           </button>
 
           {/* العنوان */}
@@ -150,7 +149,7 @@ export default function Products({
 
         <div className="products-grid">
 
-          {products.map((product) => (
+          {products.slice(0, 4).map((product) => (
 
             (() => {
               const isWishlisted = onToggleWishlist

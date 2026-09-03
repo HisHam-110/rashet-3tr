@@ -506,6 +506,8 @@ background: linear-gradient(
   .newsletter-form {
     width: 100%;
 
+    transform: none;
+
     flex-direction: column;
 
     gap: 10px;

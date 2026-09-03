@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import Footer from '../Footer/Footer';
 import './ReturnsPolicyPage.css';
 
-import shadowBg from '../../assets/images/about-shadow-bg.jpg';
+import returnsPolicyHero from '../../assets/images/returns-policy-hero.svg';
 import perfumeSmokeBg from '../../assets/images/dartistana_create_a_professional_product_shoot_of_3_perfume_bot_3e6bf181-e7e3-410a-96fa-977eb5e88c24 1.svg';
 
 import { pagesApi } from '../../services/storeApi';
@@ -34,7 +34,7 @@ export default function ReturnsPolicyPage() {
       {/* Hero Banner Section */}
       <section className="rep-hero-section">
         <div className="rep-container">
-          <div className="rep-hero-card" style={{ backgroundImage: `url(${shadowBg})` }}>
+          <div className="rep-hero-card" style={{ '--policy-hero-art': `url(${returnsPolicyHero})` }}>
             <div className="rep-hero-content">
               {/* Decorative hexagon/geometric outline */}
               <div className="rep-deco-shape"></div>

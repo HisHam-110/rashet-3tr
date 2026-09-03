@@ -9,7 +9,7 @@ import img72 from '../../assets/images/image 72.svg';
 import imgAbout from '../../assets/images/About.svg';
 import imgHero from '../../assets/images/Hero Section (1).svg';
 
-const CARDS = [
+const FALLBACK_CARDS = [
   {
     id: '1',
     title: 'لك ولها',
@@ -47,25 +47,36 @@ const CARDS = [
   },
 ];
 
-const N = CARDS.length;
-
-// Triple the cards array for seamless infinite step scrolling
-const TRIPLE_CARDS = [
-  ...CARDS.map((c, i) => ({ ...c, uid: `set1-${i}` })),
-  ...CARDS.map((c, i) => ({ ...c, uid: `set2-${i}` })),
-  ...CARDS.map((c, i) => ({ ...c, uid: `set3-${i}` })),
-];
-
-const START_INDEX = N; // Start at the second set
-
 export default function CollectionsSection() {
   const navigate = useNavigate();
-  const [index, setIndex] = useState(START_INDEX);
+  const [cards, setCards] = useState([]);
+  const [index, setIndex] = useState(0);
   const [stepWidth, setStepWidth] = useState(0);
   const [noTransition, setNoTransition] = useState(false);
   const [isPaused, setIsPaused] = useState(false);
 
   const trackRef = useRef(null);
+  const count = cards.length;
+  const openCollection = (item) => {
+    const slug = item.slug || '';
+    const title = item.title || '';
+    if (slug === 'womens' || title.includes('نسائية')) navigate('/perfumes?category=women');
+    else if (slug === 'for-you-and-her' || title.includes('لك ولها')) navigate('/perfumes?category=unisex');
+    else navigate('/perfumes?category=__empty');
+  };
+  const tripleCards = [
+    ...cards.map((card, i) => ({ ...card, uid: `set1-${i}` })),
+    ...cards.map((card, i) => ({ ...card, uid: `set2-${i}` })),
+    ...cards.map((card, i) => ({ ...card, uid: `set3-${i}` })),
+  ];
+
+  useEffect(() => {
+    setCards(FALLBACK_CARDS);
+  }, []);
+
+  useEffect(() => {
+    if (count) setIndex(count);
+  }, [count]);
 
   // Measure the exact step width (card width + gap) and update state
   const measureStep = () => {
@@ -102,12 +113,12 @@ export default function CollectionsSection() {
 
   // Seamless snap on transition end
   const handleTransitionEnd = () => {
-    if (index >= 2 * N) {
+    if (count && index >= 2 * count) {
       setNoTransition(true);
-      setIndex((i) => i - N);
-    } else if (index < N) {
+      setIndex((i) => i - count);
+    } else if (count && index < count) {
       setNoTransition(true);
-      setIndex((i) => i + N);
+      setIndex((i) => i + count);
     }
   };
 
@@ -167,11 +178,11 @@ export default function CollectionsSection() {
           }}
           onTransitionEnd={handleTransitionEnd}
         >
-          {TRIPLE_CARDS.map((item) => (
+          {tripleCards.map((item) => (
             <article
               key={item.uid}
               className="csc-card"
-              onClick={() => navigate(`/perfumes?category=${item.id}`)}
+              onClick={() => openCollection(item)}
               style={{ cursor: 'pointer' }}
             >
               {/* Background Image & Overlay */}
@@ -196,7 +207,7 @@ export default function CollectionsSection() {
                   className="csc-card-btn"
                   onClick={(e) => {
                     e.stopPropagation();
-                    navigate(`/perfumes?category=${item.id}`);
+                    openCollection(item);
                   }}
                   aria-label={`تسوق الآن من ${item.title}`}
                 >

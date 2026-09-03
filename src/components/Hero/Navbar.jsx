@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import logoImg from '../../assets/images/1 1.svg';
 import './Navbar.css';
 
 export default function Navbar({
   cartCount = 0,
+  wishlistCount = 0,
   onOpenCart,
   onOpenUser,
 }) {
@@ -13,11 +14,32 @@ export default function Navbar({
   const [searchVal, setSearchVal] = useState('');
   const [activeSection, setActiveSection] = useState('');
   const location = useLocation();
+  const navigate = useNavigate();
+
+  const handleSearchSubmit = (event) => {
+    event.preventDefault();
+    const query = searchVal.trim();
+    if (!query) return;
+
+    const normalized = query.replace(/[أإآ]/g, 'ا').toLowerCase();
+    const destinations = [
+      { terms: ['الدفع', 'دفع', 'payment'], path: '/checkout/payment' },
+      { terms: ['الشحن', 'توصيل', 'shipping'], path: '/checkout/shipping' },
+      { terms: ['السله', 'السلة', 'cart'], path: '/cart' },
+      { terms: ['التواصل', 'تواصل', 'contact'], path: '/contact' },
+      { terms: ['عن رشة', 'من نحن', 'about'], path: '/about' },
+      { terms: ['المجموعات', 'المجموعة', 'collections'], path: '/collections' },
+    ];
+    const match = destinations.find(({ terms }) => terms.some((term) => normalized.includes(term)));
+    navigate(match?.path || `/perfumes?search=${encodeURIComponent(query)}`);
+    setIsSearchActive(false);
+    setIsMobileOpen(false);
+  };
 
   const navItems = [
     { id: 'home', label: 'الرئيسية', href: '/' },
     { id: 'collections', label: 'المجموعة', href: '/collections' },
-    { id: 'about', label: 'عن رشة عطر', href: '/#about-brand' },
+    { id: 'about', label: 'عن رشة عطر', href: '/about' },
     { id: 'bestsellers', label: 'الأكثر مبيعاً', href: '/#featured' },
     { id: 'perfumes', label: 'العطور', href: '/perfumes' },
     { id: 'articles', label: 'المقالات', href: '/#articles' },
@@ -84,6 +106,8 @@ export default function Navbar({
               isActive = currentPath === '/perfumes';
             } else if (item.href === '/collections') {
               isActive = currentPath === '/collections';
+            } else if (item.href === '/about') {
+              isActive = currentPath === '/about' || currentPath === '/about-brand';
             } else if (item.href === '/contact') {
               isActive = currentPath === '/contact';
             } else if (item.href === '/') {
@@ -124,7 +148,7 @@ export default function Navbar({
             </button>
 
             {isSearchActive && (
-              <div className="nav-search-dropdown">
+              <form className="nav-search-dropdown" onSubmit={handleSearchSubmit}>
                 <input
                   type="text"
                   placeholder="ابحث عن عطرك المفضل..."
@@ -132,9 +156,20 @@ export default function Navbar({
                   onChange={(e) => setSearchVal(e.target.value)}
                   autoFocus
                 />
-              </div>
+                <button type="submit" aria-label="تنفيذ البحث">بحث</button>
+              </form>
             )}
           </div>
+
+          <button
+            className="nav-action-icon-btn nav-wishlist-btn"
+            onClick={() => navigate('/wishlist')}
+            aria-label="المفضلة"
+            title="المفضلة"
+          >
+            <span aria-hidden="true">♡</span>
+            {wishlistCount > 0 && <span className="nav-wishlist-badge">{wishlistCount}</span>}
+          </button>
 
           {/* User / Profile Action */}
           <button
