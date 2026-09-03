@@ -89,7 +89,7 @@
 .cn-info-side {
   width: 400px;
   flex-shrink: 0;
-  background: linear-gradient(145deg, #8A5A38 0%, #6e4427 100%);
+  background: #905B30;
   border-radius: 16px;
   padding: 40px 32px;
   color: #ffffff;
@@ -128,6 +128,8 @@
 .cn-info-item {
   display: flex;
   align-items: center;
+  justify-content: flex-end;
+  flex-direction: row-reverse;
   gap: 16px;
 }
 
@@ -135,13 +137,12 @@
   width: 42px;
   height: 42px;
   border-radius: 10px;
-  background: #ffffff;
-  color: #8A5A38;
+  background: rgba(255, 255, 255, 0.28);
   display: flex;
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
 }
 
 .cn-info-text {
@@ -152,6 +153,7 @@
 
 .cn-info-text.ltr-text {
   direction: ltr;
+  display: inline-block;
 }
 
 /* Decorative circles */
@@ -190,29 +192,34 @@
 /* Social links */
 .cn-social-links {
   display: flex;
-  gap: 12px;
+  justify-content: flex-start;
+  gap: 14px;
   position: relative;
   z-index: 2;
   margin-top: 40px;
 }
 
 .cn-social-btn {
-  width: 38px;
-  height: 38px;
+  width: 44px;
+  height: 44px;
   border-radius: 50%;
-  background: rgba(255, 255, 255, 0.2);
-  color: #ffffff;
+  background: #ffffff;
   display: flex;
   align-items: center;
   justify-content: center;
   transition: all 0.25s ease;
-  backdrop-filter: blur(4px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.cn-social-btn img {
+  width: 22px;
+  height: 22px;
+  object-fit: contain;
 }
 
 .cn-social-btn:hover {
-  background: #ffffff;
-  color: #8A5A38;
   transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
 }
 
 /* ===== LEFT COLUMN: FORM SIDE ===== */

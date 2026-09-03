@@ -183,6 +183,9 @@
   border: 1px solid rgba(229, 222, 210, 0.9);
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
   z-index: 100;
+  display: flex;
+  align-items: center;
+  gap: 6px;
 }
 
 .nav-search-dropdown input {
@@ -193,6 +196,40 @@
   font-size: 0.9rem;
   color: #333;
   background: transparent;
+}
+
+.nav-wishlist-btn {
+  position: relative;
+  color: #905b30;
+  font-family: Arial, sans-serif;
+  font-size: 28px;
+  line-height: 1;
+}
+
+.nav-wishlist-badge {
+  position: absolute;
+  top: -4px;
+  left: -4px;
+  display: grid;
+  min-width: 17px;
+  height: 17px;
+  padding: 0 3px;
+  place-items: center;
+  border-radius: 50%;
+  color: #fff;
+  background: #905b30;
+  border: 1px solid #fcfaf7;
+  font: 700 10px var(--font-arabic);
+}
+
+.nav-search-dropdown button {
+  flex: 0 0 auto;
+  padding: 6px 9px;
+  border-radius: 6px;
+  color: #fff;
+  background: #905b30;
+  font: inherit;
+  font-size: .75rem;
 }
 
 /* Mobile Toggle */
@@ -214,6 +251,13 @@
 }
 
 @media (max-width: 992px) {
+  .navbar-container {
+    padding: 0 16px;
+  }
+
+  .navbar-actions {
+    gap: 6px;
+  }
   .navbar-nav-links {
     display: none;
     position: absolute;
@@ -234,5 +278,28 @@
 
   .navbar-mobile-toggle {
     display: flex;
+  }
+}
+
+@media (max-width: 480px) {
+  .site-navbar {
+    height: 58px;
+  }
+
+  .navbar-brand-img {
+    height: 42px;
+    max-width: 112px;
+  }
+
+  .nav-action-icon-btn {
+    padding: 4px;
+  }
+
+  .nav-search-dropdown {
+    position: fixed;
+    top: 66px;
+    right: 12px;
+    left: 12px;
+    width: auto;
   }
 }

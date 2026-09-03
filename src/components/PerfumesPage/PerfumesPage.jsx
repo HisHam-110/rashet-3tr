@@ -25,10 +25,11 @@ export default function PerfumesPage({
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const categoryParam = searchParams.get('category');
+  const searchParam = searchParams.get('search') || '';
 
   const [productsList, setProductsList] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
-  const [searchQuery, setSearchQuery] = useState('');
+  const [searchQuery, setSearchQuery] = useState(searchParam);
   const [sortBy, setSortBy] = useState('newest');
   const [currentPage, setCurrentPage] = useState(1);
   const [selectedCategory, setSelectedCategory] = useState(categoryParam || 'all');
@@ -74,6 +75,11 @@ export default function PerfumesPage({
       setCurrentPage(1);
     }
   }, [categoryParam]);
+
+  useEffect(() => {
+    setSearchQuery(searchParam);
+    setCurrentPage(1);
+  }, [searchParam]);
 
   const [productRatings, setProductRatings] = useState({});
   const [imgLoaded, setImgLoaded] = useState({});
