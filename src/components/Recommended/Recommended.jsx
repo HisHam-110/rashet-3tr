@@ -329,8 +329,8 @@ export default function Products({
                       {product.price}
                     </span>
                     <img
-                      src="/icons/Group 34319.svg"
-                      alt="ريال سعودي"
+                      src="/icons/saudi-riyal.svg"
+                      alt="ر.س"
                       className="riyal-icon"
                     />
                   </div>
