@@ -9,14 +9,14 @@ import rect88 from '../../assets/images/Rectangle 88.svg';
 import subtractImg from '../../assets/images/Subtract.svg';
 import rect90 from '../../assets/images/Rectangle 90.svg';
 import bottleImg from '../../assets/images/image 65.png';
-import womenIcon from '../../../public/icons/user-02.svg';
-import menIcon from '../../../public/icons/user-circle-02.svg';
-import luxuryIcon from '../../../public/icons/crown-03.svg';
-import summerIcon from '../../../public/icons/sun-03.svg';
-import awardIcon from '../../../public/icons/award-04.svg';
-import layersIcon from '../../../public/icons/layers-01.svg';
-import shippingIcon from '../../../public/icons/shipping-truck-02.svg';
-import supportIcon from '../../../public/icons/customer-support.svg';
+const womenIcon = '/icons/user-02.svg';
+const menIcon = '/icons/user-circle-02.svg';
+const luxuryIcon = '/icons/crown-03.svg';
+const summerIcon = '/icons/sun-03.svg';
+const awardIcon = '/icons/award-04.svg';
+const layersIcon = '/icons/layers-01.svg';
+const shippingIcon = '/icons/shipping-truck-02.svg';
+const supportIcon = '/icons/customer-support.svg';
 
 export default function AboutPage() {
   const navigate = useNavigate();

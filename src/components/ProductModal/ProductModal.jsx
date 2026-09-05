@@ -42,9 +42,15 @@ export default function ProductModal({ product, onClose, onAddToCart, isWishlist
             </div>
 
             <div className="modal-price-row">
-              <span className="modal-current-price">{product.price} ر.س</span>
+              <span className="modal-current-price">
+                <span className="modal-price-val">{product.price}</span>
+                <img src="/icons/saudi-riyal.svg" alt="ر.س" className="modal-riyal-icon" />
+              </span>
               {product.originalPrice && (
-                <span className="modal-old-price">{product.originalPrice} ر.س</span>
+                <span className="modal-old-price">
+                  <span className="modal-price-val">{product.originalPrice}</span>
+                  <img src="/icons/saudi-riyal-2.svg" alt="ر.س" className="modal-riyal-icon modal-riyal-icon-old" />
+                </span>
               )}
             </div>
 

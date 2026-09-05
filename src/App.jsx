@@ -33,11 +33,9 @@ import WishlistPage from './components/WishlistPage/WishlistPage';
 import NotFoundPage from './components/NotFoundPage/NotFoundPage';
 
 import { productsApi, cartApi, wishlistApi, authApi } from './services/storeApi';
+import { session } from './services/apiClient';
 
 function App() {
-  // A route loaded directly from the browser address bar is intentionally not
-  // exposed. Internal SPA navigation does not remount App, so site links still work.
-  const [isDirectRouteAccess] = useState(() => window.location.pathname !== '/');
   const [products, setProducts] = useState([]);
   const [activeCategory, setActiveCategory] = useState('all');
   const [searchQuery, setSearchQuery] = useState('');
@@ -47,8 +45,22 @@ function App() {
   const [isAuthOpen, setIsAuthOpen] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [toast, setToast] = useState(null);
-  const [currentUser, setCurrentUser] = useState(null);
+  const [currentUser, setCurrentUser] = useState(() => session.getUser());
   const toastTimerRef = useRef(null);
+
+  const handleLoginSuccess = () => {
+    setCurrentUser(session.getUser());
+  };
+
+  const handleLogout = async () => {
+    try {
+      await authApi.logout();
+    } catch (error) {
+      console.error(error);
+    }
+    setCurrentUser(null);
+    showToast('تم تسجيل الخروج بنجاح');
+  };
 
   const { hash, pathname } = useLocation();
   const navigate = useNavigate();
@@ -136,8 +148,10 @@ function App() {
   });
 
   // Cart operations
-  const handleAddToCart = (product, qty = 1) => {
-    const addQuantity = typeof qty === 'number' ? qty : 1;
+  const handleAddToCart = (product, qty) => {
+    const addQuantity = typeof qty === 'number' && qty > 0
+      ? qty
+      : (typeof product?.quantity === 'number' && product.quantity > 0 ? product.quantity : 1);
     const targetSize = product.selectedSize || (product.sizes ? product.sizes[0] : '100 مل');
 
     cartApi.add({
@@ -299,10 +313,6 @@ function App() {
     </>
   );
 
-  if (isDirectRouteAccess) {
-    return <NotFoundPage />;
-  }
-
   return (
     <div className="app-container">
       <Navbar
@@ -310,6 +320,8 @@ function App() {
         wishlistCount={wishlistIds.length}
         onOpenCart={() => setIsCartOpen(true)}
         onOpenUser={() => setIsAuthOpen(true)}
+        currentUser={currentUser}
+        onLogout={handleLogout}
       />
       <Routes>
         <Route path="/" element={<HomePage />} />
@@ -386,6 +398,7 @@ function App() {
         isOpen={isAuthOpen}
         onClose={() => setIsAuthOpen(false)}
         showToast={showToast}
+        onLoginSuccess={handleLoginSuccess}
       />
 
       {toast && createPortal(

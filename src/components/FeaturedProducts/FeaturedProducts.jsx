@@ -227,11 +227,13 @@ export default function FeaturedProducts({
                     <div className="card-pricing-row">
                       <div className="price-block">
                         <span className="current-price">
-                          {product.price} <small>ر.س</small>
+                          <span className="current-price-val">{product.price}</span>
+                          <img src="/icons/saudi-riyal.svg" alt="ر.س" className="feat-riyal-icon" />
                         </span>
                         {(product.originalPrice || product.oldPrice) && (
                           <span className="old-price">
-                            {product.originalPrice || product.oldPrice} ر.س
+                            <span className="old-price-val">{product.originalPrice || product.oldPrice}</span>
+                            <img src="/icons/saudi-riyal-2.svg" alt="ر.س" className="feat-riyal-icon feat-riyal-icon-old" />
                           </span>
                         )}
                       </div>
@@ -248,7 +250,6 @@ export default function FeaturedProducts({
                       }}
                       aria-label={`أضف ${product.name} إلى السلة`}
                     >
-                      <span className="cart-btn-text">أضف إلى السلة</span>
                       <span className="cart-btn-icon-circle">
                         <svg 
                           width="16" 
@@ -265,6 +266,7 @@ export default function FeaturedProducts({
                           <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/>
                         </svg>
                       </span>
+                      <span className="cart-btn-text">أضف إلى السلة</span>
                     </button>
                   </div>
                 </article>

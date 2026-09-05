@@ -50,7 +50,7 @@ export default function Newsletter() {
                     required
                   />
                   <img
-                    src="../public/icons/Icon (2).svg"
+                    src="/icons/Icon (2).svg"
                     alt="البريد الإلكتروني"
                     className="newsletter-input-icon"
                   />

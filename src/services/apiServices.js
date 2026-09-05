@@ -23,13 +23,15 @@ export const mapProduct = (item = {}) => {
   const catNames = (item.categories || []).map((c) => (c.name_ar || c.slug || c.name_en || '').toLowerCase()).join(' ');
   const nameStr = String(item.name_ar || item.name || '').toLowerCase();
 
+  const catId = Number(item.category_id || item.categoryId || item.categories?.[0]?.id || 0);
+
   let category = 'unisex';
-  if (nameStr.includes('لوريس') || nameStr.includes('لويس') || nameStr.includes('ليبرا') || (catStr.includes('رجال') && catStr.includes('نسائ'))) {
-    category = 'unisex';
-  } else if (catStr.includes('نسائ') || catNames.includes('نسائ') || nameStr.includes('اكلاير')) {
+  if (catId === 2 || catStr.includes('womens') || catNames.includes('womens') || catStr.includes('نسائ') || catNames.includes('نسائ') || nameStr.includes('اكلاير')) {
     category = 'women';
-  } else if (catStr.includes('رجال') || catNames.includes('رجال') || nameStr.includes('شانيل') || nameStr.includes('سوفاج')) {
+  } else if (catId === 1 || catStr.includes('mens') || catNames.includes('mens') || catStr.includes('رجال') || catNames.includes('رجال') || nameStr.includes('شانيل') || nameStr.includes('سوفاج')) {
     category = 'men';
+  } else if (catId === 11 || catStr.includes('for-you-and-her') || catNames.includes('for-you-and-her') || nameStr.includes('لوريس') || nameStr.includes('لويس') || nameStr.includes('ليبرا') || (catStr.includes('رجال') && catStr.includes('نسائ'))) {
+    category = 'unisex';
   }
 
   const rawImg = formatImageUrl(item.image) || formatImageUrl(item.main_image) || formatImageUrl(item.images?.[0]?.url || item.images?.[0]);
@@ -66,6 +68,8 @@ export const authService = {
     const res = await api('/api/v1/auth/register', { method: 'POST', body: data });
     const token = res.token || res.data?.token;
     if (token) session.setToken(token);
+    const user = res.user || res.data?.user || { name: data.name, email: data.email };
+    if (user) session.setUser(user);
     return res;
   },
   async login(data) {
@@ -75,6 +79,8 @@ export const authService = {
     const res = await api('/api/v1/auth/login', { method: 'POST', body: data });
     const token = res.token || res.data?.token;
     if (token) session.setToken(token);
+    const user = res.user || res.data?.user || { email: data.email, name: data.email.split('@')[0] };
+    if (user) session.setUser(user);
     return res;
   },
   async loginAdmin(data) {
@@ -101,6 +107,7 @@ export const authService = {
     } finally {
       session.clearToken();
       session.clearAdminToken();
+      session.clearUser();
     }
   },
 };

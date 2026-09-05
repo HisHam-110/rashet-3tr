@@ -93,7 +93,7 @@ export default function ProductDetailPage({ onAddToCart, onToggleWishlist, wishl
 
   const handleAddToCart = () => {
     if (onAddToCart) {
-      onAddToCart({ ...product, selectedSize, quantity });
+      onAddToCart({ ...product, selectedSize, quantity }, quantity);
     }
     setAddedToCart(true);
     setTimeout(() => setAddedToCart(false), 2500);
@@ -170,9 +170,15 @@ export default function ProductDetailPage({ onAddToCart, onToggleWishlist, wishl
 
               {/* Price */}
               <div className="pdp-price-wrap">
-                <span className="pdp-price-main">{product.price} ر.س</span>
+                <span className="pdp-price-main">
+                  <span className="pdp-price-val">{product.price}</span>
+                  <img src="/icons/saudi-riyal.svg" alt="ر.س" className="pdp-riyal-icon-symbol" />
+                </span>
                 {(product.oldPrice || product.originalPrice) && (
-                  <span className="pdp-price-old">{product.oldPrice || product.originalPrice} ر.س</span>
+                  <span className="pdp-price-old">
+                    <span className="pdp-price-val">{product.oldPrice || product.originalPrice}</span>
+                    <img src="/icons/saudi-riyal-2.svg" alt="ر.س" className="pdp-riyal-icon-symbol pdp-riyal-icon-symbol-old" />
+                  </span>
                 )}
               </div>
 

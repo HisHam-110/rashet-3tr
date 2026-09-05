@@ -13,6 +13,13 @@ const CATEGORY_LABELS = {
   niche:  { label: 'نيش',     color: '#5a4a6b' },
 };
 
+const SORT_LABELS = {
+  'newest': 'الأحدث',
+  'price-asc': 'السعر: من الأقل للأعلى',
+  'price-desc': 'السعر: من الأعلى للأقل',
+  'rating': 'الأعلى تقييماً',
+};
+
 const PRODUCTS_PER_PAGE = 8;
 
 export default function PerfumesPage({
@@ -72,8 +79,24 @@ export default function PerfumesPage({
 
   useEffect(() => {
     if (categoryParam) {
-      setSelectedCategory(categoryParam);
+      let normalized = categoryParam;
+      if (categoryParam === 'womens' || categoryParam === 'women') normalized = 'women';
+      else if (categoryParam === 'mens' || categoryParam === 'men') normalized = 'men';
+      else if (categoryParam === 'for-you-and-her' || categoryParam === 'unisex') normalized = 'unisex';
+
+      setSelectedCategory(normalized);
+      if (normalized === 'all' || normalized === 'full') {
+        setActiveCategories(ALL_CATS);
+        setTempCategories(ALL_CATS);
+      } else {
+        setActiveCategories([normalized]);
+        setTempCategories([normalized]);
+      }
       setCurrentPage(1);
+    } else {
+      setSelectedCategory('all');
+      setActiveCategories(ALL_CATS);
+      setTempCategories(ALL_CATS);
     }
   }, [categoryParam]);
 
@@ -337,17 +360,22 @@ export default function PerfumesPage({
                     <polyline points="6 9 12 15 18 9" />
                   </svg>
                 </span>
-                <select
-                  id="pp-sort"
-                  className="pp-sort-select"
-                  value={sortBy}
-                  onChange={(e) => handleSortChange(e.target.value)}
-                >
-                  <option value="newest">الأحدث</option>
-                  <option value="price-asc">السعر: من الأقل للأعلى</option>
-                  <option value="price-desc">السعر: من الأعلى للأقل</option>
-                  <option value="rating">الأعلى تقييماً</option>
-                </select>
+                <div className="pp-sort-select-wrapper">
+                  <span className="pp-sort-selected-text">
+                    {SORT_LABELS[sortBy] || 'الأحدث'}
+                  </span>
+                  <select
+                    id="pp-sort"
+                    className="pp-sort-select"
+                    value={sortBy}
+                    onChange={(e) => handleSortChange(e.target.value)}
+                  >
+                    <option value="newest">الأحدث</option>
+                    <option value="price-asc">السعر: من الأقل للأعلى</option>
+                    <option value="price-desc">السعر: من الأعلى للأقل</option>
+                    <option value="rating">الأعلى تقييماً</option>
+                  </select>
+                </div>
               </div>
             </div>
           </div>
@@ -527,9 +555,15 @@ export default function PerfumesPage({
 
                       {/* Price */}
                       <div className="pp-card-price-row">
-                        <span className="pp-current-price">{product.price} ر.س</span>
-                        {product.oldPrice && (
-                          <span className="pp-old-price">{product.oldPrice} ر.س</span>
+                        <span className="pp-current-price">
+                          <span className="pp-price-val">{product.price}</span>
+                          <img src="/icons/saudi-riyal.svg" alt="ر.س" className="pp-riyal-icon" />
+                        </span>
+                        {(product.oldPrice || product.originalPrice) && (
+                          <span className="pp-old-price">
+                            <span className="pp-price-val">{product.oldPrice || product.originalPrice}</span>
+                            <img src="/icons/saudi-riyal-2.svg" alt="ر.س" className="pp-riyal-icon pp-riyal-icon-old" />
+                          </span>
                         )}
                       </div>
 
@@ -573,6 +607,7 @@ export default function PerfumesPage({
               })}
             </div>
           )}
+
 
           {/* ========= PAGINATION ========= */}
           {totalPages > 1 && (
@@ -650,8 +685,6 @@ export default function PerfumesPage({
                 {isCategoriesExpanded && (
                   <div className="pp-checkbox-list">
                     <label className="pp-checkbox-item">
-                      <span className="pp-checkbox-count">({productsList.filter(p => p.category === 'men' || p.category === 'unisex').length})</span>
-                      <span className="pp-checkbox-label">رجالي</span>
                       <input
                         type="checkbox"
                         checked={tempCategories.includes('men')}
@@ -663,10 +696,10 @@ export default function PerfumesPage({
                           }
                         }}
                       />
+                      <span className="pp-checkbox-label">رجالي</span>
+                      <span className="pp-checkbox-count">({productsList.filter(p => p.category === 'men' || p.category === 'unisex').length})</span>
                     </label>
                     <label className="pp-checkbox-item">
-                      <span className="pp-checkbox-count">({productsList.filter(p => p.category === 'women' || p.category === 'unisex').length})</span>
-                      <span className="pp-checkbox-label">نسائي</span>
                       <input
                         type="checkbox"
                         checked={tempCategories.includes('women')}
@@ -678,10 +711,10 @@ export default function PerfumesPage({
                           }
                         }}
                       />
+                      <span className="pp-checkbox-label">نسائي</span>
+                      <span className="pp-checkbox-count">({productsList.filter(p => p.category === 'women' || p.category === 'unisex').length})</span>
                     </label>
                     <label className="pp-checkbox-item">
-                      <span className="pp-checkbox-count">({productsList.filter(p => p.category === 'unisex').length})</span>
-                      <span className="pp-checkbox-label">يونيسكس</span>
                       <input
                         type="checkbox"
                         checked={tempCategories.includes('unisex')}
@@ -693,6 +726,8 @@ export default function PerfumesPage({
                           }
                         }}
                       />
+                      <span className="pp-checkbox-label">يونيسكس</span>
+                      <span className="pp-checkbox-count">({productsList.filter(p => p.category === 'unisex').length})</span>
                     </label>
                   </div>
                 )}
@@ -751,16 +786,16 @@ export default function PerfumesPage({
                 {isSizesExpanded && (
                   <div className="pp-checkbox-list">
                     <label className="pp-checkbox-item">
+                      <input type="checkbox" readOnly />
                       <span className="pp-checkbox-label">50 مل</span>
-                      <input type="checkbox" readOnly />
                     </label>
                     <label className="pp-checkbox-item">
+                      <input type="checkbox" readOnly />
                       <span className="pp-checkbox-label">100 مل</span>
-                      <input type="checkbox" readOnly />
                     </label>
                     <label className="pp-checkbox-item">
-                      <span className="pp-checkbox-label">200 مل</span>
                       <input type="checkbox" readOnly />
+                      <span className="pp-checkbox-label">200 مل</span>
                     </label>
                   </div>
                 )}
@@ -783,10 +818,6 @@ export default function PerfumesPage({
                   <div className="pp-checkbox-list">
                     {[5, 4, 3, 2, 1].map((stars) => (
                       <label key={stars} className="pp-checkbox-item">
-                        <span className="pp-checkbox-count">
-                          ({productsList.filter(p => Math.floor(productRatings[p.id] || p.rating) === stars).length})
-                        </span>
-                        <span className="pp-checkbox-label">{stars} نجوم</span>
                         <input
                           type="checkbox"
                           checked={tempRatings.includes(stars)}
@@ -798,6 +829,10 @@ export default function PerfumesPage({
                             }
                           }}
                         />
+                        <span className="pp-checkbox-label">{stars} نجوم</span>
+                        <span className="pp-checkbox-count">
+                          ({productsList.filter(p => Math.floor(productRatings[p.id] || p.rating) === stars).length})
+                        </span>
                       </label>
                     ))}
                   </div>

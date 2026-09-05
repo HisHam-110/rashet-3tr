@@ -3,76 +3,133 @@ import { useNavigate } from 'react-router-dom';
 import Footer from '../Footer/Footer';
 import './CollectionsPage.css';
 
+import { categoriesApi } from '../../services/storeApi';
+
 // Local high-res assets matching user screenshot
-import womenImg from '../../assets/images/image 73 (1).svg';
-import menImg from '../../assets/images/image 67.svg';
-import unisexImg from '../../assets/images/About.svg';
+import womenImg from '../../assets/images/image 68.svg';
+import menImg from '../../assets/images/image 72.svg';
+import unisexImg from '../../assets/images/image 73 (1).svg';
 import fullCollImg from '../../assets/images/image 69.svg';
-import luxuryImg from '../../assets/images/image 72.svg';
-import summerImg from '../../assets/images/image 68.svg';
+import luxuryImg from '../../assets/images/Hero Section (1).svg';
+import nicheImg from '../../assets/images/About.svg';
 
 const FALLBACK_COLLECTIONS = [
   {
-    id: 'women',
-    title: 'عطور نسائية',
-    subtitle: 'تزيدك انوثة',
-    image: womenImg,
-    fallback: 'https://images.unsplash.com/photo-1547887537-6158d64c35b3?auto=format&fit=crop&w=800&q=80',
+    id: 1,
+    name_ar: 'عطور النيش الحصرية',
+    name_en: "Men's",
+    slug: 'mens',
+    title: 'عطور النيش الحصرية',
+    subtitle: 'مجموعة حصرية نادرة',
+    description_ar: 'مجموعة حصرية نادرة',
+    image: 'https://rashet-etr.growfet.com/api/img/category/image-72-dnmglmz8.png',
+    fallback: menImg,
   },
   {
-    id: 'men',
-    title: 'عطور رجالية',
-    subtitle: 'تليق بيك',
-    image: menImg,
-    fallback: 'https://images.unsplash.com/photo-1523293182086-7651a899d37f?auto=format&fit=crop&w=800&q=80',
+    id: 2,
+    name_ar: 'نسائية',
+    name_en: "Women's",
+    slug: 'womens',
+    title: 'نسائية',
+    subtitle: 'تزيدك انوثة وسحراً بلمسات عطرية لا تُنسى.',
+    description_ar: 'تزيدك انوثة وسحراً بلمسات عطرية لا تُنسى.',
+    image: 'https://rashet-etr.growfet.com/api/img/category/image-68-0y3rxqpx.png',
+    fallback: womenImg,
   },
   {
-    id: 'unisex',
-    title: 'لك و لها',
-    subtitle: 'نفحة رجولة ورشة انوثة',
-    image: unisexImg,
-    fallback: 'https://images.unsplash.com/photo-1594035910387-fea47794261f?auto=format&fit=crop&w=800&q=80',
+    id: 11,
+    name_ar: 'لك ولها',
+    name_en: 'For You and Her',
+    slug: 'for-you-and-her',
+    title: 'لك ولها',
+    subtitle: 'نفحة رجولة ورشة انوثة في تناغم مثالي',
+    description_ar: 'نفحة رجولة ورشة انوثة في تناغم مثالي',
+    image: 'https://rashet-etr.growfet.com/api/img/category/image-73-ah7iwvoh.png',
+    fallback: unisexImg,
   },
   {
-    id: 'full',
+    id: 12,
+    name_ar: 'المجموعة الكاملة',
+    name_en: 'The complete collection',
+    slug: 'the-complete-collection',
     title: 'المجموعة الكاملة',
-    subtitle: 'عطورك المفضلة في مكان واحد',
-    image: fullCollImg,
-    fallback: 'https://images.unsplash.com/photo-1592945403244-b3fbafd7f539?auto=format&fit=crop&w=800&q=80',
+    subtitle: 'عطورك المفضلة في مكان واحد بتصاميم راقية',
+    description_ar: 'عطورك المفضلة في مكان واحد بتصاميم راقية',
+    image: 'https://rashet-etr.growfet.com/api/img/category/image-69-zpc374za.png',
+    fallback: fullCollImg,
   },
   {
-    id: 'luxury',
-    title: 'مجموعة الفخامة',
-    subtitle: 'تروي حكاية فخامتك',
+    id: 13,
+    name_ar: 'عطور النيش الفاخرة',
+    name_en: 'Luxury Niche Perfumes',
+    slug: 'luxury-niche-perfumes',
+    title: 'عطور النيش الفاخرة',
+    subtitle: 'مجموعة نادرة ومميزة من أرقى دور العطور العالمية',
+    description_ar: 'مجموعة نادرة ومميزة من أرقى دور العطور العالمية',
     image: luxuryImg,
-    fallback: 'https://images.unsplash.com/photo-1588405748880-12d1d2a59f75?auto=format&fit=crop&w=800&q=80',
+    fallback: luxuryImg,
   },
   {
-    id: 'summer',
-    title: 'مجموعة الصيف',
-    subtitle: 'تحسسك الانتعاش',
-    image: summerImg,
-    fallback: 'https://images.unsplash.com/photo-1615397349754-cfa2066a298e?auto=format&fit=crop&w=800&q=80',
+    id: 14,
+    name_ar: 'عطور نيش',
+    name_en: 'Niche Perfumes',
+    slug: 'niche-perfumes',
+    title: 'عطور نيش',
+    subtitle: 'تشكيلة حصرية من العطور النادرة',
+    description_ar: 'تشكيلة حصرية من العطور النادرة',
+    image: nicheImg,
+    fallback: nicheImg,
   },
 ];
 
 export default function CollectionsPage() {
   const navigate = useNavigate();
-  const [collections, setCollections] = useState([]);
+  const [collections, setCollections] = useState(FALLBACK_COLLECTIONS);
 
   useEffect(() => {
-    setCollections(FALLBACK_COLLECTIONS);
+    const controller = new AbortController();
+    categoriesApi.list(controller.signal)
+      .then((apiCats) => {
+        if (Array.isArray(apiCats) && apiCats.length > 0) {
+          const mapped = apiCats.map((cat, i) => {
+            const fb = FALLBACK_COLLECTIONS.find(f => f.id === cat.id || f.slug === cat.slug) || FALLBACK_COLLECTIONS[i % FALLBACK_COLLECTIONS.length];
+            return {
+              id: cat.id,
+              name_ar: cat.name_ar || cat.name || fb.name_ar,
+              title: cat.name_ar || cat.name || fb.title,
+              subtitle: cat.description_ar || cat.description || fb.subtitle,
+              description_ar: cat.description_ar || cat.description || fb.description_ar,
+              image: cat.image || fb.image || fb.fallback,
+              fallback: fb.fallback,
+              slug: cat.slug || fb.slug,
+            };
+          });
+          setCollections(mapped);
+        }
+      })
+      .catch(() => {
+        setCollections(FALLBACK_COLLECTIONS);
+      });
+
+    return () => controller.abort();
   }, []);
 
   const handleCardClick = (collection) => {
     const slug = collection.slug || '';
     const name = collection.name_ar || collection.title || '';
+    const id = collection.id;
     if (slug === 'womens' || name.includes('نسائية')) {
       navigate('/perfumes?category=women');
     } else if (slug === 'for-you-and-her' || name.includes('لك ولها')) {
       navigate('/perfumes?category=unisex');
+    } else if (slug === 'mens' || name.includes('النيش الحصرية')) {
+      navigate('/perfumes?category=men');
+    } else if (slug === 'the-complete-collection' || name.includes('المجموعة الكاملة')) {
+      navigate('/perfumes?category=all');
+    } else if (id) {
+      navigate(`/perfumes?categoryId=${id}`);
     } else {
-      navigate('/perfumes?category=__empty');
+      navigate('/perfumes');
     }
   };
 

@@ -171,12 +171,12 @@ export default function CartPage({
                         <div className="cap-price-section">
                           <span className="cap-item-price">
                             {item.price * item.quantity}
-                            <img src="../../public/icons/saudi-riyal.svg" alt="ر.س" className="cap-riyal-icon" />
+                            <img src="/icons/saudi-riyal.svg" alt="ر.س" className="cap-riyal-icon" />
                           </span>
                           {originalPrice && (
                             <span className="cap-item-original-price">
                               {originalPrice * item.quantity}
-                              <img src="../../public/icons/saudi-riyal-2.svg" alt="ر.س" className="cap-riyal-icon cap-riyal-icon-old" />
+                              <img src="/icons/saudi-riyal-2.svg" alt="ر.س" className="cap-riyal-icon cap-riyal-icon-old" />
                             </span>
                           )}
                         </div>
@@ -188,7 +188,7 @@ export default function CartPage({
                             onClick={() => setProductToRemove(item)}
                             title="حذف"
                           >
-                            <img src="../../public/icons/delete-03.svg" alt="حذف" width="18" height="18" />
+                            <img src="/icons/delete-03.svg" alt="حذف" width="18" height="18" />
                           </button>
                           
                           {/* Wishlist toggle */}
@@ -319,13 +319,13 @@ export default function CartPage({
                   </div>
                   <div className="cap-payment-icons">
                     <div className="cap-pay-card">
-                      <img src="../../public/icons/image 60.svg" alt="Apple Pay" />
+                      <img src="/icons/image 60.svg" alt="Apple Pay" />
                     </div>
                     <div className="cap-pay-card">
-                      <img src="../../public/icons/image 10.svg" alt="Visa" />
+                      <img src="/icons/image 10.svg" alt="Visa" />
                     </div>
                     <div className="cap-pay-card">
-                      <img src="../../public/icons/image 62.svg" alt="Mada" />
+                      <img src="/icons/image 62.svg" alt="Mada" />
                     </div>
                   </div>
                 </div>
@@ -343,7 +343,7 @@ export default function CartPage({
             </button>
             <div className="cap-modal-icon-wrap">
               <div className="cap-modal-icon-circle">
-                <img src="../../public/icons/delete-03.svg" alt="حذف" width="26" height="26" />
+                <img src="/icons/delete-03.svg" alt="حذف" width="26" height="26" />
               </div>
             </div>
             <h2 className="cap-modal-title">إزالة المنتج؟</h2>

@@ -56,7 +56,7 @@ export default function PrivacyPolicyPage() {
             {/* Left Icon: Container privacy.svg */}
             <div className="prp-hero-graphic">
               <img
-                src="../../public/icons/container privacy.svg"
+                src="/icons/container privacy.svg"
                 alt="سياسة الخصوصية"
                 className="prp-privacy-icon-img"
               />

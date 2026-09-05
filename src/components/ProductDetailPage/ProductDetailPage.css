@@ -209,12 +209,32 @@
   font-size: 1.8rem;
   font-weight: 800;
   color: #905b30;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
 }
 
 .pdp-price-old {
   font-size: 1.05rem;
   color: #b0a09a;
   text-decoration: line-through;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.pdp-riyal-icon-symbol {
+  width: 24px;
+  height: 24px;
+  object-fit: contain;
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.pdp-riyal-icon-symbol-old {
+  width: 17px;
+  height: 17px;
+  opacity: 0.8;
 }
 
 .pdp-short-desc {

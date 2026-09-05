@@ -2,11 +2,29 @@ const BASE_URL = (typeof import.meta !== 'undefined' && import.meta && import.me
 const TOKEN_KEY = 'rashet_auth_token';
 const ADMIN_TOKEN_KEY = 'rashet_admin_token';
 const CART_TOKEN_KEY = 'rashet_cart_token';
+const USER_KEY = 'rashet_user_info';
 
 export const session = {
   getToken: () => localStorage.getItem(TOKEN_KEY),
   setToken: (value) => value && localStorage.setItem(TOKEN_KEY, value),
   clearToken: () => localStorage.removeItem(TOKEN_KEY),
+
+  getUser: () => {
+    try {
+      const data = localStorage.getItem(USER_KEY);
+      return data ? JSON.parse(data) : null;
+    } catch {
+      return null;
+    }
+  },
+  setUser: (value) => {
+    if (value) {
+      try {
+        localStorage.setItem(USER_KEY, JSON.stringify(value));
+      } catch {}
+    }
+  },
+  clearUser: () => localStorage.removeItem(USER_KEY),
 
   getAdminToken: () => localStorage.getItem(ADMIN_TOKEN_KEY),
   setAdminToken: (value) => value && localStorage.setItem(ADMIN_TOKEN_KEY, value),

@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import './Footer.css';
 import logo from '../../assets/images/1 1.svg';
 
@@ -20,12 +21,12 @@ export default function Footer() {
         <div className="footer-column">
           <h3 className="footer-title">روابط سريعة</h3>
           <ul className="footer-links">
-            <li><a href="/">الرئيسية</a></li>
-            <li><a href="/#articles">أحدث المقالات</a></li>
-            <li><a href="/collections">المجموعات</a></li>
-            <li><a href="/#featured">الأكثر مبيعاً</a></li>
-            <li><a href="/about">عن رشة عطر</a></li>
-            <li><a href="/contact">تواصل معنا</a></li>
+            <li><Link to="/">الرئيسية</Link></li>
+            <li><Link to="/#articles">أحدث المقالات</Link></li>
+            <li><Link to="/collections">المجموعات</Link></li>
+            <li><Link to="/#featured">الأكثر مبيعاً</Link></li>
+            <li><Link to="/about">عن رشة عطر</Link></li>
+            <li><Link to="/contact">تواصل معنا</Link></li>
           </ul>
         </div>
 
@@ -33,8 +34,8 @@ export default function Footer() {
         <div className="footer-column">
           <h3 className="footer-title">روابط تهمك</h3>
           <ul className="footer-links">
-            <li><a href="/returns-policy">سياسة الاستبدال والاسترجاع</a></li>
-            <li><a href="/privacy-policy">سياسة الخصوصية</a></li>
+            <li><Link to="/returns-policy">سياسة الاستبدال والاسترجاع</Link></li>
+            <li><Link to="/privacy-policy">سياسة الخصوصية</Link></li>
           </ul>
         </div>
 

@@ -8,6 +8,8 @@ export default function Navbar({
   wishlistCount = 0,
   onOpenCart,
   onOpenUser,
+  currentUser,
+  onLogout
 }) {
   const [isMobileOpen, setIsMobileOpen] = useState(false);
   const [isSearchActive, setIsSearchActive] = useState(false);
@@ -172,18 +174,44 @@ export default function Navbar({
           </button>
 
           {/* User / Profile Action */}
-          <button
-            className="nav-action-icon-btn"
-            onClick={onOpenUser}
-            aria-label="حساب المستخدم"
-            title="حسابي"
-          >
-            <img
-              src="/icons/user.svg"
-              alt="حسابي"
-              className="nav-svg-icon"
-            />
-          </button>
+          {currentUser ? (
+            <div className="nav-user-dropdown-container">
+              <button
+                className="nav-action-icon-btn nav-user-btn"
+                aria-label="حساب المستخدم"
+                title="حسابي"
+              >
+                <span className="nav-user-name">أهلاً، {currentUser.name || 'مستخدم'}</span>
+                <img
+                  src="/icons/user.svg"
+                  alt="حسابي"
+                  className="nav-svg-icon"
+                />
+              </button>
+              <div className="nav-user-dropdown-menu">
+                <div className="dropdown-user-info">
+                  <span className="dropdown-user-name">{currentUser.name || 'مستخدم'}</span>
+                  <span className="dropdown-user-email">{currentUser.email || ''}</span>
+                </div>
+                <button className="dropdown-logout-btn" onClick={onLogout}>
+                  تسجيل الخروج
+                </button>
+              </div>
+            </div>
+          ) : (
+            <button
+              className="nav-action-icon-btn"
+              onClick={onOpenUser}
+              aria-label="حساب المستخدم"
+              title="حسابي"
+            >
+              <img
+                src="/icons/user.svg"
+                alt="حسابي"
+                className="nav-svg-icon"
+              />
+            </button>
+          )}
 
           {/* Shopping Cart Action */}
           <button

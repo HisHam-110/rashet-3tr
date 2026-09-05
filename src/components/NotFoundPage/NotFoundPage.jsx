@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import './NotFoundPage.css';
 
 export default function NotFoundPage() {
@@ -16,7 +17,7 @@ export default function NotFoundPage() {
           <h1>الصفحة غير موجودة</h1>
           <span className="not-found-line" />
           <p className="not-found-description">يبدو أن الرابط غير صحيح أو أن الصفحة التي تبحث عنها لم تعد متاحة.</p>
-          <a href="/">العودة للرئيسية</a>
+          <Link to="/">العودة للرئيسية</Link>
         </div>
       </section>
     </main>

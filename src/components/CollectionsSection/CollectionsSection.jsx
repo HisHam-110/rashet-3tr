@@ -2,54 +2,94 @@ import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './CollectionsSection.css';
 
-// Real local assets
+import { categoriesApi } from '../../services/storeApi';
+
+// Real local assets as backup
 import img69 from '../../assets/images/image 69.svg';
 import img68 from '../../assets/images/image 68.svg';
 import img72 from '../../assets/images/image 72.svg';
+import img73 from '../../assets/images/image 73 (1).svg';
 import imgAbout from '../../assets/images/About.svg';
 import imgHero from '../../assets/images/Hero Section (1).svg';
 
 const FALLBACK_CARDS = [
   {
-    id: '1',
+    id: 1,
+    name_ar: 'عطور النيش الحصرية',
+    name_en: "Men's",
+    slug: 'mens',
+    title: 'عطور النيش الحصرية',
+    description: 'مجموعة حصرية نادرة',
+    description_ar: 'مجموعة حصرية نادرة',
+    image: 'https://rashet-etr.growfet.com/api/img/category/image-72-dnmglmz8.png',
+    fallback: img72,
+    alt: 'عطور النيش الحصرية',
+  },
+  {
+    id: 2,
+    name_ar: 'نسائية',
+    name_en: "Women's",
+    slug: 'womens',
+    title: 'نسائية',
+    description: 'تزيدك انوثة وسحراً بلمسات عطرية لا تُنسى.',
+    description_ar: 'تزيدك انوثة وسحراً بلمسات عطرية لا تُنسى.',
+    image: 'https://rashet-etr.growfet.com/api/img/category/image-68-0y3rxqpx.png',
+    fallback: img68,
+    alt: 'نسائية',
+  },
+  {
+    id: 11,
+    name_ar: 'لك ولها',
+    name_en: 'For You and Her',
+    slug: 'for-you-and-her',
     title: 'لك ولها',
-    description: 'عطور تناسب كل الأوقات والمناسبات',
-    image: imgAbout,
-    alt: 'مجموعة لك ولها',
+    description: 'نفحة رجولة ورشة انوثة في تناغم مثالي',
+    description_ar: 'نفحة رجولة ورشة انوثة في تناغم مثالي',
+    image: 'https://rashet-etr.growfet.com/api/img/category/image-73-ah7iwvoh.png',
+    fallback: img73,
+    alt: 'لك ولها',
   },
   {
-    id: '2',
-    title: 'مجموعة الضيافة',
-    description: 'تروي حكاية فخامتك وأصالتك',
-    image: img72,
-    alt: 'مجموعة الضيافة الفاخرة',
-  },
-  {
-    id: '3',
-    title: 'مجموعة الصيف',
-    description: 'تجدّد إحساسك بالانتعاش والحيوية',
-    image: img68,
-    alt: 'مجموعة الصيف المنعشة',
-  },
-  {
-    id: '4',
+    id: 12,
+    name_ar: 'المجموعة الكاملة',
+    name_en: 'The complete collection',
+    slug: 'the-complete-collection',
     title: 'المجموعة الكاملة',
-    description: 'عطورك المفضلة في مكان واحد',
-    image: img69,
-    alt: 'المجموعة الكاملة من العطور',
+    description: 'عطورك المفضلة في مكان واحد بتصاميم راقية',
+    description_ar: 'عطورك المفضلة في مكان واحد بتصاميم راقية',
+    image: 'https://rashet-etr.growfet.com/api/img/category/image-69-zpc374za.png',
+    fallback: img69,
+    alt: 'المجموعة الكاملة',
   },
   {
-    id: '5',
-    title: 'مجموعة الليل',
-    description: 'رائحة ساحرة تسبقك وتبقى',
+    id: 13,
+    name_ar: 'عطور النيش الفاخرة',
+    name_en: 'Luxury Niche Perfumes',
+    slug: 'luxury-niche-perfumes',
+    title: 'عطور النيش الفاخرة',
+    description: 'مجموعة نادرة ومميزة من أرقى دور العطور العالمية',
+    description_ar: 'مجموعة نادرة ومميزة من أرقى دور العطور العالمية',
     image: imgHero,
-    alt: 'مجموعة الليل الفاخرة',
+    fallback: imgHero,
+    alt: 'عطور النيش الفاخرة',
+  },
+  {
+    id: 14,
+    name_ar: 'عطور نيش',
+    name_en: 'Niche Perfumes',
+    slug: 'niche-perfumes',
+    title: 'عطور نيش',
+    description: 'تشكيلة حصرية من العطور النادرة',
+    description_ar: 'تشكيلة حصرية من العطور النادرة',
+    image: imgAbout,
+    fallback: imgAbout,
+    alt: 'عطور نيش',
   },
 ];
 
 export default function CollectionsSection() {
   const navigate = useNavigate();
-  const [cards, setCards] = useState([]);
+  const [cards, setCards] = useState(FALLBACK_CARDS);
   const [index, setIndex] = useState(0);
   const [stepWidth, setStepWidth] = useState(0);
   const [noTransition, setNoTransition] = useState(false);
@@ -58,11 +98,26 @@ export default function CollectionsSection() {
   const trackRef = useRef(null);
   const count = cards.length;
   const openCollection = (item) => {
-    const slug = item.slug || '';
-    const title = item.title || '';
-    if (slug === 'womens' || title.includes('نسائية')) navigate('/perfumes?category=women');
-    else if (slug === 'for-you-and-her' || title.includes('لك ولها')) navigate('/perfumes?category=unisex');
-    else navigate('/perfumes?category=__empty');
+    const slug = (item.slug || '').toLowerCase();
+    const title = (item.title || item.name_ar || '').toLowerCase();
+    const id = item.id;
+    if (slug === 'womens' || slug === 'women' || title.includes('نسائية') || title.includes('نساء') || id === 2) {
+      navigate('/perfumes?category=women');
+    } else if (slug === 'for-you-and-her' || slug === 'unisex' || title.includes('لك ولها') || id === 11) {
+      navigate('/perfumes?category=unisex');
+    } else if (slug === 'mens' || slug === 'men' || title.includes('النيش الحصرية') || title.includes('رجال') || id === 1) {
+      navigate('/perfumes?category=men');
+    } else if (slug === 'the-complete-collection' || title.includes('المجموعة الكاملة') || id === 12) {
+      navigate('/perfumes?category=all');
+    } else if (slug === 'luxury-niche-perfumes' || title.includes('النيش الفاخرة') || id === 13) {
+      navigate('/perfumes?category=luxury');
+    } else if (slug === 'niche-perfumes' || title.includes('عطور نيش') || id === 14) {
+      navigate('/perfumes?category=niche');
+    } else if (id) {
+      navigate(`/perfumes?categoryId=${id}`);
+    } else {
+      navigate('/perfumes');
+    }
   };
   const tripleCards = [
     ...cards.map((card, i) => ({ ...card, uid: `set1-${i}` })),
@@ -71,13 +126,36 @@ export default function CollectionsSection() {
   ];
 
   useEffect(() => {
-    setCards(FALLBACK_CARDS);
+    const controller = new AbortController();
+    categoriesApi.list(controller.signal)
+      .then((apiCats) => {
+        if (Array.isArray(apiCats) && apiCats.length > 0) {
+          const mapped = apiCats.map((cat, i) => {
+            const fb = FALLBACK_CARDS.find(f => f.id === cat.id || f.slug === cat.slug) || FALLBACK_CARDS[i % FALLBACK_CARDS.length];
+            return {
+              id: cat.id,
+              name_ar: cat.name_ar || cat.name || fb.name_ar,
+              title: cat.name_ar || cat.name || fb.title,
+              description: cat.description_ar || cat.description || fb.description,
+              image: cat.image || fb.image || fb.fallback,
+              fallback: fb.fallback,
+              alt: cat.name_ar || fb.alt,
+              slug: cat.slug || fb.slug,
+            };
+          });
+          setCards(mapped);
+        }
+      })
+      .catch(() => {
+        setCards(FALLBACK_CARDS);
+      });
+
+    return () => controller.abort();
   }, []);
 
   useEffect(() => {
     if (count) setIndex(count);
   }, [count]);
-
   // Measure the exact step width (card width + gap) and update state
   const measureStep = () => {
     if (!trackRef.current) return;

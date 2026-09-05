@@ -373,21 +373,20 @@
 .pp-sort-wrap {
   display: flex;
   align-items: center;
-  gap: 6px;
+  gap: 8px;
 }
 
 .pp-sort-label {
   font-size: 0.88rem;
   color: #a89a90;
   font-weight: 500;
+  white-space: nowrap;
 }
 
 .pp-sort-select-container {
   display: inline-flex;
   align-items: center;
   gap: 4px;
-  border-bottom: 1.5px solid #80634e;
-  padding-bottom: 2px;
 }
 
 .pp-sort-chevron-inline {
@@ -399,23 +398,43 @@
   flex-shrink: 0;
 }
 
-.pp-sort-select {
-  padding: 0 !important;
-  border: none !important;
-  border-radius: 0 !important;
-  background: transparent !important;
+.pp-sort-select-wrapper {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+}
+
+.pp-sort-selected-text {
+  display: inline-block;
   font-family: inherit;
-  font-size: 0.9rem;
-  font-weight: 700;
-  color: #80634e !important;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #80634e;
+  border-bottom: 1.5px solid #80634e;
+  padding-bottom: 1px;
+  line-height: 1.2;
+  white-space: nowrap;
+  pointer-events: none;
+  transition: border-color 0.2s ease, width 0.2s ease;
+}
+
+.pp-sort-select {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
   cursor: pointer;
-  outline: none;
-  appearance: none !important;
-  -webkit-appearance: none !important;
-  -moz-appearance: none !important;
-  width: auto;
-  min-width: 0;
-  text-align: right;
+  z-index: 2;
+  font-size: 0.85rem;
+  border: none;
+  background: transparent;
+  padding: 0;
+  margin: 0;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
 }
 
 /* Category Pills Row */
@@ -713,22 +732,43 @@
 /* Price Row */
 .pp-card-price-row {
   display: flex;
-  align-items: baseline;
+  align-items: center;
   gap: 8px;
-  margin-top: 2px;
+  margin-top: 4px;
 }
 
 .pp-current-price {
-  font-size: 1.1rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  font-size: 1.05rem;
   font-weight: 800;
   color: var(--accent-brown, #8c6d4f);
 }
 
 .pp-old-price {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
   font-size: 0.85rem;
   color: var(--text-muted, #736b63);
   text-decoration: line-through;
-  opacity: 0.7;
+  opacity: 0.75;
+}
+
+.pp-riyal-icon {
+  width: 17px;
+  height: 17px;
+  object-fit: contain;
+  display: inline-block;
+  vertical-align: middle;
+  flex-shrink: 0;
+}
+
+.pp-riyal-icon-old {
+  width: 14px;
+  height: 14px;
+  opacity: 0.8;
 }
 
 /* Add to Cart Button */
@@ -1006,7 +1046,7 @@
   }
 
   .pp-sort-select {
-    min-width: 140px;
+    width: auto;
   }
 
   .pp-card-info {
@@ -1254,7 +1294,7 @@
 .pp-checkbox-item {
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  gap: 10px;
   cursor: pointer;
   font-size: 0.95rem;
   color: #80634e;
@@ -1274,6 +1314,8 @@
   justify-content: center;
   cursor: pointer;
   transition: all 0.2s ease;
+  flex-shrink: 0;
+  margin: 0;
 }
 
 .pp-checkbox-item input[type="checkbox"]:checked {
@@ -1291,12 +1333,13 @@
 .pp-checkbox-label {
   flex: 1;
   text-align: right;
-  margin-right: 12px;
+  margin: 0;
 }
 
 .pp-checkbox-count {
   color: #a89a90;
   font-size: 0.85rem;
+  margin-right: auto;
 }
 
 /* Price Slider styling */
