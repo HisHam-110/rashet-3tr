@@ -36,6 +36,9 @@ import { productsApi, cartApi, wishlistApi, authApi } from './services/storeApi'
 import { session } from './services/apiClient';
 
 function App() {
+  // A route loaded directly from the browser address bar is intentionally not
+  // exposed. Internal SPA navigation does not remount App, so site links still work.
+  const [isDirectRouteAccess] = useState(() => window.location.pathname !== '/');
   const [products, setProducts] = useState([]);
   const [activeCategory, setActiveCategory] = useState('all');
   const [searchQuery, setSearchQuery] = useState('');
@@ -312,6 +315,10 @@ function App() {
       <Footer />
     </>
   );
+
+  if (isDirectRouteAccess) {
+    return <NotFoundPage />;
+  }
 
   return (
     <div className="app-container">
