@@ -1,80 +1,231 @@
 .hero-wrapper {
   position: relative;
   width: 100%;
-  background-color: #f8f5f1;
+  background-color: #1a100a;
   overflow: hidden;
-  padding-bottom: 20px;
+  padding-bottom: 24px;
 }
 
-/* Main Hero Banner with background */
+/* Main Hero Banner with video background */
 .hero-banner-section {
   position: relative;
   width: 100%;
-  min-height: 410px;
-  background-size: cover;
-  background-position: center left;
-  background-repeat: no-repeat;
+  min-height: 460px;
   display: flex;
   align-items: center;
-  padding: 40px 0 60px;
+  padding: 50px 0 80px;
+  overflow: hidden;
 }
 
-/* Semi-transparent soft warm overlay if needed for text readability */
-.hero-banner-section::before {
-  content: '';
+/* Video Wrapper & Elements */
+.hero-video-wrapper {
   position: absolute;
-  top: 0;
-  right: 0;
+  inset: 0;
   width: 100%;
   height: 100%;
-  background: linear-gradient(
-    to left,
-    rgba(252, 250, 247, 0.45) 0%,
-    rgba(252, 250, 247, 0.15) 50%,
-    transparent 100%
-  );
-  pointer-events: none;
+  overflow: hidden;
   z-index: 1;
 }
 
+.hero-video-element {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  transform: scale(1.03);
+  transition: opacity 0.8s ease, transform 1.2s ease;
+  opacity: 0.88;
+}
+
+.hero-video-element.loaded {
+  opacity: 0.95;
+  transform: scale(1);
+}
+
+/* Luxury Multi-Layer Overlays for Contrast & Readability */
+.hero-video-overlay-gradient {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to left,
+    rgba(20, 10, 5, 0.88) 0%,
+    rgba(28, 15, 8, 0.72) 38%,
+    rgba(35, 18, 10, 0.45) 65%,
+    rgba(20, 10, 5, 0.75) 100%
+  );
+  pointer-events: none;
+  z-index: 2;
+}
+
+.hero-video-radial-glow {
+  position: absolute;
+  top: -10%;
+  right: 5%;
+  width: 550px;
+  height: 550px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(212, 160, 92, 0.22) 0%, rgba(144, 91, 48, 0.08) 50%, transparent 75%);
+  filter: blur(40px);
+  pointer-events: none;
+  z-index: 2;
+  animation: ambientPulse 7s ease-in-out infinite alternate;
+}
+
+@keyframes ambientPulse {
+  0% { transform: scale(1) translate(0, 0); opacity: 0.7; }
+  100% { transform: scale(1.15) translate(-20px, 15px); opacity: 1; }
+}
+
+/* Ambient Floating Golden Particles */
+.hero-ambient-particles {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 2;
+}
+
+.hero-ambient-particles .particle {
+  position: absolute;
+  border-radius: 50%;
+  background: #f1d19b;
+  box-shadow: 0 0 10px #e2ab66;
+  opacity: 0.6;
+  animation: floatParticle 8s ease-in-out infinite;
+}
+
+.particle.p1 { width: 5px; height: 5px; top: 25%; right: 18%; animation-delay: 0s; }
+.particle.p2 { width: 7px; height: 7px; top: 60%; right: 35%; animation-delay: 2.5s; }
+.particle.p3 { width: 4px; height: 4px; top: 38%; right: 48%; animation-delay: 4.2s; }
+.particle.p4 { width: 6px; height: 6px; top: 75%; right: 15%; animation-delay: 1.8s; }
+
+@keyframes floatParticle {
+  0% { transform: translateY(0) scale(1); opacity: 0.3; }
+  50% { transform: translateY(-25px) scale(1.3); opacity: 0.85; }
+  100% { transform: translateY(0) scale(1); opacity: 0.3; }
+}
+
+/* Floating Controls & Scene Switcher */
+.hero-video-controls {
+  position: absolute;
+  top: 24px;
+  left: 32px;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: rgba(22, 12, 6, 0.65);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  padding: 6px 12px;
+  border-radius: 30px;
+  border: 1px solid rgba(212, 160, 92, 0.25);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.28);
+}
+
+.hero-controls-group {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.hero-control-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  background: rgba(255, 255, 255, 0.08);
+  color: #f7e6cf;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.hero-control-btn:hover {
+  background: #905b30;
+  color: #ffffff;
+  border-color: #905b30;
+  transform: scale(1.08);
+}
+
+.hero-scene-pills {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-right: 4px;
+  border-right: 1px solid rgba(255, 255, 255, 0.14);
+  padding-right: 8px;
+}
+
+.hero-scene-pill {
+  background: transparent;
+  border: 1px solid transparent;
+  color: rgba(247, 230, 207, 0.75);
+  font-family: inherit;
+  font-size: 0.78rem;
+  font-weight: 600;
+  padding: 4px 10px;
+  border-radius: 20px;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  white-space: nowrap;
+}
+
+.hero-scene-pill:hover {
+  color: #ffffff;
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.hero-scene-pill.active {
+  background: #905b30;
+  color: #ffffff;
+  border-color: rgba(234, 186, 125, 0.4);
+  box-shadow: 0 2px 8px rgba(144, 91, 48, 0.4);
+}
+
+/* Foreground Container */
 .hero-container {
   width: 100%;
   max-width: 1200px;
   margin: 0 auto;
   padding: 0 24px;
   position: relative;
-  z-index: 2;
+  z-index: 5;
 }
 
 .hero-content-column {
-  max-width: 540px;
+  max-width: 580px;
 }
 
 .hero-content-inner {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
+  text-align: right;
 }
 
-/* Main Heading */
+/* Main Heading with Golden Shimmer */
 .hero-heading {
   font-family: 'Tajawal', 'Cairo', sans-serif;
-  font-size: 2.7rem;
-  font-weight: 700;
-  line-height: 1.35;
-  color: #70421f;
+  font-size: 3rem;
+  font-weight: 800;
+  line-height: 1.3;
+  color: #ffffff;
   margin: 0 0 16px 0;
   letter-spacing: -0.5px;
+  text-shadow: 0 3px 12px rgba(0, 0, 0, 0.65);
 }
 
 /* Subtitle Description */
 .hero-subtext {
-  font-size: 1.08rem;
-  font-weight: 400;
-  line-height: 1.7;
-  color: #5c534b;
-  margin: 0 0 28px 0;
-  max-width: 460px;
+  font-size: 1.15rem;
+  font-weight: 500;
+  line-height: 1.8;
+  color: #f1dfcb;
+  margin: 0 0 32px 0;
+  max-width: 490px;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.55);
 }
 
 /* CTA Button */
@@ -82,23 +233,37 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  background-color: #9a5d2f;
+  gap: 12px;
+  background: linear-gradient(135deg, #a46435 0%, #7b421a 100%);
   color: #ffffff;
-  font-size: 1rem;
-  font-weight: 600;
-  padding: 13px 36px;
-  border-radius: 9px;
+  font-size: 1.05rem;
+  font-weight: 700;
+  padding: 14px 40px;
+  border-radius: 10px;
   text-decoration: none;
-  border: none;
+  border: 1px solid rgba(234, 186, 125, 0.35);
   cursor: pointer;
-  box-shadow: 0 4px 14px rgba(154, 93, 47, 0.25);
-  transition: background-color 0.25s ease, transform 0.2s ease, box-shadow 0.25s ease;
+  box-shadow: 0 8px 24px rgba(123, 66, 26, 0.45);
+  transition: all 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.hero-cta-arrow {
+  font-size: 1.35rem;
+  font-weight: 800;
+  line-height: 1;
+  display: inline-block;
+  transition: transform 0.3s ease;
 }
 
 .hero-cta-btn:hover {
-  background-color: #7d4820;
-  transform: translateY(-2px);
-  box-shadow: 0 6px 18px rgba(125, 72, 32, 0.35);
+  background: linear-gradient(135deg, #b9733e 0%, #8c4c20 100%);
+  transform: translateY(-3px);
+  box-shadow: 0 12px 28px rgba(123, 66, 26, 0.6);
+  border-color: rgba(255, 218, 175, 0.6);
+}
+
+.hero-cta-btn:hover .hero-cta-arrow {
+  transform: translateX(-5px);
 }
 
 .hero-cta-btn:active {
@@ -108,47 +273,67 @@
 /* Responsive adjustments */
 @media (max-width: 992px) {
   .hero-banner-section {
-    min-height: 360px;
-    padding: 30px 0 50px;
+    min-height: 420px;
+    padding: 40px 0 70px;
   }
 
   .hero-heading {
-    font-size: 2.2rem;
+    font-size: 2.4rem;
   }
 
   .hero-subtext {
-    font-size: 1rem;
+    font-size: 1.05rem;
+  }
+
+  .hero-video-controls {
+    top: 16px;
+    left: 16px;
   }
 }
 
 @media (max-width: 768px) {
   .hero-banner-section {
     min-height: auto;
-    padding: 40px 0 60px;
-    background-position: center;
+    padding: 70px 0 80px;
+  }
+
+  .hero-video-controls {
+    top: 12px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: max-content;
+    max-width: 92%;
+    overflow-x: auto;
+  }
+
+  .hero-scene-pills {
+    display: none;
   }
 
   .hero-content-column {
     max-width: 100%;
     text-align: center;
+    margin-top: 28px;
   }
 
   .hero-content-inner {
     align-items: center;
+    text-align: center;
   }
 
   .hero-heading {
-    font-size: 1.85rem;
+    font-size: 2rem;
     line-height: 1.35;
   }
 
   .hero-subtext {
-    font-size: 0.95rem;
-    margin-bottom: 24px;
+    font-size: 1rem;
+    margin-bottom: 28px;
   }
 
   .hero-cta-btn {
     width: 100%;
-    max-width: 280px;
+    max-width: 300px;
   }
 }
+

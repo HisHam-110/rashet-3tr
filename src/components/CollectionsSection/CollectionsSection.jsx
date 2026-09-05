@@ -288,15 +288,16 @@ export default function CollectionsSection() {
                     openCollection(item);
                   }}
                   aria-label={`تسوق الآن من ${item.title}`}
+                  dir="rtl"
                 >
                   <span>تسوق الآن</span>
                   <svg
-                    width="14"
-                    height="14"
+                    width="18"
+                    height="18"
                     viewBox="0 0 24 24"
                     fill="none"
                     stroke="currentColor"
-                    strokeWidth="2.5"
+                    strokeWidth="2.8"
                     strokeLinecap="round"
                     strokeLinejoin="round"
                     className="btn-arrow"

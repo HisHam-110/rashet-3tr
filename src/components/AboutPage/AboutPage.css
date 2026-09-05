@@ -251,14 +251,39 @@
 }
 
 .ab-personal-scent-cta {
-  padding: 9px 18px;
+  display: inline-flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  direction: rtl;
+  gap: 10px;
+  padding: 10px 22px;
   border: 0;
   border-radius: 8px;
   color: #fff;
   background: #986137;
   font-family: inherit;
   font-size: .95rem;
+  font-weight: 700;
   cursor: pointer;
+  transition: background-color 0.25s ease, transform 0.2s ease;
+}
+
+.ab-personal-scent-cta:hover {
+  background: #7b4a27;
+  transform: translateY(-2px);
+}
+
+.ab-cta-arrow {
+  font-size: 1.25rem;
+  font-weight: 800;
+  line-height: 1;
+  display: inline-block;
+  transition: transform 0.25s ease;
+}
+
+.ab-personal-scent-cta:hover .ab-cta-arrow {
+  transform: translateX(-4px);
 }
 
 .ab-personal-scent-bottle {

@@ -7,15 +7,48 @@ const VALID_COUPONS = ['RASHAT10', 'RASHET10', 'RASHAT15', 'RASHET15', 'RASHAT20
 
 export default function ShippingPage({ cartItems = [] }) {
   const navigate = useNavigate();
+  
+  const formData = useMemo(() => {
+    try {
+      const saved = sessionStorage.getItem('rashet_checkout_form');
+      return saved ? JSON.parse(saved) : {};
+    } catch {
+      return {};
+    }
+  }, []);
+
   const subtotal = useMemo(() => cartItems.reduce((sum, item) => sum + item.price * item.quantity, 0), [cartItems]);
   const isFreeAvailable = subtotal >= 1000;
-  const [method, setMethod] = useState(subtotal >= 1000 ? 'free' : 'standard');
+  const [method, setMethod] = useState(() => {
+    try {
+      const saved = sessionStorage.getItem('rashet_shipping_method');
+      if (saved) return saved;
+    } catch {}
+    return subtotal >= 1000 ? 'free' : 'standard';
+  });
+
+  const handleMethodChange = (newMethod) => {
+    setMethod(newMethod);
+    try {
+      sessionStorage.setItem('rashet_shipping_method', newMethod);
+    } catch {}
+  };
+
   const [couponCode, setCouponCode] = useState('');
   const [couponError, setCouponError] = useState('');
   const [discount, setDiscount] = useState(0);
 
   const shipping = method === 'free' && isFreeAvailable ? 0 : 25;
   const total = Math.max(0, subtotal - discount + shipping);
+
+  const formattedPhone = formData.phone ? `+966 ${formData.phone}` : '+966 50 123 4567';
+  const formattedAddress = useMemo(() => {
+    const parts = [];
+    if (formData.region) parts.push(formData.region);
+    if (formData.city) parts.push(`حي ${formData.city}`);
+    if (formData.address) parts.push(formData.address);
+    return parts.length ? parts.join(' - ') : 'الرياض - حي العليا، شارع الملك فهد، 45';
+  }, [formData]);
 
   const handleApplyCoupon = (e) => {
     e.preventDefault();
@@ -39,19 +72,19 @@ export default function ShippingPage({ cartItems = [] }) {
         <section className="shipping-content">
           <h1>طريقة التوصيل</h1>
           <label className={`delivery-option ${method === 'standard' ? 'selected' : ''}`}>
-            <input type="radio" name="delivery" checked={method === 'standard'} onChange={() => setMethod('standard')} />
+            <input type="radio" name="delivery" checked={method === 'standard'} onChange={() => handleMethodChange('standard')} />
             <span><b>توصيل قياسي</b><small>يصل خلال 2-5 أيام عمل</small></span>
             <strong>25 ر.س</strong>
           </label>
           <label className={`delivery-option ${!isFreeAvailable ? 'disabled' : ''} ${method === 'free' ? 'selected' : ''}`}>
-            <input type="radio" name="delivery" checked={method === 'free'} disabled={!isFreeAvailable} onChange={() => isFreeAvailable && setMethod('free')} />
+            <input type="radio" name="delivery" checked={method === 'free'} disabled={!isFreeAvailable} onChange={() => isFreeAvailable && handleMethodChange('free')} />
             <span><b>توصيل مجاني</b><small>{isFreeAvailable ? 'متاح لطلبك (أكثر من 1000 ر.س)' : 'متوفر للطلبات التي تزيد عن 1000 ر.س'}</small></span>
             <strong>مجاني</strong>
           </label>
           <div className="shipping-address">
             <h2>معلومات التوصيل</h2>
-            <div><span>رقم الجوال</span><b>+966 50 123 4567</b><button type="button" onClick={() => navigate('/checkout')}>تعديل</button></div>
-            <div><span>العنوان</span><b>الرياض - حي العليا، شارع الملك فهد، 45</b><button type="button" onClick={() => navigate('/checkout')}>تعديل</button></div>
+            <div><span>رقم الجوال</span><b>{formattedPhone}</b><button type="button" onClick={() => navigate('/checkout')}>تعديل</button></div>
+            <div><span>العنوان</span><b>{formattedAddress}</b><button type="button" onClick={() => navigate('/checkout')}>تعديل</button></div>
           </div>
           <button className="payment-button" onClick={() => navigate('/checkout/payment')}>متابعة الدفع <span>←</span></button>
         </section>

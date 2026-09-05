@@ -95,8 +95,9 @@ export default function AboutPage() {
                 </button>
               </div>
 
-              <button type="button" className="ab-personal-scent-cta" onClick={() => navigate('/collections')}>
-                تسوق الآن
+              <button type="button" className="ab-personal-scent-cta" onClick={() => navigate('/collections')} dir="rtl">
+                <span>تسوق الآن</span>
+                <span className="ab-cta-arrow">←</span>
               </button>
             </div>
             <div className="ab-personal-scent-bottle">

@@ -9,27 +9,58 @@ export default function PaymentPage({ cartItems = [] }) {
   const navigate = useNavigate();
 
   // State
-  const [paymentMethod, setPaymentMethod] = useState('card');
+  const [paymentMethod, setPaymentMethod] = useState(() => {
+    try {
+      return sessionStorage.getItem('rashet_payment_method') || 'card';
+    } catch {
+      return 'card';
+    }
+  });
+
   const [saveCard, setSaveCard] = useState(false);
-  const [cardDetails, setCardDetails] = useState({
-    cardNumber: '',
-    expiry: '',
-    cvv: '',
+  const [cardDetails, setCardDetails] = useState(() => {
+    try {
+      const saved = sessionStorage.getItem('rashet_card_details');
+      return saved ? JSON.parse(saved) : { cardNumber: '', expiry: '', cvv: '' };
+    } catch {
+      return { cardNumber: '', expiry: '', cvv: '' };
+    }
   });
 
   // Calculations
   const subtotal = useMemo(() => cartItems.reduce((sum, item) => sum + item.price * item.quantity, 0), [cartItems]);
   const isFreeAvailable = subtotal >= 1000;
-  const [shippingMethod] = useState(subtotal >= 1000 ? 'free' : 'standard');
+  const [shippingMethod, setShippingMethod] = useState(() => {
+    try {
+      const saved = sessionStorage.getItem('rashet_shipping_method');
+      if (saved) return saved;
+    } catch {}
+    return subtotal >= 1000 ? 'free' : 'standard';
+  });
+
   const shipping = shippingMethod === 'free' && isFreeAvailable ? 0 : 25;
   const discount = 95; // Matching default/applied sample coupon or 0
   const total = Math.max(0, subtotal - discount + shipping);
 
   const [paymentError, setPaymentError] = useState('');
 
+  const handlePaymentMethodSelect = (method) => {
+    setPaymentMethod(method);
+    try {
+      sessionStorage.setItem('rashet_payment_method', method);
+    } catch {}
+    if (paymentError) setPaymentError('');
+  };
+
   const handleCardChange = (e) => {
     const { name, value } = e.target;
-    setCardDetails((prev) => ({ ...prev, [name]: value }));
+    setCardDetails((prev) => {
+      const next = { ...prev, [name]: value };
+      try {
+        sessionStorage.setItem('rashet_card_details', JSON.stringify(next));
+      } catch {}
+      return next;
+    });
     if (paymentError) setPaymentError('');
   };
 
@@ -48,6 +79,8 @@ export default function PaymentPage({ cartItems = [] }) {
     }
     setPaymentError('');
     try {
+      sessionStorage.setItem('rashet_payment_method', paymentMethod);
+      sessionStorage.setItem('rashet_card_details', JSON.stringify(cardDetails));
       await checkoutApi.savePaymentMethod(paymentMethod);
     } catch (err) {
       // Proceed gracefully
@@ -61,6 +94,10 @@ export default function PaymentPage({ cartItems = [] }) {
       return;
     }
     setPaymentError('');
+    try {
+      sessionStorage.setItem('rashet_payment_method', paymentMethod);
+      sessionStorage.setItem('rashet_card_details', JSON.stringify(cardDetails));
+    } catch {}
     navigate('/checkout/review');
   };
 
@@ -138,7 +175,7 @@ export default function PaymentPage({ cartItems = [] }) {
                   type="radio"
                   name="paymentMethod"
                   checked={paymentMethod === 'apple'}
-                  onChange={() => setPaymentMethod('apple')}
+                  onChange={() => handlePaymentMethodSelect('apple')}
                 />
                 <span className="pay-option-title">Apple Pay</span>
               </div>
@@ -154,7 +191,7 @@ export default function PaymentPage({ cartItems = [] }) {
                   type="radio"
                   name="paymentMethod"
                   checked={paymentMethod === 'mada'}
-                  onChange={() => setPaymentMethod('mada')}
+                  onChange={() => handlePaymentMethodSelect('mada')}
                 />
                 <span className="pay-option-title">مدى</span>
               </div>
@@ -165,13 +202,13 @@ export default function PaymentPage({ cartItems = [] }) {
 
             {/* 3. Credit / Debit Card */}
             <div className={`pay-card-box ${paymentMethod === 'card' ? 'selected' : ''}`}>
-              <label className="pay-card-header" onClick={() => setPaymentMethod('card')}>
+              <label className="pay-card-header" onClick={() => handlePaymentMethodSelect('card')}>
                 <div className="pay-option-right">
                   <input
                     type="radio"
                     name="paymentMethod"
                     checked={paymentMethod === 'card'}
-                    onChange={() => setPaymentMethod('card')}
+                    onChange={() => handlePaymentMethodSelect('card')}
                   />
                   <span className="pay-option-title">البطاقة البنكية</span>
                 </div>
@@ -248,7 +285,7 @@ export default function PaymentPage({ cartItems = [] }) {
                   type="radio"
                   name="paymentMethod"
                   checked={paymentMethod === 'cash'}
-                  onChange={() => setPaymentMethod('cash')}
+                  onChange={() => handlePaymentMethodSelect('cash')}
                 />
                 <span className="pay-option-title">الدفع عند الاستلام</span>
               </div>
