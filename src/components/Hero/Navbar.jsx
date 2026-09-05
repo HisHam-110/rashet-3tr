@@ -40,16 +40,15 @@ export default function Navbar({
 
   const navItems = [
     { id: 'home', label: 'الرئيسية', href: '/' },
-    { id: 'collections', label: 'المجموعة', href: '/collections' },
-    { id: 'about', label: 'عن رشة عطر', href: '/about' },
-    { id: 'bestsellers', label: 'الأكثر مبيعاً', href: '/#featured' },
-    { id: 'perfumes', label: 'العطور', href: '/perfumes' },
-    { id: 'articles', label: 'المقالات', href: '/#articles' },
-    { id: 'contact', label: 'تواصل معنا', href: '/contact' },
+    { id: 'collections', label: 'المجموعة', href: '/collections', targetSection: 'collections' },
+    { id: 'about', label: 'عن رشة عطر', href: '/about', targetSection: 'about-brand' },
+    { id: 'bestsellers', label: 'الأكثر مبيعاً', href: '/#featured', targetSection: 'featured' },
+    { id: 'perfumes', label: 'العطور', href: '/perfumes', targetSection: 'products' },
+    { id: 'articles', label: 'المقالات', href: '/#articles', targetSection: 'articles' },
+    { id: 'contact', label: 'تواصل معنا', href: '/contact', targetSection: 'contact' },
   ];
 
   const currentPath = location.pathname;
-  const currentHash = location.hash;
 
   useEffect(() => {
     if (currentPath !== '/') {
@@ -57,22 +56,33 @@ export default function Navbar({
       return undefined;
     }
 
+    const sections = [
+      { id: 'home', elementId: 'hero' },
+      { id: 'collections', elementId: 'collections' },
+      { id: 'about', elementId: 'about-brand' },
+      { id: 'bestsellers', elementId: 'featured' },
+      { id: 'perfumes', elementId: 'products' },
+      { id: 'articles', elementId: 'articles' },
+      { id: 'contact', elementId: 'contact' },
+    ];
+
     const updateActiveSection = () => {
-      const marker = 135;
-      const sections = navItems
-        .filter((item) => item.href.startsWith('/#'))
-        .map((item) => ({
-          id: item.id,
-          element: document.getElementById(item.href.slice(2)),
-        }))
-        .filter((section) => section.element);
+      if (window.scrollY < 100) {
+        setActiveSection('home');
+        return;
+      }
 
-      const visibleSection = sections.find(({ element }) => {
-        const bounds = element.getBoundingClientRect();
-        return bounds.top <= marker && bounds.bottom > marker;
-      });
+      // Find lowest section that has reached the upper viewport
+      const activeSec = sections
+        .map(({ id, elementId }) => ({ id, el: document.getElementById(elementId) }))
+        .filter((s) => s.el)
+        .reverse()
+        .find((s) => {
+          const rect = s.el.getBoundingClientRect();
+          return rect.top <= 200;
+        });
 
-      setActiveSection(visibleSection?.id || (window.scrollY < 80 ? 'home' : ''));
+      setActiveSection(activeSec?.id || 'home');
     };
 
     updateActiveSection();
@@ -83,6 +93,18 @@ export default function Navbar({
       window.removeEventListener('resize', updateActiveSection);
     };
   }, [currentPath]);
+
+  const handleNavClick = (item, e) => {
+    setIsMobileOpen(false);
+    if (currentPath === '/' && item.targetSection) {
+      const targetEl = document.getElementById(item.targetSection);
+      if (targetEl) {
+        e.preventDefault();
+        targetEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        setActiveSection(item.id);
+      }
+    }
+  };
 
   return (
     <nav className="site-navbar" role="navigation" aria-label="شريط التنقل الرئيسي">
@@ -103,19 +125,15 @@ export default function Navbar({
           {navItems.map((item) => {
             let isActive = false;
             if (currentPath === '/') {
-              isActive = activeSection === item.id;
+              isActive = (activeSection || 'home') === item.id;
             } else if (item.id === 'perfumes') {
               isActive = currentPath === '/perfumes';
-            } else if (item.href === '/collections') {
+            } else if (item.id === 'collections') {
               isActive = currentPath === '/collections';
-            } else if (item.href === '/about') {
+            } else if (item.id === 'about') {
               isActive = currentPath === '/about' || currentPath === '/about-brand';
-            } else if (item.href === '/contact') {
+            } else if (item.id === 'contact') {
               isActive = currentPath === '/contact';
-            } else if (item.href === '/') {
-              isActive = currentPath === '/' && !currentHash;
-            } else {
-              isActive = currentPath === '/' && currentHash === item.href.substring(1);
             }
 
             return (
@@ -123,7 +141,7 @@ export default function Navbar({
                 <Link
                   to={item.href}
                   className={`nav-anchor ${isActive ? 'active' : ''}`}
-                  onClick={() => setIsMobileOpen(false)}
+                  onClick={(e) => handleNavClick(item, e)}
                 >
                   {item.label}
                 </Link>

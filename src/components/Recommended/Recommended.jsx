@@ -324,33 +324,29 @@ export default function Products({
                 ================================= */}
 
                 <div className="product-price-row">
-
-                  {/* السعر الجديد + أيقونة الريال */}
-
                   <div className="product-current-price">
-
                     <span className="price-value">
                       {product.price}
                     </span>
-
                     <img
                       src="/icons/Group 34319.svg"
                       alt="ريال سعودي"
                       className="riyal-icon"
                     />
-
                   </div>
 
-
-                  {/* الأيقونة بدل السعر القديم */}
-
-                  <img
-                    src="/icons/saudi-riyal.svg"
-                    alt=""
-                    className="old-price-icon"
-                    aria-hidden="true"
-                  />
-
+                  {(product.oldPrice || product.originalPrice) && (
+                    <div className="product-old-price">
+                      <span className="old-price-value">
+                        {product.oldPrice || product.originalPrice}
+                      </span>
+                      <img
+                        src="/icons/saudi-riyal-2.svg"
+                        alt="ر.س"
+                        className="old-riyal-icon"
+                      />
+                    </div>
+                  )}
                 </div>
 
 

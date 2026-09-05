@@ -104,86 +104,6 @@
   100% { transform: translateY(0) scale(1); opacity: 0.3; }
 }
 
-/* Floating Controls & Scene Switcher */
-.hero-video-controls {
-  position: absolute;
-  top: 24px;
-  left: 32px;
-  z-index: 10;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  background: rgba(22, 12, 6, 0.65);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  padding: 6px 12px;
-  border-radius: 30px;
-  border: 1px solid rgba(212, 160, 92, 0.25);
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.28);
-}
-
-.hero-controls-group {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-}
-
-.hero-control-btn {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 30px;
-  height: 30px;
-  border-radius: 50%;
-  border: 1px solid rgba(255, 255, 255, 0.15);
-  background: rgba(255, 255, 255, 0.08);
-  color: #f7e6cf;
-  cursor: pointer;
-  transition: all 0.2s ease;
-}
-
-.hero-control-btn:hover {
-  background: #905b30;
-  color: #ffffff;
-  border-color: #905b30;
-  transform: scale(1.08);
-}
-
-.hero-scene-pills {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  margin-right: 4px;
-  border-right: 1px solid rgba(255, 255, 255, 0.14);
-  padding-right: 8px;
-}
-
-.hero-scene-pill {
-  background: transparent;
-  border: 1px solid transparent;
-  color: rgba(247, 230, 207, 0.75);
-  font-family: inherit;
-  font-size: 0.78rem;
-  font-weight: 600;
-  padding: 4px 10px;
-  border-radius: 20px;
-  cursor: pointer;
-  transition: all 0.25s ease;
-  white-space: nowrap;
-}
-
-.hero-scene-pill:hover {
-  color: #ffffff;
-  background: rgba(255, 255, 255, 0.1);
-}
-
-.hero-scene-pill.active {
-  background: #905b30;
-  color: #ffffff;
-  border-color: rgba(234, 186, 125, 0.4);
-  box-shadow: 0 2px 8px rgba(144, 91, 48, 0.4);
-}
-
 /* Foreground Container */
 .hero-container {
   width: 100%;
@@ -284,30 +204,12 @@
   .hero-subtext {
     font-size: 1.05rem;
   }
-
-  .hero-video-controls {
-    top: 16px;
-    left: 16px;
-  }
 }
 
 @media (max-width: 768px) {
   .hero-banner-section {
     min-height: auto;
     padding: 70px 0 80px;
-  }
-
-  .hero-video-controls {
-    top: 12px;
-    left: 50%;
-    transform: translateX(-50%);
-    width: max-content;
-    max-width: 92%;
-    overflow-x: auto;
-  }
-
-  .hero-scene-pills {
-    display: none;
   }
 
   .hero-content-column {
