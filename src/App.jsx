@@ -65,6 +65,23 @@ function App() {
   const { hash, pathname } = useLocation();
   const navigate = useNavigate();
 
+  // Known valid route patterns — used to hide Navbar on 404
+  const KNOWN_ROUTES = [
+    /^\/$/,
+    /^\/about$/,
+    /^\/about-brand$/,
+    /^\/wishlist$/,
+    /^\/collections$/,
+    /^\/contact$/,
+    /^\/privacy-policy$/,
+    /^\/returns-policy$/,
+    /^\/cart$/,
+    /^\/checkout(\/.*)?$/,
+    /^\/perfumes$/,
+    /^\/product\/[^/]+$/,
+  ];
+  const isKnownRoute = KNOWN_ROUTES.some((pattern) => pattern.test(pathname));
+
   const showToast = (message, type = 'success', itemDetails = null) => {
     if (toastTimerRef.current) clearTimeout(toastTimerRef.current);
     setToast({ message, type, itemDetails });
@@ -315,14 +332,16 @@ function App() {
 
   return (
     <div className="app-container">
-      <Navbar
-        cartCount={totalCartCount}
-        wishlistCount={wishlistIds.length}
-        onOpenCart={() => setIsCartOpen(true)}
-        onOpenUser={() => setIsAuthOpen(true)}
-        currentUser={currentUser}
-        onLogout={handleLogout}
-      />
+      {isKnownRoute && (
+        <Navbar
+          cartCount={totalCartCount}
+          wishlistCount={wishlistIds.length}
+          onOpenCart={() => setIsCartOpen(true)}
+          onOpenUser={() => setIsAuthOpen(true)}
+          currentUser={currentUser}
+          onLogout={handleLogout}
+        />
+      )}
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/about" element={<AboutPage />} />

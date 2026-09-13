@@ -39,10 +39,23 @@ export default function PrivacyPolicyPage() {
                 <span className="prp-bc-current">سياسة الخصوصية</span>
               </div>
 
-              {/* Title & Lock Icon */}
+              {/* Title */}
               <div className="prp-title-row">
                 <h1 className="prp-hero-title">
-                  <img src="/icons/Icon.svg" alt="" className="prp-lock-icon" aria-hidden="true" />
+                  <svg
+                    width="28"
+                    height="32"
+                    viewBox="0 0 24 32"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="prp-lock-icon"
+                    aria-hidden="true"
+                  >
+                    <path
+                      d="M3 31.5C2.175 31.5 1.46875 31.2062 0.88125 30.6187C0.29375 30.0312 0 29.325 0 28.5V13.5C0 12.675 0.29375 11.9688 0.88125 11.3813C1.46875 10.7938 2.175 10.5 3 10.5H4.5V7.5C4.5 5.425 5.23125 3.65625 6.69375 2.19375C8.15625 0.73125 9.925 0 12 0C14.075 0 15.8438 0.73125 17.3062 2.19375C18.7687 3.65625 19.5 5.425 19.5 7.5V10.5H21C21.825 10.5 22.5312 10.7938 23.1187 11.3813C23.7062 11.9688 24 12.675 24 13.5V28.5C24 29.325 23.7062 30.0312 23.1187 30.6187C22.5312 31.2062 21.825 31.5 21 31.5H3ZM12 24C12.825 24 13.5312 23.7062 14.1187 23.1187C14.7062 22.5312 15 21.825 15 21C15 20.175 14.7062 19.4688 14.1187 18.8813C13.5312 18.2938 12.825 18 12 18C11.175 18 10.4688 18.2938 9.88125 18.8813C9.29375 19.4688 9 20.175 9 21C9 21.825 9.29375 22.5312 9.88125 23.1187C10.4688 23.7062 11.175 24 12 24ZM7.5 10.5H16.5V7.5C16.5 6.25 16.0625 5.1875 15.1875 4.3125C14.3125 3.4375 13.25 3 12 3C10.75 3 9.6875 3.4375 8.8125 4.3125C7.9375 5.1875 7.5 6.25 7.5 7.5V10.5Z"
+                      fill="#905B30"
+                    />
+                  </svg>
                   <span>سياسة الخصوصية</span>
                 </h1>
               </div>
@@ -56,7 +69,7 @@ export default function PrivacyPolicyPage() {
             {/* Left Icon: Container privacy.svg */}
             <div className="prp-hero-graphic">
               <img
-                src="/icons/container privacy.svg"
+                src="/icons/Container privacy.svg"
                 alt="سياسة الخصوصية"
                 className="prp-privacy-icon-img"
               />
@@ -95,7 +108,7 @@ export default function PrivacyPolicyPage() {
                 aria-expanded={activeTab === '01'}
               >
                 <span>01</span>
-                <span className="prp-chevron">⌄</span>
+                <img src="/icons/Icon dwon.svg" alt="" className="prp-chevron" aria-hidden="true" />
               </button>
               {activeTab === '01' && (
                 <div className="prp-tab-content">
@@ -119,7 +132,7 @@ export default function PrivacyPolicyPage() {
                 aria-expanded={activeTab === '02'}
               >
                 <span>02</span>
-                <span className="prp-chevron">⌄</span>
+                <img src="/icons/Icon dwon.svg" alt="" className="prp-chevron" aria-hidden="true" />
               </button>
               {activeTab === '02' && (
                 <div className="prp-tab-content prp-tab-content-alt">

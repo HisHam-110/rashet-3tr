@@ -395,7 +395,7 @@
 
 .nf-quick-title {
   display: block;
-  font-size: 0.88rem;
+  font-size: 1rem;
   font-weight: 700;
   color: #8C7869;
   margin-bottom: 12px;
@@ -411,9 +411,9 @@
   background: rgba(144, 91, 48, 0.06);
   border: 1px solid rgba(144, 91, 48, 0.18);
   color: #56371D;
-  padding: 6px 14px;
+  padding: 8px 18px;
   border-radius: 20px;
-  font-size: 0.85rem;
+  font-size: 1rem;
   font-weight: 600;
   cursor: pointer;
   font-family: inherit;
