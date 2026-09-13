@@ -86,8 +86,8 @@ export default function PerfumesPage({
 
       setSelectedCategory(normalized);
       if (normalized === 'all' || normalized === 'full') {
-        setActiveCategories(ALL_CATS);
-        setTempCategories(ALL_CATS);
+        setActiveCategories([]);
+        setTempCategories([]);
       } else {
         setActiveCategories([normalized]);
         setTempCategories([normalized]);
@@ -95,8 +95,8 @@ export default function PerfumesPage({
       setCurrentPage(1);
     } else {
       setSelectedCategory('all');
-      setActiveCategories(ALL_CATS);
-      setTempCategories(ALL_CATS);
+      setActiveCategories([]);
+      setTempCategories([]);
     }
   }, [categoryParam]);
 
@@ -114,17 +114,17 @@ export default function PerfumesPage({
 
   // Filter Drawer active states — include ALL possible category values
   const ALL_CATS = ['men', 'women', 'unisex', 'luxury', 'niche', 'oriental', 'summer', 'night'];
-  const [activeCategories, setActiveCategories] = useState(ALL_CATS);
-  const [minPrice, setMinPrice] = useState(0);
-  const [maxPrice, setMaxPrice] = useState(9999);
-  const [activeRatings, setActiveRatings] = useState([5, 4, 3, 2, 1]);
+  const [activeCategories, setActiveCategories] = useState([]);
+  const [minPrice, setMinPrice] = useState(200);
+  const [maxPrice, setMaxPrice] = useState(2500);
+  const [activeRatings, setActiveRatings] = useState([]);
 
   // Drawer open / temp states
   const [isFilterOpen, setIsFilterOpen] = useState(false);
-  const [tempCategories, setTempCategories] = useState(ALL_CATS);
-  const [tempMinPrice, setTempMinPrice] = useState(0);
-  const [tempMaxPrice, setTempMaxPrice] = useState(9999);
-  const [tempRatings, setTempRatings] = useState([5, 4, 3, 2, 1]);
+  const [tempCategories, setTempCategories] = useState([]);
+  const [tempMinPrice, setTempMinPrice] = useState(200);
+  const [tempMaxPrice, setTempMaxPrice] = useState(2500);
+  const [tempRatings, setTempRatings] = useState([]);
 
   // Drawer Section Expansion states
   const [isCategoriesExpanded, setIsCategoriesExpanded] = useState(true);
@@ -179,12 +179,19 @@ export default function PerfumesPage({
     // 4. Price Range
     result = result.filter((p) => p.price >= minPrice && p.price <= maxPrice);
 
-    // 5. Star Ratings
-    result = result.filter((p) => {
-      const rawRating = productRatings[p.id] || p.rating || 5;
-      const currentRating = Math.max(1, Math.min(5, Math.floor(rawRating)));
-      return activeRatings.includes(currentRating);
-    });
+    // 5. Drawer Category Filter (only if user selected specific categories)
+    if (activeCategories.length > 0) {
+      result = result.filter((p) => activeCategories.includes(p.category));
+    }
+
+    // 6. Star Ratings (only if user selected specific ratings)
+    if (activeRatings.length > 0) {
+      result = result.filter((p) => {
+        const rawRating = productRatings[p.id] || p.rating || 5;
+        const currentRating = Math.max(1, Math.min(5, Math.floor(rawRating)));
+        return activeRatings.includes(currentRating);
+      });
+    }
 
     // Sort
     switch (sortBy) {
@@ -505,6 +512,16 @@ export default function PerfumesPage({
                         </svg>
                       </button>
 
+                      {/* Soft Discount Badge on Top Corner */}
+                      {(() => {
+                        const oldP = Number(product.oldPrice || product.originalPrice || Math.round(Number(product.price || 0) * 1.25));
+                        const currP = Number(product.price || 0);
+                        const discount = (oldP && currP && oldP > currP) ? Math.round(((oldP - currP) / oldP) * 100) : 20;
+                        return (
+                          <span className="card-top-discount-badge">خصم {discount}%</span>
+                        );
+                      })()}
+
                       {/* New Badge */}
                       {product.isNew && (
                         <span className="pp-new-badge">جديد</span>
@@ -659,7 +676,7 @@ export default function PerfumesPage({
               <div className="pp-filter-title-wrap">
                 <h3 className="pp-filter-title">فلترة المنتجات</h3>
                 <span className="pp-filter-count-badge">
-                  { (tempCategories.length !== 3 ? 1 : 0) + (tempMinPrice !== 200 || tempMaxPrice !== 2500 ? 1 : 0) + (tempRatings.length !== 5 ? 1 : 0) } محددة
+                  { tempCategories.length + (tempMinPrice !== 200 || tempMaxPrice !== 2500 ? 1 : 0) + tempRatings.length } محددة
                 </span>
               </div>
               <button className="pp-filter-close-btn" onClick={() => setIsFilterOpen(false)} aria-label="إغلاق">
@@ -748,14 +765,95 @@ export default function PerfumesPage({
                 </button>
                 {isPriceExpanded && (
                   <div className="pp-price-slider-container">
-                    <input
-                      type="range"
-                      min="200"
-                      max="2500"
-                      value={tempMaxPrice}
-                      onChange={(e) => setTempMaxPrice(Number(e.target.value))}
-                      className="pp-price-range-slider"
-                    />
+                    <div
+                      className="pp-dual-range-wrapper"
+                      ref={(el) => { if (el) el.__priceSliderEl = el; }}
+                    >
+                      <div className="pp-dual-range-track"></div>
+                      <div
+                        className="pp-dual-range-active-track"
+                        style={{
+                          left: `${((tempMinPrice - 200) / (2500 - 200)) * 100}%`,
+                          width: `${((tempMaxPrice - tempMinPrice) / (2500 - 200)) * 100}%`,
+                        }}
+                      ></div>
+                      {/* Min Handle */}
+                      <div
+                        className="pp-range-handle"
+                        style={{ left: `${((tempMinPrice - 200) / (2500 - 200)) * 100}%` }}
+                        onMouseDown={(e) => {
+                          e.preventDefault();
+                          const wrapper = e.target.closest('.pp-dual-range-wrapper');
+                          const rect = wrapper.getBoundingClientRect();
+                          const onMove = (ev) => {
+                            const x = (ev.clientX || ev.touches?.[0]?.clientX) - rect.left;
+                            const pct = Math.max(0, Math.min(1, x / rect.width));
+                            const val = Math.round((200 + pct * 2300) / 50) * 50;
+                            setTempMinPrice(Math.min(val, tempMaxPrice - 50));
+                          };
+                          const onUp = () => {
+                            document.removeEventListener('mousemove', onMove);
+                            document.removeEventListener('mouseup', onUp);
+                          };
+                          document.addEventListener('mousemove', onMove);
+                          document.addEventListener('mouseup', onUp);
+                        }}
+                        onTouchStart={(e) => {
+                          const wrapper = e.target.closest('.pp-dual-range-wrapper');
+                          const rect = wrapper.getBoundingClientRect();
+                          const onMove = (ev) => {
+                            const x = ev.touches[0].clientX - rect.left;
+                            const pct = Math.max(0, Math.min(1, x / rect.width));
+                            const val = Math.round((200 + pct * 2300) / 50) * 50;
+                            setTempMinPrice(Math.min(val, tempMaxPrice - 50));
+                          };
+                          const onEnd = () => {
+                            document.removeEventListener('touchmove', onMove);
+                            document.removeEventListener('touchend', onEnd);
+                          };
+                          document.addEventListener('touchmove', onMove, { passive: false });
+                          document.addEventListener('touchend', onEnd);
+                        }}
+                      ></div>
+                      {/* Max Handle */}
+                      <div
+                        className="pp-range-handle"
+                        style={{ left: `${((tempMaxPrice - 200) / (2500 - 200)) * 100}%` }}
+                        onMouseDown={(e) => {
+                          e.preventDefault();
+                          const wrapper = e.target.closest('.pp-dual-range-wrapper');
+                          const rect = wrapper.getBoundingClientRect();
+                          const onMove = (ev) => {
+                            const x = (ev.clientX || ev.touches?.[0]?.clientX) - rect.left;
+                            const pct = Math.max(0, Math.min(1, x / rect.width));
+                            const val = Math.round((200 + pct * 2300) / 50) * 50;
+                            setTempMaxPrice(Math.max(val, tempMinPrice + 50));
+                          };
+                          const onUp = () => {
+                            document.removeEventListener('mousemove', onMove);
+                            document.removeEventListener('mouseup', onUp);
+                          };
+                          document.addEventListener('mousemove', onMove);
+                          document.addEventListener('mouseup', onUp);
+                        }}
+                        onTouchStart={(e) => {
+                          const wrapper = e.target.closest('.pp-dual-range-wrapper');
+                          const rect = wrapper.getBoundingClientRect();
+                          const onMove = (ev) => {
+                            const x = ev.touches[0].clientX - rect.left;
+                            const pct = Math.max(0, Math.min(1, x / rect.width));
+                            const val = Math.round((200 + pct * 2300) / 50) * 50;
+                            setTempMaxPrice(Math.max(val, tempMinPrice + 50));
+                          };
+                          const onEnd = () => {
+                            document.removeEventListener('touchmove', onMove);
+                            document.removeEventListener('touchend', onEnd);
+                          };
+                          document.addEventListener('touchmove', onMove, { passive: false });
+                          document.addEventListener('touchend', onEnd);
+                        }}
+                      ></div>
+                    </div>
                     <div className="pp-price-display-row">
                       <div className="pp-price-block">
                         <span className="pp-price-label-text">من</span>
@@ -857,14 +955,14 @@ export default function PerfumesPage({
               <button
                 className="pp-clear-filter-btn"
                 onClick={() => {
-                  setTempCategories(['men', 'women', 'unisex']);
+                  setTempCategories([]);
                   setTempMinPrice(200);
                   setTempMaxPrice(2500);
-                  setTempRatings([5, 4, 3, 2, 1]);
-                  setActiveCategories(['men', 'women', 'unisex']);
+                  setTempRatings([]);
+                  setActiveCategories([]);
                   setMinPrice(200);
                   setMaxPrice(2500);
-                  setActiveRatings([5, 4, 3, 2, 1]);
+                  setActiveRatings([]);
                   setIsFilterOpen(false);
                 }}
               >

@@ -2,6 +2,11 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./Recommended.css";
 
+import img16 from "../../assets/images/image 16.svg";
+import img18 from "../../assets/images/image 18.svg";
+import img20 from "../../assets/images/image 20.svg";
+import img21 from "../../assets/images/image 21.svg";
+
 export default function Products({
   products: suppliedProducts = [],
   onAddToCart,
@@ -15,36 +20,48 @@ export default function Products({
       name: "عطر لوريس | Loris",
       type: "عطور رجالية، نسائية",
       price: "450",
+      originalPrice: "580",
+      oldPrice: "580",
       rating: 5,
-      image: "../../src/assets/images/image 21.svg",
+      image: img21,
     },
     {
       id: 2,
       name: "عطر ليبر | Libre",
       type: "عطور رجالية، نسائية",
-      price: "450",
+      price: "480",
+      originalPrice: "620",
+      oldPrice: "620",
       rating: 5,
-      image: "../../src/assets/images/image 20.svg",
+      image: img20,
     },
     {
       id: 3,
       name: "عطر بكارات روج | Baccarat",
       type: "عطور نسائية",
-      price: "450",
+      price: "550",
+      originalPrice: "700",
+      oldPrice: "700",
       rating: 5,
-      image: "../../src/assets/images/image 18.svg",
+      image: img18,
     },
     {
       id: 4,
       name: "عطر مونت | Mount",
       type: "عطور رجالية",
-      price: "450",
+      price: "420",
+      originalPrice: "550",
+      oldPrice: "550",
       rating: 5,
-      image: "../../src/assets/images/image 16.svg",
+      image: img16,
     },
   ];
 
-  const products = suppliedProducts || [];
+  const rawProducts = suppliedProducts && suppliedProducts.length > 0 ? suppliedProducts : fallbackProducts;
+  const products = rawProducts.map((p) => ({
+    ...p,
+    oldPrice: p.oldPrice || p.originalPrice || (p.price ? Math.round(Number(p.price) * 1.25) : 580),
+  }));
 
   /* =========================
      Ratings
@@ -112,33 +129,30 @@ export default function Products({
 
         <div className="products-header">
 
-          {/* عرض الكل */}
+          {/* العنوان (يمين) */}
+          <div className="products-title-wrapper">
+            <h2 className="products-title">
+              العطور
+            </h2>
+            <span className="products-title-line"></span>
+          </div>
 
+          {/* عرض الكل (شمال) */}
           <button
             type="button"
             className="show-all"
             onClick={(e) => {
               e.preventDefault();
-              navigate('/perfumes');
+              navigate('/collections');
             }}
           >
-            <span className="show-all-arrow">
-              ‹
-            </span>
             <span>عرض الكل</span>
+            <span className="show-all-arrow">
+              <svg width="20" height="20" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ transform: 'rotate(180deg)' }}>
+                <path d="M11.8799 26.5599L20.5732 17.8666C21.5999 16.8399 21.5999 15.1599 20.5732 14.1333L11.8799 5.43994" stroke="currentColor" strokeWidth="2.2" strokeMiterlimit="10" strokeLinecap="round" strokeLinejoin="round"/>
+              </svg>
+            </span>
           </button>
-
-          {/* العنوان */}
-
-          <div className="products-title-wrapper">
-
-            <h2 className="products-title">
-              العطور
-            </h2>
-
-            <span className="products-title-line"></span>
-
-          </div>
 
         </div>
 
@@ -180,6 +194,15 @@ export default function Products({
               ================================= */}
 
               <div className="product-image-wrapper">
+                {/* Soft Discount Badge on Top Corner */}
+                {(() => {
+                  const oldP = Number(product.oldPrice || product.originalPrice || Math.round(Number(product.price || 0) * 1.25));
+                  const currP = Number(product.price || 0);
+                  const discount = (oldP && currP && oldP > currP) ? Math.round(((oldP - currP) / oldP) * 100) : 20;
+                  return (
+                    <span className="card-top-discount-badge">خصم {discount}%</span>
+                  );
+                })()}
 
                 {/* =========================
                     FAVORITE

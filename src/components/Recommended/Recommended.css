@@ -23,17 +23,16 @@
 .products-header {
   width: 100%;
   display: flex;
-  align-items: flex-start;
+  align-items: flex-end;
   justify-content: space-between;
-  margin-bottom: 18px;
-  direction: ltr;
-  
+  margin-bottom: 22px;
+  direction: rtl;
 }
 
 .products-title-wrapper {
   display: flex;
   flex-direction: column;
-  align-items: flex-end;
+  align-items: flex-start;
   direction: rtl;
 }
 
@@ -79,8 +78,9 @@
 }
 
 .show-all-arrow {
-  font-size: 27px;
-  line-height: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   transition: transform 0.3s ease;
 }
 
@@ -313,12 +313,13 @@
 
 .product-price-row {
   display: flex;
-  align-items: center;
+  align-items: baseline;
   justify-content: flex-start;
-  gap: 8px;
+  gap: 10px;
   direction: rtl;
   margin-top: 4px;
   margin-bottom: 8px;
+  text-align: right;
 }
 
 
@@ -329,13 +330,13 @@
 .product-current-price {
   display: inline-flex;
   align-items: center;
-  gap: 3px;
+  gap: 4px;
   color: #8c6d4f;
   font-family: "Cairo", sans-serif;
-  font-size: 1.05rem;
+  font-size: 1.08rem;
   font-weight: 800;
   line-height: 1.2;
-  direction: ltr;
+  direction: rtl;
 }
 
 .price-value {
@@ -348,8 +349,8 @@
 ========================================= */
 
 .riyal-icon {
-  width: 17px;
-  height: 17px;
+  width: 24px;
+  height: 24px;
   display: inline-block;
   vertical-align: middle;
   object-fit: contain;
@@ -364,10 +365,10 @@
 .product-old-price {
   display: inline-flex;
   align-items: center;
-  gap: 3px;
+  gap: 4px;
   color: #736b63;
   font-family: "Cairo", sans-serif;
-  font-size: 0.85rem;
+  font-size: 0.88rem;
   font-weight: 500;
   line-height: 1.2;
   text-decoration: line-through;
@@ -380,12 +381,12 @@
 }
 
 .old-riyal-icon {
-  width: 14px;
-  height: 14px;
+  width: 19px;
+  height: 19px;
   object-fit: contain;
   display: inline-block;
   vertical-align: middle;
-  opacity: 0.75;
+  opacity: 0.85;
   flex-shrink: 0;
 }
 

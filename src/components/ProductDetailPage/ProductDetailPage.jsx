@@ -76,14 +76,14 @@ export default function ProductDetailPage({ onAddToCart, onToggleWishlist, wishl
 
   useEffect(() => {
     if (product) {
-      const sizes = product.sizes || ['50 مل', '100 مل', '150 مل', '200 مل'];
-      setSelectedSize(sizes[1] || sizes[0]);
+      const sizes = product.sizes || ['30 مل', '50 مل', '100 مل', '150 مل', '200 مل'];
+      setSelectedSize(sizes[2] || sizes[0]);
     }
   }, [product]);
 
   if (!product) return null;
 
-  const sizes = product.sizes || ['50 مل', '100 مل', '150 مل', '200 مل'];
+  const sizes = product.sizes || ['30 مل', '50 مل', '100 مل', '150 مل', '200 مل'];
 
   // Main gallery thumbs from API images array
   const thumbs = (product.images && product.images.length > 0)
@@ -114,7 +114,9 @@ export default function ProductDetailPage({ onAddToCart, onToggleWishlist, wishl
           <div className="pdp-breadcrumb">
             <span className="pdp-bc-link" onClick={() => navigate('/')}>الرئيسية</span>
             <span className="pdp-bc-sep">/</span>
-            <span className="pdp-bc-link" onClick={() => navigate('/perfumes')}>العطور الفاخرة</span>
+            <span className="pdp-bc-link" onClick={() => navigate('/perfumes')}>العطور</span>
+            <span className="pdp-bc-sep">/</span>
+            <span className="pdp-bc-current">التفاصيل</span>
           </div>
           <h1 className="pdp-page-title">العطور</h1>
         </div>
@@ -174,12 +176,18 @@ export default function ProductDetailPage({ onAddToCart, onToggleWishlist, wishl
                   <span className="pdp-price-val">{product.price}</span>
                   <img src="/icons/saudi-riyal.svg" alt="ر.س" className="pdp-riyal-icon-symbol" />
                 </span>
-                {(product.oldPrice || product.originalPrice) && (
-                  <span className="pdp-price-old">
-                    <span className="pdp-price-val">{product.oldPrice || product.originalPrice}</span>
-                    <img src="/icons/saudi-riyal-2.svg" alt="ر.س" className="pdp-riyal-icon-symbol pdp-riyal-icon-symbol-old" />
-                  </span>
-                )}
+                {(() => {
+                  const oldP = Number(product.oldPrice || product.originalPrice || Math.round(Number(product.price || 0) * 1.25));
+                  const currP = Number(product.price || 0);
+                  const discount = (oldP && currP && oldP > currP) ? Math.round(((oldP - currP) / oldP) * 100) : 20;
+                  return (
+                    <span className="pdp-price-old">
+                      <span className="pdp-price-val">{oldP}</span>
+                      <img src="/icons/saudi-riyal-2.svg" alt="ر.س" className="pdp-riyal-icon-symbol pdp-riyal-icon-symbol-old" />
+                      <span className="discount-badge-tag" style={{ fontSize: '0.85rem', padding: '3px 9px' }}>خصم {discount}%</span>
+                    </span>
+                  );
+                })()}
               </div>
 
               {/* Short Description */}
@@ -338,7 +346,9 @@ export default function ProductDetailPage({ onAddToCart, onToggleWishlist, wishl
           <div className="pdp-section-header">
             <button className="pdp-show-all-btn" onClick={() => navigate('/perfumes')}>
               <span>عرض الكل</span>
-              <span className="pdp-arrow">‹</span>
+              <svg width="18" height="18" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ transform: 'rotate(180deg)' }}>
+                <path d="M11.8799 26.5599L20.5732 17.8666C21.5999 16.8399 21.5999 15.1599 20.5732 14.1333L11.8799 5.43994" stroke="currentColor" strokeWidth="2.2" strokeMiterlimit="10" strokeLinecap="round" strokeLinejoin="round"/>
+              </svg>
             </button>
             <h2 className="pdp-section-h2">قد يعجبك أيضاً</h2>
           </div>

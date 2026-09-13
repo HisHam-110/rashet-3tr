@@ -218,22 +218,18 @@ export default function CollectionsSection() {
             <h2 className="collections-title">تسوق حسب المجموعة</h2>
             <p className="collections-subtitle">وفر أكثر مع مجموعات تناسب جميع الأذواق</p>
           </div>
-          <a href="#all-products" className="view-all-link" aria-label="عرض كل المجموعات">
+          <button
+            type="button"
+            className="view-all-link"
+            onClick={() => navigate('/collections')}
+            aria-label="عرض كل المجموعات"
+            style={{ cursor: 'pointer', border: 'none', background: 'transparent' }}
+          >
             <span>عرض الكل</span>
-            <svg
-              width="16"
-              height="16"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2.5"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              className="arrow-icon"
-            >
-              <path d="M19 12H5M12 19l-7-7 7-7" />
+            <svg width="18" height="18" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ transform: 'rotate(180deg)' }}>
+              <path d="M11.8799 26.5599L20.5732 17.8666C21.5999 16.8399 21.5999 15.1599 20.5732 14.1333L11.8799 5.43994" stroke="currentColor" strokeWidth="2.2" strokeMiterlimit="10" strokeLinecap="round" strokeLinejoin="round"/>
             </svg>
-          </a>
+          </button>
         </div>
       </div>
 
@@ -292,17 +288,18 @@ export default function CollectionsSection() {
                 >
                   <span>تسوق الآن</span>
                   <svg
-                    width="18"
-                    height="18"
+                    width="20"
+                    height="20"
                     viewBox="0 0 24 24"
                     fill="none"
                     stroke="currentColor"
-                    strokeWidth="2.8"
+                    strokeWidth="2.5"
                     strokeLinecap="round"
                     strokeLinejoin="round"
                     className="btn-arrow"
                   >
-                    <path d="M19 12H5M12 19l-7-7 7-7" />
+                    <line x1="19" y1="12" x2="5" y2="12"></line>
+                    <polyline points="12 19 5 12 12 5"></polyline>
                   </svg>
                 </button>
               </div>

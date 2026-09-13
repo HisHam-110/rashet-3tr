@@ -104,7 +104,7 @@
 .centered-carousel-viewport {
   position: relative;
   width: 100%;
-  height: 700px;
+  height: 630px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -126,17 +126,20 @@
   top: 50%;
   left: 50%;
   
-  /* Desktop Dimensions */
-  width: clamp(330px, 28vw, 430px);
-  height: clamp(520px, 45vw, 670px);
+  /* Desktop Dimensions - Specified exactly by User */
+  width: 400px;
+  max-width: 90vw;
+  height: 577px;
+  max-height: 90vh;
   
   border-radius: 30px;
-  border: 3px solid #FFFFFF;
+  border: 6px solid #FFFFFF;
   background-color: #FFFFFF;
   box-shadow: 0 8px 24px rgba(58, 42, 32, 0.06);
   overflow: hidden;
   cursor: pointer;
   box-sizing: border-box;
+  opacity: 1;
 
   /* Smooth 3D Transition for Position + Scale + Opacity */
   transition:
@@ -304,12 +307,16 @@
 .card-pricing-row {
   margin-bottom: 18px;
   width: 100%;
+  direction: rtl;
+  text-align: right;
 }
 
 .price-block {
   display: flex;
   align-items: baseline;
+  justify-content: flex-start;
   gap: 12px;
+  direction: rtl;
 }
 
 .current-price {
@@ -319,6 +326,7 @@
   display: inline-flex;
   align-items: center;
   gap: 5px;
+  direction: rtl;
 }
 
 .old-price {
@@ -328,20 +336,21 @@
   display: inline-flex;
   align-items: center;
   gap: 4px;
+  direction: rtl;
 }
 
 .feat-riyal-icon {
-  width: 20px;
-  height: 20px;
+  width: 25px;
+  height: 25px;
   object-fit: contain;
   display: inline-block;
   vertical-align: middle;
 }
 
 .feat-riyal-icon-old {
-  width: 15px;
-  height: 15px;
-  opacity: 0.8;
+  width: 20px;
+  height: 20px;
+  opacity: 0.85;
 }
 
 /* =========================================

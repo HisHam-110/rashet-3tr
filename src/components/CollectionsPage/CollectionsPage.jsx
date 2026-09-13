@@ -183,7 +183,19 @@ export default function CollectionsPage() {
                   <p className="clp-card-subtitle">{col.description_ar || col.subtitle}</p>
                   <button className="clp-card-btn" onClick={(e) => { e.stopPropagation(); handleCardClick(col); }}>
                     <span>تسوق الآن</span>
-                    <span className="clp-arrow">←</span>
+                    <svg
+                      width="18"
+                      height="18"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="2.8"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      className="clp-arrow"
+                    >
+                      <path d="M19 12H5M12 19l-7-7 7-7" />
+                    </svg>
                   </button>
                 </div>
               </div>

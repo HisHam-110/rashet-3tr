@@ -6,7 +6,6 @@
 .collections-section {
   padding: 75px 0 85px;
   background-color: #FAF8F5; /* Warm Off-White / Beige background */
-  border-bottom: 1px solid var(--border-color, #EAE2D8);
   width: 100%;
   overflow: hidden;
   direction: rtl;
@@ -206,9 +205,9 @@
   background-color: #905B30;
   color: #FFFFFF;
   border: none;
-  padding: 8px 18px;
-  border-radius: 6px;
-  font-size: 0.92rem;
+  padding: 10px 22px;
+  border-radius: 12px;
+  font-size: 0.95rem;
   font-weight: 700;
   cursor: pointer;
   font-family: inherit;

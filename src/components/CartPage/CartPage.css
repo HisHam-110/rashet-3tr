@@ -331,15 +331,15 @@
 
 /* Riyal Icon */
 .cap-riyal-icon {
-  width: 18px;
-  height: 18px;
+  width: 24px;
+  height: 24px;
   object-fit: contain;
 }
 
 .cap-riyal-icon-old {
-  width: 14px;
-  height: 14px;
-  opacity: 0.7;
+  width: 19px;
+  height: 19px;
+  opacity: 0.85;
 }
 
 /* Coupon Box */

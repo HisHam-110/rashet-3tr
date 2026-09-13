@@ -66,28 +66,6 @@ const DEFAULT_PRODUCTS = [
     tagline: 'عبير الانتعاش القوي',
     image: img16,
   },
-  {
-    id: 6,
-    name: 'مجموعة الصيف | Summer Collection',
-    brand: 'رشة عطر الخاصة',
-    category: 'عطور الصيف المنعشة',
-    price: '490',
-    originalPrice: '650',
-    rating: 4.9,
-    tagline: 'تجدد إحساسك',
-    image: img68,
-  },
-  {
-    id: 7,
-    name: 'المجموعة الكاملة | Royal Set',
-    brand: 'رشة عطر الملكية',
-    category: 'مجموعات فاخرة',
-    price: '890',
-    originalPrice: '1200',
-    rating: 5.0,
-    tagline: 'تروي حكاية فخامتك',
-    image: img72,
-  },
 ];
 
 export default function FeaturedProducts({
@@ -97,7 +75,11 @@ export default function FeaturedProducts({
   wishlistIds = [],
   onOpenProductDetails,
 }) {
-  const displayProducts = products || [];
+  const rawList = (products && products.length > 0 ? products : DEFAULT_PRODUCTS).slice(0, 5);
+  const displayProducts = rawList.map((p) => ({
+    ...p,
+    oldPrice: p.oldPrice || p.originalPrice || (p.price ? Math.round(Number(p.price) * 1.25) : 600),
+  }));
   const [activeIndex, setActiveIndex] = useState(0);
 
   const total = displayProducts.length;
@@ -141,7 +123,9 @@ export default function FeaturedProducts({
               onClick={handlePrev}
               aria-label="المنتج السابق"
             >
-              ‹
+              <svg width="22" height="22" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ transform: 'rotate(180deg)' }}>
+                <path d="M11.8799 26.5599L20.5732 17.8666C21.5999 16.8399 21.5999 15.1599 20.5732 14.1333L11.8799 5.43994" stroke="currentColor" strokeWidth="2.2" strokeMiterlimit="10" strokeLinecap="round" strokeLinejoin="round"/>
+              </svg>
             </button>
             <button 
               type="button" 
@@ -149,7 +133,9 @@ export default function FeaturedProducts({
               onClick={handleNext}
               aria-label="المنتج التالي"
             >
-              ›
+              <svg width="22" height="22" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M11.8799 26.5599L20.5732 17.8666C21.5999 16.8399 21.5999 15.1599 20.5732 14.1333L11.8799 5.43994" stroke="currentColor" strokeWidth="2.2" strokeMiterlimit="10" strokeLinecap="round" strokeLinejoin="round"/>
+              </svg>
             </button>
           </div>
           <div className="featured-header-title-wrap">
@@ -204,6 +190,14 @@ export default function FeaturedProducts({
                 >
                   {/* Card Background Media & Overlay */}
                   <div className="card-media-wrap">
+                    {(() => {
+                      const oldP = Number(product.originalPrice || product.oldPrice || Math.round(Number(product.price || 0) * 1.25));
+                      const currP = Number(product.price || 0);
+                      const discount = (oldP && currP && oldP > currP) ? Math.round(((oldP - currP) / oldP) * 100) : 20;
+                      return (
+                        <span className="card-top-discount-badge">خصم {discount}%</span>
+                      );
+                    })()}
                     {cardImg && (
                       <img 
                         src={cardImg} 
@@ -213,8 +207,32 @@ export default function FeaturedProducts({
                       />
                     )}
                     <div className="card-media-overlay" />
-                    
                   </div>
+
+                  {/* Favorite Button */}
+                  <button
+                    type="button"
+                    className={`featured-fav-btn ${wishlistIds.includes(product.id) ? 'liked' : ''}`}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      e.preventDefault();
+                      onToggleWishlist?.(product.id);
+                    }}
+                    aria-label={wishlistIds.includes(product.id) ? 'إزالة من المفضلة' : 'إضافة إلى المفضلة'}
+                  >
+                    <svg
+                      width="20"
+                      height="20"
+                      viewBox="0 0 24 24"
+                      fill={wishlistIds.includes(product.id) ? 'currentColor' : 'none'}
+                      stroke="currentColor"
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    >
+                      <path d="M20.84 4.61C19.84 3.61 18.49 3.05 17.09 3.05C15.69 3.05 14.34 3.61 13.34 4.61L12 5.95L10.66 4.61C8.58 2.53 5.21 2.53 3.13 4.61C1.05 6.69 1.05 10.06 3.13 12.14L12 21L20.87 12.14C22.95 10.06 22.95 6.69 20.84 4.61Z" />
+                    </svg>
+                  </button>
 
                   {/* Card Content at Bottom */}
                   <div className="card-bottom-info">
@@ -274,19 +292,6 @@ export default function FeaturedProducts({
             })}
           </div>
           )}
-
-          {/* Dots */}
-          <div className="carousel-dots-wrapper">
-            {displayProducts.map((_, idx) => (
-              <button
-                key={idx}
-                type="button"
-                className={`carousel-dot ${idx === activeIndex ? 'active' : ''}`}
-                onClick={() => setActiveIndex(idx)}
-                aria-label={`المنتج ${idx + 1}`}
-              />
-            ))}
-          </div>
         </div>
       </div>
     </section>

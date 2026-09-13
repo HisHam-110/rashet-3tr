@@ -96,8 +96,9 @@ export default function Navbar({
 
   const handleNavClick = (item, e) => {
     setIsMobileOpen(false);
-    if (currentPath === '/' && item.targetSection) {
-      const targetEl = document.getElementById(item.targetSection);
+    if (item.href.startsWith('/#') && currentPath === '/') {
+      const targetId = item.href.replace('/#', '');
+      const targetEl = document.getElementById(targetId);
       if (targetEl) {
         e.preventDefault();
         targetEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
@@ -195,22 +196,46 @@ export default function Navbar({
           {currentUser ? (
             <div className="nav-user-dropdown-container">
               <button
-                className="nav-action-icon-btn nav-user-btn"
+                className="nav-action-icon-btn nav-user-btn nav-user-logged-in"
+                onClick={onOpenUser}
                 aria-label="حساب المستخدم"
-                title="حسابي"
+                title="الملف الشخصي"
               >
+                <div className="nav-user-avatar-badge">
+                  {(currentUser.avatar || currentUser.avatar_url || currentUser.picture || currentUser.image || currentUser.photo_url) ? (
+                    <img
+                      src={currentUser.avatar || currentUser.avatar_url || currentUser.picture || currentUser.image || currentUser.photo_url}
+                      alt={currentUser.name || 'المستخدم'}
+                      className="user-avatar-img"
+                    />
+                  ) : (
+                    <span className="user-avatar-initial">
+                      {(currentUser.name || 'م').trim()[0].toUpperCase()}
+                    </span>
+                  )}
+                  <span className="user-status-dot" title="حساب متصل" />
+                </div>
                 <span className="nav-user-name">أهلاً، {currentUser.name || 'مستخدم'}</span>
-                <img
-                  src="/icons/user.svg"
-                  alt="حسابي"
-                  className="nav-svg-icon"
-                />
               </button>
               <div className="nav-user-dropdown-menu">
-                <div className="dropdown-user-info">
+                <div className="dropdown-user-info" onClick={onOpenUser} style={{ cursor: 'pointer' }}>
+                  <div className="dropdown-avatar-circle">
+                    {(currentUser.avatar || currentUser.avatar_url || currentUser.picture || currentUser.image || currentUser.photo_url) ? (
+                      <img
+                        src={currentUser.avatar || currentUser.avatar_url || currentUser.picture || currentUser.image || currentUser.photo_url}
+                        alt={currentUser.name || 'المستخدم'}
+                        className="dropdown-avatar-img"
+                      />
+                    ) : (
+                      (currentUser.name || 'م').trim()[0].toUpperCase()
+                    )}
+                  </div>
                   <span className="dropdown-user-name">{currentUser.name || 'مستخدم'}</span>
                   <span className="dropdown-user-email">{currentUser.email || ''}</span>
                 </div>
+                <button className="dropdown-profile-btn" onClick={onOpenUser}>
+                  الملف الشخصي
+                </button>
                 <button className="dropdown-logout-btn" onClick={onLogout}>
                   تسجيل الخروج
                 </button>

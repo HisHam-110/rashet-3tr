@@ -46,14 +46,14 @@ export const mapProduct = (item = {}) => {
     brand: item.brand?.name_ar || item.brand?.name || item.brand || item.brand_name || '',
     description: item.description_ar || item.description || item.description_en || '',
     price: Number(item.price || 0),
-    originalPrice: item.original_price ? Number(item.original_price) : null,
-    oldPrice: item.original_price ? Number(item.original_price) : null,
+    originalPrice: item.original_price ? Number(item.original_price) : (item.price ? Math.round(Number(item.price) * 1.25) : 600),
+    oldPrice: item.original_price ? Number(item.original_price) : (item.price ? Math.round(Number(item.price) * 1.25) : 600),
     rating: Number(item.rating || item.average_rating || 5),
     reviewsCount: Number(item.reviews_count || item.reviews?.length || 0),
     reviews: Number(item.reviews_count || item.reviews?.length || 0),
     image: rawImg,
     images: images.length ? images : (rawImg ? [rawImg] : []),
-    sizes: item.sizes || ['50 مل', '100 مل'],
+    sizes: (item.sizes && item.sizes.length) ? item.sizes : ['30 مل', '50 مل', '100 مل', '150 مل', '200 مل'],
     category: category,
     isBestSeller: item.is_best_seller || item.isBestSeller || false,
     isFeatured: item.is_featured || item.isFeatured || false,
@@ -65,40 +65,95 @@ export const mapProduct = (item = {}) => {
 // 1. AUTHENTICATION & PROFILE
 export const authService = {
   async register(data) {
-    const res = await api('/api/v1/auth/register', { method: 'POST', body: data });
-    const token = res.token || res.data?.token;
+    const body = {
+      ...data,
+      password_confirmation: data.password_confirmation || data.password,
+    };
+    const res = await api('/api/v1/auth/register', { method: 'POST', body });
+    const token = res.token || res.data?.token || res.access_token || res.data?.access_token;
     if (token) session.setToken(token);
-    const user = res.user || res.data?.user || { name: data.name, email: data.email };
-    if (user) session.setUser(user);
-    return res;
+    let user = res.user || res.data?.user;
+    if (!user && token) {
+      try {
+        user = await this.getProfile();
+      } catch {}
+    }
+    if (!user) {
+      user = { name: data.name, email: data.email, phone: data.phone };
+    }
+    session.setUser(user);
+    return { ...res, token, user };
   },
   async login(data) {
     return this.loginCustomer(data);
   },
   async loginCustomer(data) {
     const res = await api('/api/v1/auth/login', { method: 'POST', body: data });
-    const token = res.token || res.data?.token;
+    const token = res.token || res.data?.token || res.access_token || res.data?.access_token;
     if (token) session.setToken(token);
-    const user = res.user || res.data?.user || { email: data.email, name: data.email.split('@')[0] };
-    if (user) session.setUser(user);
-    return res;
+    let user = res.user || res.data?.user;
+    if (!user && token) {
+      try {
+        user = await this.getProfile();
+      } catch {}
+    }
+    if (!user) {
+      user = { email: data.email, name: data.email.split('@')[0] };
+    }
+    session.setUser(user);
+    return { ...res, token, user };
   },
   async loginAdmin(data) {
     const res = await api('/api/v1/auth/login', { method: 'POST', body: data });
-    const token = res.token || res.data?.token || res.admin_token;
+    const token = res.token || res.data?.token || res.access_token || res.data?.access_token || res.admin_token;
     if (token) session.setAdminToken(token);
     return res;
   },
   profile() {
     return this.getProfile();
   },
-  getProfile() {
-    return api('/api/v1/user/profile');
+  async getProfile() {
+    if (!session.getToken()) return null;
+    const res = await api('/api/v1/user/profile');
+    const user = res.user || res.data?.user || res.data || res;
+    if (user && typeof user === 'object' && (user.email || user.name || user.id)) {
+      session.setUser(user);
+      return user;
+    }
+    return user;
   },
-  updateProfile(data) {
-    return api('/api/v1/user/profile', { method: 'PUT', body: data });
+  async updateProfile(data) {
+    const currentToken = session.getToken();
+    const isLocalOAuthToken = currentToken && currentToken.startsWith('google_');
+    
+    if (!isLocalOAuthToken && currentToken) {
+      try {
+        const res = await api('/api/v1/user/profile', { method: 'PUT', body: data });
+        const user = res.user || res.data?.user || res.data || res;
+        const current = session.getUser() || {};
+        const updated = { ...current, ...(typeof user === 'object' ? user : {}), ...data };
+        session.setUser(updated);
+        return updated;
+      } catch (err) {
+        // If server returned 401 or method not allowed, update local session gracefully
+        if (err.status === 401 || err.status === 404 || err.status === 405) {
+          const current = session.getUser() || {};
+          const updated = { ...current, ...data };
+          session.setUser(updated);
+          return updated;
+        }
+        throw err;
+      }
+    }
+
+    // Update locally for Google OAuth & guest sessions
+    const current = session.getUser() || {};
+    const updated = { ...current, ...data };
+    session.setUser(updated);
+    return updated;
   },
   getUserOrders() {
+    if (!session.getToken()) return Promise.resolve([]);
     return api('/api/v1/user/orders');
   },
   async logout() {
@@ -223,8 +278,13 @@ export const checkoutService = {
 // 7. WISHLIST
 export const wishlistService = {
   async list() {
-    const res = await api('/api/v1/wishlist');
-    return unwrapList(res);
+    if (!session.getToken()) return [];
+    try {
+      const res = await api('/api/v1/wishlist');
+      return unwrapList(res);
+    } catch {
+      return [];
+    }
   },
   get() {
     return this.list();

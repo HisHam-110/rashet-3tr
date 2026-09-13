@@ -82,9 +82,11 @@ export default function LatestArticles() {
             <h2 className="la-title">أحدث المقالات</h2>
             <div className="la-title-underline"></div>
           </div>
-          <button className="la-view-all-btn">
-            <span className="la-chevron">‹</span>
-            عرض الكل
+          <button className="la-view-all-btn" onClick={() => navigate('/#articles')} type="button">
+            <span>عرض الكل</span>
+            <svg width="18" height="18" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ transform: 'rotate(180deg)' }}>
+              <path d="M11.8799 26.5599L20.5732 17.8666C21.5999 16.8399 21.5999 15.1599 20.5732 14.1333L11.8799 5.43994" stroke="currentColor" strokeWidth="2.2" strokeMiterlimit="10" strokeLinecap="round" strokeLinejoin="round"/>
+            </svg>
           </button>
         </div>
 
@@ -111,7 +113,10 @@ export default function LatestArticles() {
                 <div className="la-card-body">
                   <h3 className="la-card-title">{article.title}</h3>
                   <p className="la-card-excerpt">{article.excerpt}</p>
-                  <button className="la-read-more-btn">اقرأ المزيد <span>←</span></button>
+                  <button className="la-read-more-btn" type="button">
+                    <span>اقرأ المزيد</span>
+                    <img src="/icons/arrow-right-02.svg" alt="اقرأ المزيد" width="16" height="16" className="la-btn-arrow-icon" />
+                  </button>
                 </div>
               </div>
             ))}

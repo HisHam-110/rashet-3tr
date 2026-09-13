@@ -36,9 +36,6 @@ import { productsApi, cartApi, wishlistApi, authApi } from './services/storeApi'
 import { session } from './services/apiClient';
 
 function App() {
-  // A route loaded directly from the browser address bar is intentionally not
-  // exposed. Internal SPA navigation does not remount App, so site links still work.
-  const [isDirectRouteAccess] = useState(() => window.location.pathname !== '/');
   const [products, setProducts] = useState([]);
   const [activeCategory, setActiveCategory] = useState('all');
   const [searchQuery, setSearchQuery] = useState('');
@@ -261,8 +258,8 @@ function App() {
   // Products with valid images only (filter test/placeholder products from backend)
   const productsWithImages = products.filter((p) => p.image && typeof p.image === 'string' && p.image.length > 0);
 
-  // Best sellers: all products with valid API images for full slider carousel
-  const bestSellerProducts = productsWithImages.length > 0 ? productsWithImages : products;
+  // Best sellers: take top 5 products with valid API images (or top 5 products)
+  const bestSellerProducts = (productsWithImages.length > 0 ? productsWithImages : products).slice(0, 5);
 
   // Home page content (extracted from the original App return)
   const HomePage = () => (
@@ -315,10 +312,6 @@ function App() {
       <Footer />
     </>
   );
-
-  if (isDirectRouteAccess) {
-    return <NotFoundPage />;
-  }
 
   return (
     <div className="app-container">
@@ -400,12 +393,14 @@ function App() {
         onClearCart={handleClearCart}
       />
 
-      {/* Auth Modal (Login / Sign Up) */}
+      {/* Auth & Profile Modal (Login / Sign Up / Profile) */}
       <AuthModal
         isOpen={isAuthOpen}
         onClose={() => setIsAuthOpen(false)}
         showToast={showToast}
         onLoginSuccess={handleLoginSuccess}
+        currentUser={currentUser}
+        onLogout={handleLogout}
       />
 
       {toast && createPortal(

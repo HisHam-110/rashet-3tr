@@ -152,14 +152,8 @@ background: linear-gradient(
     بني ناحية اليمين
   */
 
-  background: linear-gradient(
-    90deg,
-    rgba(144, 91, 48, 0) 0%,
-    rgba(144, 91, 48, 0.20) 18%,
-    rgba(144, 91, 48, 0.55) 48%,
-    #905b30 79.6%,
-    #905b30 100%
-  );
+  background: linear-gradient(90deg, rgba(144, 91, 48, 0) 0%, #905B30 79.6%);
+
 }
 
 
