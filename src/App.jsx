@@ -27,6 +27,7 @@ import ReviewPage from './components/ReviewPage/ReviewPage';
 import LatestArticles from './components/LatestArticles/LatestArticles';
 import AuthModal from './components/AuthModal/AuthModal';
 import WhatsAppButton from './components/WhatsAppButton/WhatsAppButton';
+import ScrollToTop from './components/ScrollToTop/ScrollToTop';
 import ContactPage from './components/ContactPage/ContactPage';
 import AboutPage from './components/AboutPage/AboutPage';
 import WishlistPage from './components/WishlistPage/WishlistPage';
@@ -282,7 +283,7 @@ function App() {
   const HomePage = () => (
     <>
       {/* 2. Hero Banner Section */}
-      <Hero onExploreClick={() => setActiveCategory('all')} />
+      <Hero onExploreClick={() => navigate('/collections')} />
 
       {/* 3. Features Trust Banner */}
       <FeaturesBanner />
@@ -485,7 +486,10 @@ function App() {
           onToggleWishlist={handleToggleWishlist}
         />
       )}
-      {/* Floating WhatsApp Button */}
+      {/* Floating Scroll to Top Button (Bottom Left) */}
+      <ScrollToTop />
+
+      {/* Floating WhatsApp Button (Bottom Right) */}
       <WhatsAppButton phoneNumber="966506540920" />
     </div>
   );

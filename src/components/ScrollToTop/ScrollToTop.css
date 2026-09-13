@@ -1,0 +1,102 @@
+/* Luxury Scroll to Top Button - Positioned at Bottom Left */
+.scroll-to-top-btn {
+  position: fixed;
+  bottom: 24px;
+  left: 24px;
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #1f1b18 0%, #151210 100%);
+  border: 1px solid rgba(186, 152, 124, 0.4);
+  color: #BA987C;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 9990;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.45), 0 0 15px rgba(186, 152, 124, 0.25);
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(20px) scale(0.85);
+  transition: opacity 0.35s cubic-bezier(0.2, 0.8, 0.2, 1),
+              transform 0.35s cubic-bezier(0.2, 0.8, 0.2, 1),
+              visibility 0.35s ease,
+              background 0.3s ease,
+              box-shadow 0.3s ease,
+              border-color 0.3s ease;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  outline: none;
+  padding: 0;
+}
+
+.scroll-to-top-btn.visible {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0) scale(1);
+}
+
+.scroll-to-top-btn:hover {
+  background: linear-gradient(135deg, #BA987C 0%, #A57956 50%, #905B30 100%);
+  color: #ffffff;
+  border-color: rgba(255, 255, 255, 0.6);
+  transform: translateY(-4px) scale(1.08);
+  box-shadow: 0 10px 25px rgba(144, 91, 48, 0.55), 0 0 20px rgba(234, 186, 125, 0.5);
+}
+
+.scroll-to-top-btn:active {
+  transform: translateY(-1px) scale(0.96);
+}
+
+/* Progress ring overlay */
+.scroll-progress-ring {
+  position: absolute;
+  top: -1px;
+  left: -1px;
+  width: 52px;
+  height: 52px;
+  transform: rotate(-90deg);
+  pointer-events: none;
+}
+
+.scroll-progress-bg {
+  stroke: rgba(186, 152, 124, 0.15);
+}
+
+.scroll-progress-bar {
+  stroke: #BA987C;
+  stroke-linecap: round;
+  transition: stroke-dashoffset 0.15s ease-out;
+}
+
+.scroll-to-top-btn:hover .scroll-progress-bar {
+  stroke: #ffffff;
+}
+
+/* Arrow Icon */
+.scroll-arrow-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.25s ease;
+  z-index: 2;
+}
+
+.scroll-to-top-btn:hover .scroll-arrow-icon {
+  transform: translateY(-2px);
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 768px) {
+  .scroll-to-top-btn {
+    bottom: 18px;
+    left: 18px;
+    width: 46px;
+    height: 46px;
+  }
+
+  .scroll-progress-ring {
+    width: 46px;
+    height: 46px;
+  }
+}

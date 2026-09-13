@@ -1,8 +1,25 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 
-export default function HeroCTA({ onClick, href = '#featured' }) {
+export default function HeroCTA({ onClick, href = '/collections' }) {
+  const navigate = useNavigate();
+
+  const handleClick = (e) => {
+    if (onClick) {
+      onClick(e);
+    } else {
+      e.preventDefault();
+      navigate('/collections');
+    }
+  };
+
   return (
-    <a href={href} className="hero-cta-btn" onClick={onClick} dir="rtl">
+    <button
+      type="button"
+      className="hero-cta-btn"
+      onClick={handleClick}
+      dir="rtl"
+    >
       <span>اكتشف المجموعات</span>
       <svg
         width="18"
@@ -17,7 +34,7 @@ export default function HeroCTA({ onClick, href = '#featured' }) {
       >
         <path d="M19 12H5M12 19l-7-7 7-7" />
       </svg>
-    </a>
+    </button>
   );
 }
 

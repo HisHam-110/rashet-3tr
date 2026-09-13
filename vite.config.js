@@ -13,6 +13,15 @@ export default defineConfig({
         target: 'https://rashet-etr.growfet.com',
         changeOrigin: true,
         secure: false,
+        configure: (proxy, _options) => {
+          proxy.on('error', (err, _req, res) => {
+            // Gracefully handle proxy network/endpoint errors without crashing or logging verbose error in terminal
+            if (res && !res.headersSent && typeof res.writeHead === 'function') {
+              res.writeHead(502, { 'Content-Type': 'application/json' });
+              res.end(JSON.stringify({ error: 'Proxy service unavailable', message: err.message }));
+            }
+          });
+        },
       },
     },
   },

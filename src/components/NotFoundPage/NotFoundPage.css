@@ -1,5 +1,5 @@
 /* ═══════════════════════════════════════════════════════════════
-   404 Not Found Page — Luxury "Rashet Eter" Design
+   404 Not Found Page — Clean Luxury Design (Centered & Focused)
    ═══════════════════════════════════════════════════════════════ */
 
 .nf-wrapper {
@@ -9,13 +9,14 @@
   background-color: #FAF8F5;
   color: #3C2A1E;
   direction: rtl;
+  font-family: 'Cairo', 'Tajawal', sans-serif;
 }
 
 .nf-main {
   flex: 1;
   position: relative;
   overflow: hidden;
-  padding: 60px 24px 90px;
+  padding: 40px 20px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -26,44 +27,44 @@
   position: absolute;
   border-radius: 50%;
   pointer-events: none;
-  filter: blur(80px);
+  filter: blur(100px);
   z-index: 1;
 }
 
 .nf-glow-1 {
-  width: 480px;
-  height: 480px;
+  width: 500px;
+  height: 500px;
   top: 10%;
   right: 15%;
-  background: radial-gradient(circle, rgba(144, 91, 48, 0.14) 0%, transparent 70%);
+  background: radial-gradient(circle, rgba(186, 152, 124, 0.25) 0%, transparent 70%);
 }
 
 .nf-glow-2 {
-  width: 400px;
-  height: 400px;
+  width: 450px;
+  height: 450px;
   bottom: 10%;
-  left: 10%;
-  background: radial-gradient(circle, rgba(214, 161, 91, 0.18) 0%, transparent 70%);
+  left: 15%;
+  background: radial-gradient(circle, rgba(214, 161, 91, 0.22) 0%, transparent 70%);
 }
 
-/* ── Container Layout ────────────────────────────────────────── */
-.nf-container {
+/* ── Centered Card Layout ────────────────────────────────────── */
+.nf-container.nf-centered-card {
   position: relative;
   z-index: 2;
-  max-width: 1100px;
+  max-width: 680px;
   width: 100%;
   margin: 0 auto;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 50px;
+  display: flex;
+  flex-direction: column;
   align-items: center;
-  background: rgba(255, 255, 255, 0.7);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border: 1px solid rgba(144, 91, 48, 0.15);
-  border-radius: 28px;
-  padding: 55px 50px;
-  box-shadow: 0 20px 60px rgba(86, 55, 29, 0.08);
+  text-align: center;
+  background: rgba(255, 255, 255, 0.88);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1px solid rgba(186, 152, 124, 0.35);
+  border-radius: 32px;
+  padding: 50px 40px;
+  box-shadow: 0 25px 70px rgba(86, 55, 29, 0.1), 0 0 50px rgba(186, 152, 124, 0.15);
 }
 
 /* ── Visual Area ─────────────────────────────────────────────── */
@@ -73,6 +74,7 @@
   align-items: center;
   justify-content: center;
   position: relative;
+  margin-bottom: 20px;
 }
 
 .nf-badge {
@@ -81,17 +83,17 @@
   gap: 8px;
   background: rgba(144, 91, 48, 0.09);
   color: #905B30;
-  border: 1px solid rgba(144, 91, 48, 0.2);
-  padding: 6px 16px;
+  border: 1px solid rgba(144, 91, 48, 0.22);
+  padding: 8px 20px;
   border-radius: 50px;
-  font-size: 0.88rem;
+  font-size: 0.92rem;
   font-weight: 700;
-  margin-bottom: 25px;
+  margin-bottom: 20px;
 }
 
 .nf-badge-dot {
-  width: 7px;
-  height: 7px;
+  width: 8px;
+  height: 8px;
   border-radius: 50%;
   background-color: #905B30;
   animation: pulseDot 2s infinite ease-in-out;
@@ -108,15 +110,15 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  min-height: 280px;
+  min-height: 250px;
 }
 
 .nf-404-text {
   position: absolute;
-  font-size: clamp(7.5rem, 14vw, 12rem);
+  font-size: clamp(6.5rem, 15vw, 11rem);
   font-weight: 900;
   color: rgba(144, 91, 48, 0.08);
-  letter-spacing: 6px;
+  letter-spacing: 8px;
   user-select: none;
   z-index: 1;
   line-height: 1;
@@ -127,8 +129,8 @@
 .nf-bottle {
   position: relative;
   z-index: 2;
-  width: 130px;
-  height: 210px;
+  width: 120px;
+  height: 195px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -141,8 +143,8 @@
 }
 
 .nf-bottle-cap {
-  width: 50px;
-  height: 32px;
+  width: 48px;
+  height: 30px;
   background: linear-gradient(135deg, #D4AF37, #996515 50%, #FFD700 80%, #794D12);
   border-radius: 8px 8px 4px 4px;
   box-shadow: 0 4px 10px rgba(86, 55, 29, 0.25);
@@ -150,14 +152,14 @@
 }
 
 .nf-bottle-atomizer {
-  width: 24px;
-  height: 14px;
+  width: 22px;
+  height: 12px;
   background: linear-gradient(to bottom, #C59B27, #8B6508);
   border-radius: 2px;
 }
 
 .nf-bottle-neck {
-  width: 34px;
+  width: 32px;
   height: 10px;
   background: rgba(255, 255, 255, 0.85);
   border-left: 2px solid rgba(144, 91, 48, 0.3);
@@ -166,9 +168,9 @@
 
 .nf-bottle-body {
   position: relative;
-  width: 120px;
-  height: 145px;
-  background: linear-gradient(145deg, rgba(255, 255, 255, 0.75), rgba(245, 235, 225, 0.4));
+  width: 115px;
+  height: 135px;
+  background: linear-gradient(145deg, rgba(255, 255, 255, 0.8), rgba(245, 235, 225, 0.45));
   border: 2px solid rgba(144, 91, 48, 0.35);
   border-radius: 18px 18px 24px 24px;
   overflow: hidden;
@@ -196,7 +198,7 @@
   z-index: 3;
   background: rgba(255, 255, 255, 0.95);
   border: 1px solid rgba(144, 91, 48, 0.4);
-  padding: 8px 14px;
+  padding: 7px 12px;
   border-radius: 6px;
   display: flex;
   flex-direction: column;
@@ -205,14 +207,14 @@
 }
 
 .nf-bottle-brand {
-  font-size: 0.82rem;
+  font-size: 0.8rem;
   font-weight: 800;
   color: #56371D;
   white-space: nowrap;
 }
 
 .nf-bottle-sub {
-  font-size: 0.55rem;
+  font-size: 0.52rem;
   font-weight: 700;
   letter-spacing: 2px;
   color: #905B30;
@@ -224,15 +226,15 @@
   top: 10px;
   right: 12px;
   width: 8px;
-  height: 100px;
+  height: 90px;
   background: linear-gradient(to bottom, rgba(255, 255, 255, 0.8), transparent);
   border-radius: 4px;
   filter: blur(1px);
 }
 
 .nf-bottle-base-shadow {
-  width: 90px;
-  height: 14px;
+  width: 85px;
+  height: 12px;
   background: radial-gradient(ellipse at center, rgba(86, 55, 29, 0.28) 0%, transparent 70%);
   margin-top: 8px;
   border-radius: 50%;
@@ -297,176 +299,127 @@
   100% { transform: translate(25px, -50px) scale(1.8); opacity: 0; }
 }
 
-/* ── Content Area ────────────────────────────────────────────── */
-.nf-content {
+/* ── Centered Content Area ───────────────────────────────────── */
+.nf-content.nf-centered-content {
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
-  text-align: right;
+  align-items: center;
+  text-align: center;
+  width: 100%;
 }
 
 .nf-title {
-  font-size: clamp(1.8rem, 3.2vw, 2.6rem);
+  font-size: clamp(1.8rem, 3.5vw, 2.4rem);
   font-weight: 800;
   color: #3C2A1E;
-  margin: 0 0 16px;
-  line-height: 1.3;
+  margin: 0 0 12px;
+  line-height: 1.35;
 }
 
 .nf-highlight {
-  color: #905B30;
-  position: relative;
+  color: #BA987C;
+  background: linear-gradient(135deg, #BA987C, #905B30);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
 
 .nf-desc {
-  font-size: 1.02rem;
-  line-height: 1.85;
+  font-size: 1.05rem;
+  line-height: 1.7;
   color: #6E5B4C;
   margin: 0 0 32px;
-  max-width: 520px;
+  max-width: 480px;
 }
 
-/* ── Action Buttons ──────────────────────────────────────────── */
+/* ── Primary Action Button ───────────────────────────────────── */
 .nf-actions {
   display: flex;
   align-items: center;
-  gap: 16px;
-  flex-wrap: wrap;
-  margin-bottom: 36px;
+  justify-content: center;
+  width: 100%;
 }
 
 .nf-btn-primary {
+  position: relative;
+  overflow: hidden;
   display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: 12px;
-  background-color: #905B30;
+  background: linear-gradient(135deg, #BA987C 0%, #A57956 40%, #905B30 100%);
   color: #FFFFFF;
-  border: none;
-  padding: 12px 26px;
-  border-radius: 12px;
-  font-size: 1rem;
-  font-weight: 700;
+  border: 1px solid rgba(255, 235, 210, 0.45);
+  padding: 16px 42px;
+  border-radius: 18px;
+  font-size: 1.15rem;
+  font-weight: 800;
   cursor: pointer;
   font-family: inherit;
-  transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
-  box-shadow: 0 6px 18px rgba(144, 91, 48, 0.25);
+  transition: all 0.35s cubic-bezier(0.2, 0.8, 0.2, 1);
+  box-shadow: 0 12px 32px rgba(144, 91, 48, 0.35), 0 0 25px rgba(186, 152, 124, 0.25);
+}
+
+.nf-home-btn-main {
+  letter-spacing: 0.3px;
+}
+
+.btn-home-icon {
+  transition: transform 0.3s ease;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2));
 }
 
 .nf-btn-primary:hover {
-  background-color: #56371D;
-  transform: translateY(-2px);
-  box-shadow: 0 10px 24px rgba(86, 55, 29, 0.3);
+  background: linear-gradient(135deg, #c49970 0%, #a86c38 50%, #7e4318 100%);
+  transform: translateY(-4px) scale(1.03);
+  box-shadow: 0 16px 40px rgba(123, 66, 26, 0.5), 0 0 30px rgba(234, 186, 125, 0.45);
+  border-color: rgba(255, 255, 255, 0.8);
 }
 
-.nf-btn-primary:hover .btn-arrow {
-  transform: translateX(-5px);
+.nf-btn-primary:hover .btn-home-icon {
+  transform: scale(1.18) rotate(-6deg);
 }
 
-.nf-btn-secondary {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 10px;
-  background-color: transparent;
-  color: #56371D;
-  border: 1.5px solid #905B30;
-  padding: 11px 22px;
-  border-radius: 12px;
-  font-size: 0.98rem;
-  font-weight: 700;
-  cursor: pointer;
-  font-family: inherit;
-  transition: all 0.25s ease;
+.nf-btn-primary:active {
+  transform: translateY(-1px) scale(0.98);
 }
 
-.nf-btn-secondary:hover {
-  background-color: rgba(144, 91, 48, 0.08);
-  color: #905B30;
-  transform: translateY(-2px);
+/* Shimmer Light Beam Effect */
+.btn-shine-effect {
+  position: absolute;
+  top: 0;
+  left: -120%;
+  width: 60%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.4),
+    transparent
+  );
+  transform: skewX(-25deg);
+  animation: shineSweep 3.5s infinite ease-in-out;
+  pointer-events: none;
 }
 
-/* ── Quick Chips Navigation ──────────────────────────────────── */
-.nf-quick-section {
-  border-top: 1px solid rgba(144, 91, 48, 0.15);
-  padding-top: 24px;
-  width: 100%;
+@keyframes shineSweep {
+  0% { left: -120%; }
+  30%, 100% { left: 160%; }
 }
 
-.nf-quick-title {
-  display: block;
-  font-size: 1rem;
-  font-weight: 700;
-  color: #8C7869;
-  margin-bottom: 12px;
-}
-
-.nf-quick-chips {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-}
-
-.nf-chip {
-  background: rgba(144, 91, 48, 0.06);
-  border: 1px solid rgba(144, 91, 48, 0.18);
-  color: #56371D;
-  padding: 8px 18px;
-  border-radius: 20px;
-  font-size: 1rem;
-  font-weight: 600;
-  cursor: pointer;
-  font-family: inherit;
-  transition: all 0.2s ease;
-}
-
-.nf-chip:hover {
-  background: #905B30;
-  color: #FFFFFF;
-  border-color: #905B30;
-  transform: translateY(-1px);
-}
-
-/* ── Responsive Media Queries ────────────────────────────────── */
-@media (max-width: 991px) {
-  .nf-container {
-    grid-template-columns: 1fr;
-    gap: 40px;
-    padding: 40px 30px;
-    text-align: center;
-  }
-
-  .nf-content {
-    align-items: center;
-    text-align: center;
-  }
-
-  .nf-actions {
-    justify-content: center;
-  }
-
-  .nf-quick-chips {
-    justify-content: center;
-  }
-}
-
+/* ── Responsive Adjustments ──────────────────────────────────── */
 @media (max-width: 576px) {
   .nf-main {
-    padding: 30px 16px 60px;
+    padding: 24px 16px;
   }
 
-  .nf-container {
-    padding: 30px 20px;
-    border-radius: 20px;
+  .nf-container.nf-centered-card {
+    padding: 36px 20px;
+    border-radius: 24px;
   }
 
-  .nf-actions {
-    flex-direction: column;
+  .nf-btn-primary {
     width: 100%;
-  }
-
-  .nf-btn-primary,
-  .nf-btn-secondary {
-    width: 100%;
+    padding: 15px 24px;
+    font-size: 1.05rem;
   }
 }

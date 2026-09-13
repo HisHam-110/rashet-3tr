@@ -12,8 +12,8 @@ export default function AuthModal({ isOpen, onClose, showToast, onLoginSuccess, 
   const [name, setName] = useState('');
   const [phone, setPhone] = useState('');
   const [loading, setLoading] = useState(false);
+  const [googleLoading, setGoogleLoading] = useState(false);
   const [errors, setErrors] = useState({});
-  const [showGooglePicker, setShowGooglePicker] = useState(false);
 
   useEffect(() => {
     if (currentUser) {
@@ -25,8 +25,8 @@ export default function AuthModal({ isOpen, onClose, showToast, onLoginSuccess, 
 
   useEffect(() => {
     if (!isOpen) {
-      setShowGooglePicker(false);
       setErrors({});
+      setGoogleLoading(false);
     }
   }, [isOpen]);
 
@@ -193,223 +193,97 @@ export default function AuthModal({ isOpen, onClose, showToast, onLoginSuccess, 
     onClose();
   };
 
-  const googleAccountsList = [
-    {
-      id: 1,
-      name: 'هشام شاهين',
-      email: 'hishamshaheen260@gmail.com',
-      avatar: 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=150&auto=format&fit=crop&q=80',
-      bgColor: '#10b981',
-      initial: 'هـ'
-    },
-    {
-      id: 2,
-      name: 'hisham shaheen',
-      email: 'hishamshaheen280@gmail.com',
-      bgColor: '#ea580c',
-      initial: 'h'
-    },
-    {
-      id: 3,
-      name: 'Ki Ki',
-      email: 'kik45057@gmail.com',
-      bgColor: '#84cc16',
-      initial: 'Ki'
-    },
-    {
-      id: 4,
-      name: 'Ooo oo',
-      email: 'ooo842409@gmail.com',
-      bgColor: '#78716c',
-      initial: 'O'
-    },
-    {
-      id: 5,
-      name: 'Hisham Shaheen',
-      email: 'hishamshaheen250@gmail.com',
-      avatar: 'https://images.unsplash.com/photo-1570295999919-56ceb5ecca61?w=150&auto=format&fit=crop&q=80',
-      bgColor: '#3b82f6',
-      initial: 'H'
-    },
-    {
-      id: 6,
-      name: 'Hima Amer',
-      email: 'himaamer927@gmail.com',
-      bgColor: '#64748b',
-      initial: 'H'
-    },
-    {
-      id: 7,
-      name: 'Ebrahim Nti',
-      email: 'ebrahimnti8@gmail.com',
-      bgColor: '#22c55e',
-      initial: 'E'
-    },
-    {
-      id: 8,
-      name: 'Hisham El Sayed',
-      email: 'hishamshaheen230@gmail.com',
-      bgColor: '#64748b',
-      initial: 'H'
-    },
-    {
-      id: 9,
-      name: 'Ebrahim Amer',
-      email: 'ebrahimamer270@gmail.com',
-      bgColor: '#0284c7',
-      initial: 'E'
-    }
-  ];
-
-  const handleSelectGoogleAccount = async (acc) => {
-    const googleUser = {
-      name: acc.name,
-      email: acc.email,
-      avatar: acc.avatar || `https://ui-avatars.com/api/?name=${encodeURIComponent(acc.name)}&background=${acc.bgColor ? acc.bgColor.replace('#','') : '4285F4'}&color=fff&size=150&bold=true`,
-      picture: acc.avatar || `https://ui-avatars.com/api/?name=${encodeURIComponent(acc.name)}&background=${acc.bgColor ? acc.bgColor.replace('#','') : '4285F4'}&color=fff&size=150&bold=true`,
-      google_id: 'google_user_' + acc.id
-    };
-
-    session.setToken('google_oauth_token_' + Date.now());
-    session.setUser(googleUser);
-    if (onLoginSuccess) await onLoginSuccess();
-    if (showToast) showToast(`مرحباً ${acc.name}، تم تسجيل الدخول بواسطة جوجل!`);
-    setShowGooglePicker(false);
-    onClose();
-  };
-
+  /**
+   * Real Standard Google OAuth 2.0 Handler
+   * Securely triggers Google Identity Services without handling/storing passwords
+   */
   const handleGoogleSignIn = async () => {
     const clientId = import.meta.env.VITE_GOOGLE_CLIENT_ID;
 
-    // If Google Client ID is configured, use official Google Identity Services
-    if (clientId && window.google?.accounts?.oauth2) {
+    if (!clientId) {
+      if (showToast) {
+        showToast('يرجى إضافة VITE_GOOGLE_CLIENT_ID في ملف .env لتفعيل تسجيل الدخول الرسمي عبر Google OAuth', 'error');
+      }
+      return;
+    }
+
+    if (!window.google?.accounts?.oauth2) {
+      if (showToast) {
+        showToast('جاري تحميل مكتبة Google OAuth، يرجى المحاولة بعد لحظات...', 'error');
+      }
+      return;
+    }
+
+    setGoogleLoading(true);
+
+    try {
       const tokenClient = window.google.accounts.oauth2.initTokenClient({
         client_id: clientId,
         scope: 'email profile openid',
+        prompt: 'select_account',
         callback: async (tokenResponse) => {
+          if (tokenResponse.error) {
+            setGoogleLoading(false);
+            if (tokenResponse.error !== 'popup_closed_by_user') {
+              if (showToast) showToast('حدث خطأ أثناء الاتصال بخدمة Google OAuth', 'error');
+            }
+            return;
+          }
+
           if (tokenResponse.access_token) {
             try {
+              // 1. Fetch verified user profile from Google OAuth2 API
               const res = await fetch('https://www.googleapis.com/oauth2/v3/userinfo', {
                 headers: { Authorization: `Bearer ${tokenResponse.access_token}` }
               });
+
+              if (!res.ok) {
+                throw new Error('تعذر استرداد بيانات الحساب من Google');
+              }
+
               const data = await res.json();
-              const realGoogleUser = {
-                name: data.name || data.given_name || 'حساب جوجل',
+              const verifiedUser = {
+                token: tokenResponse.access_token,
                 email: data.email,
+                name: data.name || data.given_name || 'مستخدم Google',
                 avatar: data.picture,
                 picture: data.picture,
+                google_id: data.sub
               };
-              session.setToken(tokenResponse.access_token);
-              session.setUser(realGoogleUser);
+
+              // 2. Send verified Google credentials to backend authentication API
+              await authApi.loginWithGoogle(verifiedUser);
+
               if (onLoginSuccess) await onLoginSuccess();
-              if (showToast) showToast(`مرحباً ${realGoogleUser.name}، تم تسجيل الدخول بنجاح!`);
+              if (showToast) showToast(`مرحباً ${verifiedUser.name}، تم تسجيل الدخول بنجاح!`);
               onClose();
             } catch (e) {
-              if (showToast) showToast('تعذر استرداد بيانات حساب جوجل', 'error');
+              console.error('Google Auth Error:', e);
+              if (showToast) showToast(e.message || 'تعذر إتمام تسجيل الدخول باستخدام حساب Google', 'error');
+            } finally {
+              setGoogleLoading(false);
             }
           }
         },
       });
-      tokenClient.requestAccessToken();
-      return;
-    }
 
-    // Otherwise show the Google Account Selector list
-    setShowGooglePicker(true);
+      tokenClient.requestAccessToken({ prompt: 'select_account' });
+    } catch (err) {
+      setGoogleLoading(false);
+      console.error('Google OAuth Initialization Error:', err);
+      if (showToast) showToast('حدث خطأ أثناء فتح نافذة تسجيل الدخول عبر Google', 'error');
+    }
   };
 
   return (
     <div className="auth-modal-backdrop" onClick={onClose}>
-      <div className={`auth-modal-card ${showGooglePicker ? 'auth-modal-google-card' : ''}`} onClick={(e) => e.stopPropagation()}>
-        {/* Close button (only shown when not in Google Picker) */}
-        {!showGooglePicker && (
-          <button className="auth-modal-close" onClick={onClose} aria-label="إغلاق">
-            ✕
-          </button>
-        )}
+      <div className="auth-modal-card" onClick={(e) => e.stopPropagation()}>
+        {/* Close button */}
+        <button className="auth-modal-close" onClick={onClose} aria-label="إغلاق">
+          ✕
+        </button>
 
-        {showGooglePicker ? (
-          /* Google Account Chooser View */
-          <div className="google-picker-view">
-            <div className="google-picker-header">
-              <button
-                className="google-picker-back-btn"
-                onClick={() => setShowGooglePicker(false)}
-                type="button"
-                aria-label="الرجوع"
-                title="الرجوع"
-              >
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
-                  <line x1="5" y1="12" x2="19" y2="12"></line>
-                  <polyline points="12 5 19 12 12 19"></polyline>
-                </svg>
-              </button>
-              <div className="google-picker-logo-wrap">
-                <svg width="30" height="30" viewBox="0 0 24 24">
-                  <path fill="#4285F4" d="M23.745 12.27c0-.7-.06-1.4-.19-2.07H12v4.51h6.6c-.29 1.52-1.14 2.82-2.4 3.68v3.05h3.88c2.27-2.09 3.665-5.17 3.665-9.17z"/>
-                  <path fill="#34A853" d="M12 24c3.24 0 5.95-1.08 7.93-2.91l-3.88-3.05c-1.08.72-2.45 1.16-4.05 1.16-3.12 0-5.77-2.1-6.72-4.93H1.29v3.15C3.26 21.3 7.31 24 12 24z"/>
-                  <path fill="#FBBC05" d="M5.28 14.27c-.25-.72-.38-1.49-.38-2.27s.13-1.55.38-2.27V6.58H1.29C.47 8.21 0 10.05 0 12s.47 3.79 1.29 5.42l3.99-3.15z"/>
-                  <path fill="#EA4335" d="M12 4.75c1.77 0 3.35.61 4.6 1.8l3.42-3.42C17.95 1.19 15.24 0 12 0 7.31 0 3.26 2.7 1.29 6.58l3.99 3.15c.95-2.83 3.6-4.98 6.72-4.98z"/>
-                </svg>
-              </div>
-              <h3 className="google-picker-title">اختيار حساب</h3>
-              <p className="google-picker-subtitle">
-                للمتابعة إلى <span className="google-brand-highlight">متجر رشة عطر</span>
-              </p>
-            </div>
-
-            <div className="google-accounts-list">
-              {googleAccountsList.map((acc) => (
-                <button
-                  key={acc.id}
-                  className="google-account-item"
-                  onClick={() => handleSelectGoogleAccount(acc)}
-                  type="button"
-                >
-                  <div className="google-account-avatar-wrap">
-                    {acc.avatar ? (
-                      <img src={acc.avatar} alt={acc.name} className="google-account-avatar-img" />
-                    ) : (
-                      <div
-                        className="google-account-initial"
-                        style={{ backgroundColor: acc.bgColor || '#4285F4' }}
-                      >
-                        {acc.initial}
-                      </div>
-                    )}
-                  </div>
-                  <div className="google-account-text">
-                    <span className="google-account-name">{acc.name}</span>
-                    <span className="google-account-email">{acc.email}</span>
-                  </div>
-                </button>
-              ))}
-            </div>
-
-            <div className="google-picker-footer">
-              <button
-                type="button"
-                className="google-add-another-btn"
-                onClick={() => {
-                  const customEmail = prompt('أدخل بريد جوجل الإلكتروني الخاص بك:');
-                  if (customEmail && customEmail.includes('@')) {
-                    const customName = customEmail.split('@')[0];
-                    handleSelectGoogleAccount({
-                      id: Date.now(),
-                      name: customName,
-                      email: customEmail,
-                      bgColor: '#4285F4',
-                      initial: customName[0].toUpperCase()
-                    });
-                  }
-                }}
-              >
-                <div className="google-add-icon">+</div>
-                <span>استخدام حساب آخر</span>
-              </button>
-            </div>
-          </div>
-        ) : currentUser ? (
+        {currentUser ? (
           /* Profile Mode */
           <>
             <div className="auth-header">
@@ -474,17 +348,6 @@ export default function AuthModal({ isOpen, onClose, showToast, onLoginSuccess, 
                 type="button"
                 className="auth-logout-btn"
                 onClick={handleLogoutClick}
-                style={{
-                  marginTop: '10px',
-                  width: '100%',
-                  padding: '12px',
-                  borderRadius: '10px',
-                  border: '1px solid #e2e8f0',
-                  background: '#fff',
-                  color: '#e53e3e',
-                  fontWeight: '600',
-                  cursor: 'pointer'
-                }}
               >
                 تسجيل الخروج
               </button>
@@ -505,27 +368,42 @@ export default function AuthModal({ isOpen, onClose, showToast, onLoginSuccess, 
               </p>
             </div>
 
-            {/* Google Login Button */}
-            <button className="google-auth-btn" onClick={handleGoogleSignIn} type="button">
-              <svg className="google-icon" width="20" height="20" viewBox="0 0 24 24">
-                <path
-                  fill="#4285F4"
-                  d="M23.745 12.27c0-.7-.06-1.4-.19-2.07H12v4.51h6.6c-.29 1.52-1.14 2.82-2.4 3.68v3.05h3.88c2.27-2.09 3.665-5.17 3.665-9.17z"
-                />
-                <path
-                  fill="#34A853"
-                  d="M12 24c3.24 0 5.95-1.08 7.93-2.91l-3.88-3.05c-1.08.72-2.45 1.16-4.05 1.16-3.12 0-5.77-2.1-6.72-4.93H1.29v3.15C3.26 21.3 7.31 24 12 24z"
-                />
-                <path
-                  fill="#FBBC05"
-                  d="M5.28 14.27c-.25-.72-.38-1.49-.38-2.27s.13-1.55.38-2.27V6.58H1.29C.47 8.21 0 10.05 0 12s.47 3.79 1.29 5.42l3.99-3.15z"
-                />
-                <path
-                  fill="#EA4335"
-                  d="M12 4.75c1.77 0 3.35.61 4.6 1.8l3.42-3.42C17.95 1.19 15.24 0 12 0 7.31 0 3.26 2.7 1.29 6.58l3.99 3.15c.95-2.83 3.6-4.98 6.72-4.98z"
-                />
-              </svg>
-              <span>{isSignUp ? 'التسجيل باستخدام جوجل' : 'تسجيل الدخول باستخدام جوجل'}</span>
+            {/* Google OAuth Login Button */}
+            <button
+              className="google-auth-btn"
+              onClick={handleGoogleSignIn}
+              type="button"
+              disabled={googleLoading}
+            >
+              {googleLoading ? (
+                <div className="google-auth-spinner" />
+              ) : (
+                <svg className="google-icon" width="20" height="20" viewBox="0 0 24 24">
+                  <path
+                    fill="#4285F4"
+                    d="M23.745 12.27c0-.7-.06-1.4-.19-2.07H12v4.51h6.6c-.29 1.52-1.14 2.82-2.4 3.68v3.05h3.88c2.27-2.09 3.665-5.17 3.665-9.17z"
+                  />
+                  <path
+                    fill="#34A853"
+                    d="M12 24c3.24 0 5.95-1.08 7.93-2.91l-3.88-3.05c-1.08.72-2.45 1.16-4.05 1.16-3.12 0-5.77-2.1-6.72-4.93H1.29v3.15C3.26 21.3 7.31 24 12 24z"
+                  />
+                  <path
+                    fill="#FBBC05"
+                    d="M5.28 14.27c-.25-.72-.38-1.49-.38-2.27s.13-1.55.38-2.27V6.58H1.29C.47 8.21 0 10.05 0 12s.47 3.79 1.29 5.42l3.99-3.15z"
+                  />
+                  <path
+                    fill="#EA4335"
+                    d="M12 4.75c1.77 0 3.35.61 4.6 1.8l3.42-3.42C17.95 1.19 15.24 0 12 0 7.31 0 3.26 2.7 1.29 6.58l3.99 3.15c.95-2.83 3.6-4.98 6.72-4.98z"
+                  />
+                </svg>
+              )}
+              <span>
+                {googleLoading
+                  ? 'جاري الاتصال بـ Google...'
+                  : isSignUp
+                  ? 'التسجيل باستخدام Google'
+                  : 'تسجيل الدخول باستخدام Google'}
+              </span>
             </button>
 
             {/* Divider */}
@@ -654,7 +532,7 @@ export default function AuthModal({ isOpen, onClose, showToast, onLoginSuccess, 
                 </div>
               )}
 
-              <button type="submit" className="auth-submit-btn" disabled={loading}>
+              <button type="submit" className="auth-submit-btn" disabled={loading || googleLoading}>
                 {loading ? 'جاري التحميل...' : isSignUp ? 'إنشاء الحساب' : 'تسجيل الدخول'}
               </button>
             </form>

@@ -123,6 +123,29 @@ export default function Navbar({
 
         {/* Middle: Navigation Links */}
         <ul className={`navbar-nav-links ${isMobileOpen ? 'mobile-active' : ''}`}>
+          {currentUser && (
+            <li className="mobile-user-profile-item">
+              <div className="mobile-user-info-card" onClick={onOpenUser}>
+                <div className="mobile-user-avatar">
+                  {(currentUser.avatar || currentUser.avatar_url || currentUser.picture || currentUser.image || currentUser.photo_url) ? (
+                    <img
+                      src={currentUser.avatar || currentUser.avatar_url || currentUser.picture || currentUser.image || currentUser.photo_url}
+                      alt={currentUser.name || 'المستخدم'}
+                      className="mobile-avatar-img"
+                      referrerPolicy="no-referrer"
+                      onError={(e) => { e.currentTarget.style.display = 'none'; }}
+                    />
+                  ) : (
+                    <span>{(currentUser.name || 'م').trim()[0].toUpperCase()}</span>
+                  )}
+                </div>
+                <div className="mobile-user-text">
+                  <span className="mobile-user-name">أهلاً، {currentUser.name || 'مستخدم'}</span>
+                  <span className="mobile-user-email">{currentUser.email || ''}</span>
+                </div>
+              </div>
+            </li>
+          )}
           {navItems.map((item) => {
             let isActive = false;
             if (currentPath === '/') {
@@ -207,6 +230,8 @@ export default function Navbar({
                       src={currentUser.avatar || currentUser.avatar_url || currentUser.picture || currentUser.image || currentUser.photo_url}
                       alt={currentUser.name || 'المستخدم'}
                       className="user-avatar-img"
+                      referrerPolicy="no-referrer"
+                      onError={(e) => { e.currentTarget.style.display = 'none'; }}
                     />
                   ) : (
                     <span className="user-avatar-initial">
@@ -225,6 +250,8 @@ export default function Navbar({
                         src={currentUser.avatar || currentUser.avatar_url || currentUser.picture || currentUser.image || currentUser.photo_url}
                         alt={currentUser.name || 'المستخدم'}
                         className="dropdown-avatar-img"
+                        referrerPolicy="no-referrer"
+                        onError={(e) => { e.currentTarget.style.display = 'none'; }}
                       />
                     ) : (
                       (currentUser.name || 'م').trim()[0].toUpperCase()

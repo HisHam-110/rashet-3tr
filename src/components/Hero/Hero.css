@@ -156,6 +156,7 @@
   align-items: center;
   justify-content: center;
   gap: 12px;
+  font-family: inherit;
   background: linear-gradient(180deg, #BA987C 0%, #A57956 27.68%, #905B30 125.82%);
   color: #ffffff;
   font-size: 1.05rem;
