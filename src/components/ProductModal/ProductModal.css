@@ -106,13 +106,25 @@
   margin-bottom: 14px;
 }
 
-.modal-stars {
-  color: #e5a93b;
+.modal-rating-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  direction: ltr;
+}
+
+.modal-star-gold {
+  color: #e59b22;
+  font-size: 14px;
+  line-height: 1;
 }
 
 .modal-rating-val {
-  font-weight: 700;
-  font-size: 0.9rem;
+  color: #9aa0a6;
+  font-family: "Cairo", sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 1;
 }
 
 .modal-reviews {

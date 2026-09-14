@@ -39,11 +39,19 @@ export const mapProduct = (item = {}) => {
     .map((img) => formatImageUrl(typeof img === 'string' ? img : img.url || img.path || img.image_url))
     .filter(Boolean);
 
+  const rawType = item.type || (typeof item.category === 'string' && item.category.length > 0 && !['men', 'women', 'unisex'].includes(item.category.toLowerCase()) ? item.category : null);
+  const typeLabel = rawType || (
+    category === 'women' ? 'عطور نسائية' :
+    category === 'men' ? 'عطور رجالية' :
+    'عطور رجالية، نسائية'
+  );
+
   return {
     ...item,
     id: item.id,
     name: item.name_ar || item.name || item.name_en || item.title || '',
     brand: item.brand?.name_ar || item.brand?.name || item.brand || item.brand_name || '',
+    type: typeLabel,
     description: item.description_ar || item.description || item.description_en || '',
     price: Number(item.price || 0),
     originalPrice: item.original_price ? Number(item.original_price) : (item.price ? Math.round(Number(item.price) * 1.25) : 600),

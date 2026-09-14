@@ -545,33 +545,12 @@ export default function PerfumesPage({
                           </span>
                         )}
                       </div>
-                      <h3 className="pp-card-name">{product.name}</h3>
-
-                      {/* Rating */}
-                      <div className="pp-card-rating">
-                        <div className="product-rating" aria-label={`تقييم ${productRatings[product.id] || product.rating} من 5`}>
-                          {Array.from({ length: 5 }, (_, index) => {
-                            const starNumber = index + 1;
-                            const currentRating = productRatings[product.id] || product.rating;
-                            return (
-                              <button
-                                key={starNumber}
-                                type="button"
-                                className={`rating-star ${
-                                  starNumber <= currentRating ? "active" : ""
-                                }`}
-                                onClick={(e) => {
-                                  e.stopPropagation();
-                                  handleRating(product.id, starNumber);
-                                }}
-                                aria-label={`تقييم ${starNumber} نجوم`}
-                              >
-                                ★
-                              </button>
-                            );
-                          })}
+                      <div className="pp-card-name-row">
+                        <h3 className="pp-card-name" title={product.name}>{product.name}</h3>
+                        <div className="pp-rating-badge" aria-label={`تقييم ${(Number(product.rating) || 4.8).toFixed(1)} من 5`}>
+                          <span className="pp-rating-val">({(Number(product.rating) || 4.8).toFixed(1)})</span>
+                          <span className="pp-rating-star">★</span>
                         </div>
-                        <span className="pp-rating-count">({product.reviews})</span>
                       </div>
 
                       {/* Price */}

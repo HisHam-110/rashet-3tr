@@ -161,13 +161,11 @@ export default function ProductDetailPage({ onAddToCart, onToggleWishlist, wishl
 
               {/* Rating */}
               <div className="pdp-rating-row">
-                <div className="pdp-stars-wrap">
-                  {'★★★★★'.split('').map((star, idx) => (
-                    <span key={idx} className="pdp-star-gold">★</span>
-                  ))}
+                <div className="pdp-rating-badge">
+                  <span className="pdp-rating-val">({(Number(product.rating) || 4.8).toFixed(1)})</span>
+                  <span className="pdp-star-gold">★</span>
                 </div>
-                <span className="pdp-rating-text">{product.rating || 4.9}</span>
-                <span className="pdp-reviews-count">({product.reviews || 142}) تقييم</span>
+                <span className="pdp-reviews-count">({product.reviews || 142} تقييم)</span>
               </div>
 
               {/* Price */}
@@ -344,13 +342,15 @@ export default function ProductDetailPage({ onAddToCart, onToggleWishlist, wishl
       <section className="pdp-related-section pdp-full-width" id="section-related">
         <div className="pdp-container">
           <div className="pdp-section-header">
+            <h2 className="pdp-section-h2">قد يعجبك أيضاً</h2>
             <button className="pdp-show-all-btn" onClick={() => navigate('/perfumes')}>
               <span>عرض الكل</span>
-              <svg width="18" height="18" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ transform: 'rotate(180deg)' }}>
-                <path d="M11.8799 26.5599L20.5732 17.8666C21.5999 16.8399 21.5999 15.1599 20.5732 14.1333L11.8799 5.43994" stroke="currentColor" strokeWidth="2.2" strokeMiterlimit="10" strokeLinecap="round" strokeLinejoin="round"/>
-              </svg>
+              <span className="pdp-show-all-arrow">
+                <svg width="20" height="20" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ transform: 'rotate(180deg)' }}>
+                  <path d="M11.8799 26.5599L20.5732 17.8666C21.5999 16.8399 21.5999 15.1599 20.5732 14.1333L11.8799 5.43994" stroke="currentColor" strokeWidth="2.2" strokeMiterlimit="10" strokeLinecap="round" strokeLinejoin="round"/>
+                </svg>
+              </span>
             </button>
-            <h2 className="pdp-section-h2">قد يعجبك أيضاً</h2>
           </div>
 
           <div className="pdp-products-grid">
@@ -372,12 +372,25 @@ export default function ProductDetailPage({ onAddToCart, onToggleWishlist, wishl
                 </div>
 
                 <div className="pdp-product-card-body">
-                  <h3 className="pdp-card-title">{rel.name}</h3>
-                  <div className="pdp-card-stars">{'★'.repeat(Math.round(rel.rating || 5))}</div>
+                  <div className="pdp-card-name-row">
+                    <h3 className="pdp-card-title">{rel.name}</h3>
+                    <div className="pdp-card-rating-badge">
+                      <span className="pdp-card-rating-val">({(Number(rel.rating) || 4.8).toFixed(1)})</span>
+                      <span className="pdp-card-star-gold">★</span>
+                    </div>
+                  </div>
                   <p className="pdp-card-type">{rel.brand || 'عطور فاخرة'}</p>
                   <div className="pdp-card-price-row">
-                    <span className="pdp-card-price-val">{rel.price}</span>
-                    <img src="/icons/Group 34319.svg" alt="ريال" className="pdp-riyal-icon" />
+                    <div className="pdp-card-current-price">
+                      <span className="pdp-card-price-val">{rel.price}</span>
+                      <img src="/icons/saudi-riyal.svg" alt="ر.س" className="pdp-riyal-icon" />
+                    </div>
+                    {(rel.oldPrice || rel.originalPrice) && (
+                      <div className="pdp-card-old-price">
+                        <span className="pdp-card-old-price-val">{rel.oldPrice || rel.originalPrice}</span>
+                        <img src="/icons/saudi-riyal-2.svg" alt="ر.س" className="pdp-old-riyal-icon" />
+                      </div>
+                    )}
                   </div>
                   <button
                     type="button"
@@ -417,7 +430,10 @@ export default function ProductDetailPage({ onAddToCart, onToggleWishlist, wishl
               <div className="pdp-overall-score">
                 <span className="pdp-score-num">4.8</span>
                 <span className="pdp-score-max">من 5</span>
-                <div className="pdp-score-stars">★★★★★</div>
+                <div className="pdp-score-stars-badge">
+                  <span className="pdp-score-val">(4.8)</span>
+                  <span className="pdp-score-star">★</span>
+                </div>
                 <span className="pdp-score-total">142 تقييم</span>
               </div>
 
@@ -451,10 +467,9 @@ export default function ProductDetailPage({ onAddToCart, onToggleWishlist, wishl
                     </div>
                   </div>
 
-                  <div className="pdp-rev-stars">
-                    {Array.from({ length: rev.rating }, (_, i) => (
-                      <span key={i} className="pdp-rev-star-gold">★</span>
-                    ))}
+                  <div className="pdp-rev-rating-badge">
+                    <span className="pdp-rev-rating-val">({(Number(rev.rating) || 5.0).toFixed(1)})</span>
+                    <span className="pdp-rev-star-gold">★</span>
                   </div>
 
                   <h5 className="pdp-rev-title">{rev.title}</h5>

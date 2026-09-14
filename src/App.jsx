@@ -279,58 +279,6 @@ function App() {
   // Best sellers: take top 5 products with valid API images (or top 5 products)
   const bestSellerProducts = (productsWithImages.length > 0 ? productsWithImages : products).slice(0, 5);
 
-  // Home page content (extracted from the original App return)
-  const HomePage = () => (
-    <>
-      {/* 2. Hero Banner Section */}
-      <Hero onExploreClick={() => navigate('/collections')} />
-
-      {/* 3. Features Trust Banner */}
-      <FeaturesBanner />
-
-      {/* New Section 1: Collections Section */}
-      <CollectionsSection />
-
-      {/* New Section 2: About Perfume Section */}
-      <AboutSection />
-
-      {/* 5. Featured / Best Selling Products Grid */}
-      <FeaturedProducts
-        products={bestSellerProducts}
-        onAddToCart={handleAddToCart}
-        onToggleWishlist={handleToggleWishlist}
-        wishlistIds={wishlistIds}
-        onOpenProductDetails={(prod) => navigate(`/product/${prod.id}`)}
-        activeCategory={activeCategory}
-        onSelectCategory={(catId) => setActiveCategory(catId)}
-      />
-
-      {/* 6. Signature Perfume Story & Olfactory Pyramid (Figma Note section) */}
-      <PerfumeNotes
-        onAddToCart={handleAddToCart}
-        onOpenProductDetails={(prod) => navigate(`/product/${prod.id}`)}
-      />
-
-      {/* 7. Recommended Products / You May Also Like */}
-      <Recommended
-        products={productsWithImages}
-        onAddToCart={handleAddToCart}
-        onToggleWishlist={handleToggleWishlist}
-        wishlistIds={wishlistIds}
-        onOpenProductDetails={(prod) => navigate(`/product/${prod.id}`)}
-      />
-
-      {/* 8. Newsletter Subscription Banner */}
-      <Newsletter />
-
-      {/* 9. Latest Articles Section */}
-      <LatestArticles />
-
-      {/* 10. Footer Section */}
-      <Footer />
-    </>
-  );
-
   return (
     <div className="app-container">
       {isKnownRoute && (
@@ -344,7 +292,59 @@ function App() {
         />
       )}
       <Routes>
-        <Route path="/" element={<HomePage />} />
+        <Route
+          path="/"
+          element={
+            <>
+              {/* 2. Hero Banner Section */}
+              <Hero onExploreClick={() => navigate('/collections')} />
+
+              {/* 3. Features Trust Banner */}
+              <FeaturesBanner />
+
+              {/* New Section 1: Collections Section */}
+              <CollectionsSection />
+
+              {/* New Section 2: About Perfume Section */}
+              <AboutSection />
+
+              {/* 5. Featured / Best Selling Products Grid */}
+              <FeaturedProducts
+                products={bestSellerProducts}
+                onAddToCart={handleAddToCart}
+                onToggleWishlist={handleToggleWishlist}
+                wishlistIds={wishlistIds}
+                onOpenProductDetails={(prod) => navigate(`/product/${prod.id}`)}
+                activeCategory={activeCategory}
+                onSelectCategory={(catId) => setActiveCategory(catId)}
+              />
+
+              {/* 6. Signature Perfume Story & Olfactory Pyramid (Figma Note section) */}
+              <PerfumeNotes
+                onAddToCart={handleAddToCart}
+                onOpenProductDetails={(prod) => navigate(`/product/${prod.id}`)}
+              />
+
+              {/* 7. Recommended Products / You May Also Like */}
+              <Recommended
+                products={productsWithImages}
+                onAddToCart={handleAddToCart}
+                onToggleWishlist={handleToggleWishlist}
+                wishlistIds={wishlistIds}
+                onOpenProductDetails={(prod) => navigate(`/product/${prod.id}`)}
+              />
+
+              {/* 8. Newsletter Subscription Banner */}
+              <Newsletter />
+
+              {/* 9. Latest Articles Section */}
+              <LatestArticles />
+
+              {/* 10. Footer Section */}
+              <Footer />
+            </>
+          }
+        />
         <Route path="/about" element={<AboutPage />} />
         <Route path="/about-brand" element={<AboutPage />} />
         <Route

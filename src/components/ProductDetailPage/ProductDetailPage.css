@@ -175,23 +175,28 @@
 .pdp-rating-row {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 10px;
 }
 
-.pdp-stars-wrap {
-  display: flex;
-  gap: 2px;
+.pdp-rating-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  direction: ltr;
 }
 
 .pdp-star-gold {
-  color: #c5a454;
-  font-size: 1.1rem;
+  color: #e59b22;
+  font-size: 15px;
+  line-height: 1;
 }
 
-.pdp-rating-text {
-  font-size: 0.95rem;
-  font-weight: 700;
-  color: #56371d;
+.pdp-rating-val {
+  color: #9aa0a6;
+  font-family: "Cairo", sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1;
 }
 
 .pdp-reviews-count {
@@ -722,7 +727,8 @@
   align-items: center;
   justify-content: space-between;
   margin-bottom: 24px;
-  direction: ltr;
+  direction: rtl;
+  width: 100%;
 }
 
 .pdp-section-h2 {
@@ -736,17 +742,30 @@
   background: transparent;
   border: none;
   color: #905b30;
-  font-size: 0.92rem;
-  font-weight: 700;
+  font-size: 16px;
+  font-weight: 500;
   cursor: pointer;
-  display: flex;
+  display: inline-flex;
   align-items: center;
-  gap: 6px;
-  font-family: inherit;
+  gap: 8px;
+  font-family: "Cairo", sans-serif;
+  direction: rtl;
+  transition: color 0.25s ease;
 }
 
 .pdp-show-all-btn:hover {
-  text-decoration: underline;
+  color: #56371d;
+}
+
+.pdp-show-all-arrow {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.3s ease;
+}
+
+.pdp-show-all-btn:hover .pdp-show-all-arrow {
+  transform: translateX(-3px);
 }
 
 .pdp-products-grid {
@@ -814,17 +833,45 @@
   flex: 1;
 }
 
+.pdp-card-name-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  width: 100%;
+}
+
 .pdp-card-title {
   font-size: 0.95rem;
   font-weight: 700;
   color: #2a1a0e;
   margin: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  flex: 1;
 }
 
-.pdp-card-stars {
-  color: #c5a454;
-  font-size: 0.88rem;
-  letter-spacing: 2px;
+.pdp-card-rating-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  flex-shrink: 0;
+  direction: ltr;
+}
+
+.pdp-card-star-gold {
+  color: #e59b22;
+  font-size: 13px;
+  line-height: 1;
+}
+
+.pdp-card-rating-val {
+  color: #9aa0a6;
+  font-family: "Cairo", sans-serif;
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 1;
 }
 
 .pdp-card-type {
@@ -835,19 +882,66 @@
 
 .pdp-card-price-row {
   display: flex;
-  align-items: center;
-  gap: 6px;
+  align-items: baseline;
+  justify-content: flex-start;
+  gap: 10px;
+  direction: rtl;
   margin-top: 4px;
+  margin-bottom: 8px;
+  text-align: right;
+}
+
+.pdp-card-current-price {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  color: #8c6d4f;
+  font-family: "Cairo", sans-serif;
+  font-size: 1.08rem;
+  font-weight: 800;
+  line-height: 1.2;
+  direction: rtl;
 }
 
 .pdp-card-price-val {
-  font-size: 1.05rem;
+  font-family: "Cairo", sans-serif;
+  font-size: 1.08rem;
   font-weight: 800;
-  color: #905b30;
+  line-height: 1.2;
+  color: #8c6d4f;
 }
 
 .pdp-riyal-icon {
-  height: 15px;
+  width: 25px;
+  height: 25px;
+  object-fit: contain;
+  display: inline-block;
+  vertical-align: middle;
+  flex-shrink: 0;
+}
+
+.pdp-card-old-price {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  color: #8a7a70;
+  font-family: "Cairo", sans-serif;
+  font-size: 0.85rem;
+  font-weight: 500;
+  line-height: 1.2;
+  text-decoration: line-through;
+  opacity: 0.75;
+  direction: rtl;
+}
+
+.pdp-old-riyal-icon {
+  width: 20px;
+  height: 20px;
+  object-fit: contain;
+  display: inline-block;
+  vertical-align: middle;
+  opacity: 0.8;
+  flex-shrink: 0;
 }
 
 /* Card Add Button with Expanding Circle Hover Animation (Homepage Matching) */
@@ -959,10 +1053,24 @@
   color: #a89a90;
 }
 
-.pdp-score-stars {
-  color: #c5a454;
-  font-size: 1.15rem;
-  letter-spacing: 2px;
+.pdp-score-stars-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  direction: ltr;
+}
+
+.pdp-score-star {
+  color: #e59b22;
+  font-size: 18px;
+  line-height: 1;
+}
+
+.pdp-score-val {
+  color: #9aa0a6;
+  font-family: "Cairo", sans-serif;
+  font-size: 14px;
+  font-weight: 600;
 }
 
 .pdp-score-total {
@@ -1063,14 +1171,25 @@
   font-weight: 700;
 }
 
-.pdp-rev-stars {
-  display: flex;
-  gap: 2px;
+.pdp-rev-rating-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  direction: ltr;
 }
 
 .pdp-rev-star-gold {
-  color: #c5a454;
-  font-size: 0.95rem;
+  color: #e59b22;
+  font-size: 13px;
+  line-height: 1;
+}
+
+.pdp-rev-rating-val {
+  color: #9aa0a6;
+  font-family: "Cairo", sans-serif;
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 1;
 }
 
 .pdp-rev-title {

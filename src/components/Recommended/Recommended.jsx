@@ -277,59 +277,17 @@ export default function Products({
               <div className="product-content">
 
                 {/* =========================
-                    PRODUCT NAME
+                    PRODUCT NAME & RATING
                 ========================= */}
 
-                <h3 className="product-name">
-                  {product.name}
-                </h3>
-
-
-                {/* =========================
-                    RATING
-                ========================= */}
-
-                <div
-                  className="product-rating"
-                  aria-label={`تقييم ${ratings[product.id]} من 5`}
-                >
-
-                  {Array.from(
-                    { length: 5 },
-                    (_, index) => {
-
-                      const starNumber = index + 1;
-
-                      return (
-
-                        <button
-                          key={starNumber}
-                          type="button"
-                          className={`rating-star ${
-                            starNumber <=
-                            ratings[product.id]
-                              ? "active"
-                              : ""
-                          }`}
-                          onClick={(event) => {
-                            event.stopPropagation();
-                            handleRating(
-                              product.id,
-                              starNumber
-                            );
-                          }}
-                          aria-label={`تقييم ${starNumber} نجوم`}
-                        >
-
-                          ★
-
-                        </button>
-
-                      );
-
-                    }
-                  )}
-
+                <div className="product-name-row">
+                  <h3 className="product-name" title={product.name}>
+                    {product.name}
+                  </h3>
+                  <div className="product-rating-badge" aria-label={`تقييم ${(Number(product.rating) || 4.8).toFixed(1)} من 5`}>
+                    <span className="rating-val-text">({(Number(product.rating) || 4.8).toFixed(1)})</span>
+                    <span className="rating-star-single">★</span>
+                  </div>
                 </div>
 
 
@@ -338,7 +296,7 @@ export default function Products({
                 ========================= */}
 
                 <p className="product-type">
-                  {product.type}
+                  {product.type || (product.category === 'women' ? 'عطور نسائية' : product.category === 'men' ? 'عطور رجالية' : 'عطور رجالية، نسائية')}
                 </p>
 
 
