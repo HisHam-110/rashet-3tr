@@ -50,7 +50,10 @@ export default function PerfumesPage({
     const loadProducts = () => {
       productsApi.list({}, controller.signal)
         .then((data) => {
-          if (!Array.isArray(data)) return;
+          if (!Array.isArray(data)) {
+            setIsLoading(false);
+            return;
+          }
 
           // Keep all API products, displaying products with images first.
           const sortedAll = [...data].sort((a, b) => {
@@ -65,7 +68,8 @@ export default function PerfumesPage({
         })
         .catch((error) => {
           if (error.name !== 'AbortError') {
-            retryTimer = window.setTimeout(loadProducts, 2000);
+            setIsLoading(false);
+            retryTimer = window.setTimeout(loadProducts, 3000);
           }
         });
     };

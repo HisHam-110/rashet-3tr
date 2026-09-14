@@ -199,12 +199,15 @@ if (-not (Test-Path $WebConfigSource)) {
   <system.webServer>
     <rewrite>
       <rules>
+        <rule name="API Reverse Proxy" stopProcessing="true">
+          <match url="^api/(.*)" />
+          <action type="Rewrite" url="https://rashet-etr.growfet.com/api/{R:1}" />
+        </rule>
         <rule name="React SPA Fallback" stopProcessing="true">
           <match url=".*" />
           <conditions logicalGrouping="MatchAll">
             <add input="{REQUEST_FILENAME}" matchType="IsFile" negate="true" />
             <add input="{REQUEST_FILENAME}" matchType="IsDirectory" negate="true" />
-            <add input="{REQUEST_URI}" pattern="^/api/" negate="true" />
           </conditions>
           <action type="Rewrite" url="/index.html" />
         </rule>

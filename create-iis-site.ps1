@@ -112,6 +112,19 @@ if ($rewriteInstalled) {
                 'https://www.iis.net/downloads/microsoft/url-rewrite')
 }
 
+# Ensure Application Request Routing (ARR) proxy is enabled for API reverse-proxying
+$arrInstalled = Get-WebGlobalModule -ErrorAction SilentlyContinue |
+    Where-Object { $_.Name -like '*ApplicationRequestRouting*' -or $_.Name -like '*ARR*' }
+if ($arrInstalled) {
+    Write-Info 'ARR module : installed'
+    try {
+        Set-WebConfigurationProperty -PSPath 'MACHINE/WEBROOT/APPHOST' -Filter 'system.webServer/proxy' -Name 'enabled' -Value 'True' -ErrorAction SilentlyContinue
+        Write-Info 'ARR Proxy feature : enabled'
+    } catch {}
+} else {
+    Write-Info 'Note: Install ARR (Application Request Routing) on IIS if proxying /api to external backend.'
+}
+
 Write-Ok 'Pre-flight checks passed.'
 
 # ============================================================================

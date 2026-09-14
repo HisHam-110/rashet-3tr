@@ -1,20 +1,18 @@
-const DEFAULT_BASE_URL = 'https://rashet-etr.growfet.com';
+const DEFAULT_BASE_URL = '';
 
 const getBaseUrl = () => {
   const envUrl = typeof import.meta !== 'undefined' && import.meta && import.meta.env && import.meta.env.VITE_API_BASE_URL;
-  const isDev = typeof import.meta !== 'undefined' && import.meta && import.meta.env && import.meta.env.DEV;
 
   if (envUrl !== undefined && envUrl !== null && envUrl !== '') {
     const trimmed = envUrl.trim().replace(/\/$/, '');
-    // In local dev mode, bypass direct cross-origin target to use Vite proxy (/api) & avoid CORS
-    if (isDev && (trimmed === 'https://rashet-etr.growfet.com' || trimmed === 'http://rashet-etr.growfet.com')) {
+    // In local dev mode & production reverse-proxy deployments, use same-origin relative URL ('') to avoid CORS
+    if (trimmed === 'https://rashet-etr.growfet.com' || trimmed === 'http://rashet-etr.growfet.com' || trimmed === '/api' || trimmed === '.') {
       return '';
     }
     return trimmed;
   }
-  if (isDev) {
-    return '';
-  }
+  
+  // Default to relative path '' so all requests go to /api/... via Vite dev proxy or IIS/server reverse proxy
   return DEFAULT_BASE_URL;
 };
 
