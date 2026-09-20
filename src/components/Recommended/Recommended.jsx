@@ -258,13 +258,13 @@ export default function Products({
                 ========================= */}
 
                 {product.image && (
-
                   <img
                     src={product.image}
                     alt={product.name}
+                    loading="lazy"
+                    decoding="async"
                     className="product-image"
                   />
-
                 )}
 
               </div>

@@ -1,5 +1,11 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
+import dns from 'node:dns'
+
+// Fix Node.js EAI_AGAIN DNS resolution timeout on Windows/Node 17+ by prioritizing IPv4
+try {
+  dns.setDefaultResultOrder('ipv4first')
+} catch {}
 
 // https://vite.dev/config/
 export default defineConfig({
@@ -10,7 +16,7 @@ export default defineConfig({
     },
     proxy: {
       '/api': {
-        target: 'https://rashet-etr.growfet.com',
+        target: 'https://rashet-etr-hesham.growfet.com',
         changeOrigin: true,
         secure: false,
         configure: (proxy, _options) => {

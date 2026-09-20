@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import Footer from '../Footer/Footer';
+import SEOHead from '../SEO/SEOHead';
 import './CartPage.css';
 
 import { cartApi } from '../../services/storeApi';
@@ -42,16 +43,19 @@ export default function CartPage({
       setAppliedCouponCode(cleanCoupon);
       setDiscountPercent(10);
       setCouponError('');
+      try { sessionStorage.setItem('rashet_coupon', JSON.stringify({ applied: true, code: cleanCoupon, percent: 10 })); } catch {}
     } catch (err) {
       if (VALID_COUPONS.includes(cleanCoupon)) {
         setIsCouponApplied(true);
         setAppliedCouponCode(cleanCoupon);
         setDiscountPercent(10);
         setCouponError('');
+        try { sessionStorage.setItem('rashet_coupon', JSON.stringify({ applied: true, code: cleanCoupon, percent: 10 })); } catch {}
       } else {
         setIsCouponApplied(false);
         setDiscountPercent(0);
         setCouponError(err.message || 'كود الخصم غير صالح، يرجى التحقق منه');
+        try { sessionStorage.removeItem('rashet_coupon'); } catch {}
       }
     }
   };
@@ -62,18 +66,24 @@ export default function CartPage({
     setDiscountPercent(0);
     setCoupon('');
     setCouponError('');
+    try { sessionStorage.removeItem('rashet_coupon'); } catch {}
   };
 
   return (
     <div className="cart-page-wrapper" dir="rtl">
+      <SEOHead
+        title="سلة التسوق | متجر رشة عطر"
+        robots="noindex, nofollow"
+      />
+
       {/* Top Header & Breadcrumb */}
       <div className="cap-top-bar">
         <div className="cap-container">
-          <div className="cap-breadcrumb">
-            <span className="cap-bc-link" onClick={() => navigate('/')}>الرئيسية</span>
+          <nav className="cap-breadcrumb" aria-label="مسار التنقل">
+            <Link to="/" className="cap-bc-link">الرئيسية</Link>
             <span className="cap-bc-sep">/</span>
             <span className="cap-bc-current">السلة</span>
-          </div>
+          </nav>
           <h1 className="cap-page-title">سلة التسوق</h1>
           <p className="cap-cart-count-desc">لديك {cartItems.length} منتجات في السلة</p>
         </div>

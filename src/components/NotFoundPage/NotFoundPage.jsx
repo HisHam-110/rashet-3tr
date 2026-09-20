@@ -1,5 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
+import SEOHead from '../SEO/SEOHead';
 import './NotFoundPage.css';
 
 export default function NotFoundPage() {
@@ -7,6 +8,11 @@ export default function NotFoundPage() {
 
   return (
     <div className="nf-wrapper" dir="rtl">
+      <SEOHead
+        title="الصفحة غير موجودة (404) | متجر رشة عطر"
+        description="عذراً، الصفحة التي تبحث عنها غير موجودة أو تم نقلها."
+        robots="noindex, follow"
+      />
       <main className="nf-main">
         {/* Ambient Glows */}
         <div className="nf-glow nf-glow-1" aria-hidden="true" />

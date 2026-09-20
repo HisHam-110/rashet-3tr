@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import Footer from '../Footer/Footer';
+import SEOHead from '../SEO/SEOHead';
+import { getBreadcrumbSchema } from '../../utils/seoConfig';
 import './CollectionsPage.css';
 
 import { categoriesApi } from '../../services/storeApi';
@@ -135,6 +137,15 @@ export default function CollectionsPage() {
 
   return (
     <div className="collections-page" dir="rtl">
+      <SEOHead
+        title="مجموعات العطور الحصرية والنيش | رشة عطر"
+        description="اكتشف مجموعات عطور رشة عطر المختارة بعناية: عطور رجالية، نسائية، تشكيلات لك ولها، وعطور النيش الحصرية بأرقى معايير الجودة والفخامة."
+        canonical="/collections"
+        schema={getBreadcrumbSchema([
+          { name: 'الرئيسية', url: '/' },
+          { name: 'المجموعات', url: '/collections' },
+        ])}
+      />
 
       {/* Decorative Top-Right Animated Graphic */}
       <div className="clp-bg-graphic-top-right">
@@ -148,11 +159,11 @@ export default function CollectionsPage() {
       {/* Top Header & Breadcrumb */}
       <div className="clp-top-bar">
         <div className="clp-container">
-          <div className="clp-breadcrumb">
-            <span className="clp-bc-link" onClick={() => navigate('/')}>الرئيسية</span>
+          <nav className="clp-breadcrumb" aria-label="مسار التنقل">
+            <Link to="/" className="clp-bc-link">الرئيسية</Link>
             <span className="clp-bc-sep">/</span>
             <span className="clp-bc-current">المجموعات</span>
-          </div>
+          </nav>
         </div>
       </div>
 
@@ -176,7 +187,7 @@ export default function CollectionsPage() {
                 className="clp-card"
                 onClick={() => handleCardClick(col)}
               >
-                <img src={col.image || col.fallback} alt={col.name_ar || col.title} className="clp-card-img" />
+                <img src={col.image || col.fallback} alt={col.name_ar || col.title} className="clp-card-img" loading="lazy" decoding="async" />
                 <div className="clp-card-overlay"></div>
                 <div className="clp-card-content">
                   <h3 className="clp-card-title">{col.name_ar || col.title}</h3>

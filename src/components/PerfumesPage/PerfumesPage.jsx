@@ -1,6 +1,8 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 import Footer from '../Footer/Footer';
+import SEOHead from '../SEO/SEOHead';
+import { getBreadcrumbSchema, getItemListSchema } from '../../utils/seoConfig';
 import './PerfumesPage.css';
 
 import { productsApi } from '../../services/storeApi';
@@ -297,17 +299,120 @@ export default function PerfumesPage({
     return stars;
   };
 
+  const categoryInfo = useMemo(() => {
+    switch (selectedCategory) {
+      case 'men':
+        return {
+          title: 'عطور رجالية فاخرة وأصلية | متجر رشة عطر',
+          description: 'اكتشف أفخم العطور الرجالية الأصلية في متجر رشة عطر. تركيبات قوية تدوم طويلاً من العود والأخشاب والتوابل الشرقية لحضور واثق.',
+          canonical: '/perfumes?category=men',
+          heading: 'عطور رجالية فاخرة',
+          guideTitle: 'دليل اختيار العطور الرجالية الفاخرة',
+          guideIntro: 'صُممت تشكيلة العطور الرجالية في رشة عطر لتمنحك حضوراً آسراً يعكس الهيبة والرجولة الكلاسيكية بلمسة عصرية مبتكرة.',
+          scentTypes: 'روائح خشبية عميقة من خشب الصندل والأرز، العود الدخاني المعتق، التوابل الشرقية الدافئة (الهيل والزعفران)، ونفحات عليا منعشة من البرغموت والحمضيات الإيطالية.',
+          occasions: 'مثالية لساعات العمل والاجتماعات الرسمية، السهرات والمناسبات الخاصة، والمواسم المعتدلة والباردة.',
+          targetAudience: 'للرجل الواثق الباحث عن الفخامة والتميز وأثر عطري مهيب لا يُنسى.',
+          howToChoose: 'اختر العطور الحمضية المنعشة للصباح والعمل، وركز على التوليفات الخشبية والعود الثقيل للأمسيات واللقاءات الرسمية.',
+        };
+      case 'women':
+        return {
+          title: 'عطور نسائية راقية وأصلية | متجر رشة عطر',
+          description: 'تسوقي أجمل العطور النسائية الفاخرة من رشة عطر. روائح مفعمة بالأنوثة والجاذبية من الزهور النادرة والفانيليا والمسك لكافة مناسباتك.',
+          canonical: '/perfumes?category=women',
+          heading: 'عطور نسائية راقية',
+          guideTitle: 'دليل اختيار العطور النسائية الفاخرة',
+          guideIntro: 'باقة استثنائية من العطور النسائية التي تجمع بين الرقة والفوحان الآسر، صُنعت لتبرز أنوثتك وجمال إطلالتك في كل لحظة.',
+          scentTypes: 'الزهور البيضاء، الياسمين الدمشقي، الفانيليا المدخنة، المسك الحريري، والتوت البري مع قاعدة دافئة من العنبر والباتشولي.',
+          occasions: 'الحفلات والأعراس، السهرات الخاصة، الاستخدام اليومي الراقي، وأجواء الربيع والصيف.',
+          targetAudience: 'للمرأة العصرية الأنيقة التي تبحث عن الجاذبية والغموض وتفاصيل عطرية تحكي قصة أناقتها.',
+          howToChoose: 'اختاري العطور الزهرية والفاكهية لأوقات النهار والربيع، واعتمدي على نغمات الفانيليا والعنبر والمسك للسهرات والمناسبات الكبرى.',
+        };
+      case 'unisex':
+        return {
+          title: 'عطور للجنسين لك ولها | أرقى التوليفات المشتركة | رشة عطر',
+          description: 'مجموعة عطور استثنائية تناسب الرجال والنساء في آن واحد بتركيبات متوازنة تأسر الحواس وتمنحك تميزاً فريداً من رشة عطر.',
+          canonical: '/perfumes?category=unisex',
+          heading: 'عطور للجنسين (لك ولها)',
+          guideTitle: 'دليل عطور الجنسين (لك ولها)',
+          guideIntro: 'عطور مشتركة حصرية تم ابتكارها بتوليفات متوازنة تكسر الحدود النمطية، لتنسجم بسلاسة مع كيمياء البشرة لدى الرجال والنساء.',
+          scentTypes: 'العنبر الرمادي، حبوب التونكا، أخشاب البتولا، المسك النقي، مع افتتاحيات نضرة من اللافندر والليمون الصقلي.',
+          occasions: 'كافة الأوقات، بيئات العمل الإبداعية، اللقاءات الودية، ومثالية كهدية فاخرة مشتركة تعبر عن التناغم.',
+          targetAudience: 'لعشاق العطور المتفردة والنيش الذين يفضلون الروائح الغامضة وغير التقليدية.',
+          howToChoose: 'ابحث عن العطور التي تحقق توازناً دقيقاً بين الدفء والانتعاش لتمنحك بصمة عطرية تدوم طويلاً وتناسب كافة الفصول.',
+        };
+      case 'luxury':
+        return {
+          title: 'عطور النيش الفاخرة والحصرية | متجر رشة عطر',
+          description: 'تشكيلة مختارة من أندر وأفخم عطور النيش الفاخرة المصنوعة من أنقى الزيوت العطرية العالمية لعشاق التميز والانفراد.',
+          canonical: '/perfumes?category=luxury',
+          heading: 'عطور النيش الفاخرة',
+          guideTitle: 'دليل عطور النيش الحصرية والنادرة',
+          guideIntro: 'قمة الإبداع العطري؛ تشكيلة فاخرة تعتمد على خلاصات طبيعية نادرة وزيوت نقية بتركيز Extrait de Parfum لعشاق الفخامة الاستثنائية.',
+          scentTypes: 'العود الطبيعي المعتق، الجلود الإيطالية الفاخرة، الزعفران الكشميري، ولمسات التبغ العسلي والبخور الملكي.',
+          occasions: 'المناسبات الكبرى، الاحتفالات الرفيعة، واستقبال كبار الضيوف.',
+          targetAudience: 'لخبراء العطور والصفوة الباحثين عن ندرة التركيبة وثبات استثنائي يدوم لأيام على الملابس.',
+          howToChoose: 'رش العطر على نقاط النبض مباشرة، ودع العطر يمر بمراحله العطرية الثلاث ليكشف عن أسرار نوتاته المعقدة تدريجياً.',
+        };
+      default:
+        return {
+          title: 'جميع العطور الفاخرة | تسوق أرقى عطور النيش والعود | رشة عطر',
+          description: 'تصفح تشكيلة متجر رشة عطر الكاملة من العطور الأصلية الرجالية والنسائية والنيش. ثبات عالي، أسعار مميزة، وتوصيل سريع لكافة المناطق.',
+          canonical: '/perfumes',
+          heading: 'جميع العطور الفاخرة',
+          guideTitle: 'دليل تسوق العطور الفاخرة في متجر رشة عطر',
+          guideIntro: 'مرحباً بك في عالم رشة عطر، وجهتك الموثوقة لشراء أرقى العطور الأصلية في السعودية ومصر بأعلى معايير الجودة والثبات.',
+          scentTypes: 'تشكيلة شاملة تلبي كافة الأذواق تشمل العطور الشرقية، الغربية، الزهرية، الخشبية، والحمضية المنعشة.',
+          occasions: 'حلول عطرية متكاملة تناسب الاستخدام اليومي والعمل والسهرات والمناسبات السعيدة.',
+          targetAudience: 'لكل عشاق الأناقة والجاذبية وروائح العطور التي تترك أثراً طيباً في الذاكرة.',
+          howToChoose: 'استعن بفلاتر الموقع لتحديد نوع العطر (رجالي، نسائي، يونيسكس، نيش) ونطاق السعر والتقييم للوصول إلى عطرك الأنسب بسرعة وسهولة.',
+        };
+    }
+  }, [selectedCategory]);
+
+  const breadcrumbs = useMemo(() => {
+    const crumbs = [
+      { name: 'الرئيسية', url: '/' },
+      { name: 'العطور', url: '/perfumes' },
+    ];
+    if (selectedCategory && selectedCategory !== 'all' && selectedCategory !== 'full') {
+      crumbs.push({ name: categoryInfo.heading, url: categoryInfo.canonical });
+    }
+    return crumbs;
+  }, [selectedCategory, categoryInfo]);
+
+  const perfumesSchema = useMemo(() => {
+    const bcSchema = getBreadcrumbSchema(breadcrumbs);
+    const listSchema = getItemListSchema(categoryInfo.heading, filtered);
+    return [bcSchema, listSchema].filter(Boolean);
+  }, [breadcrumbs, categoryInfo.heading, filtered]);
+
   return (
     <div className="perfumes-page" dir="rtl">
+      <SEOHead
+        title={categoryInfo.title}
+        description={categoryInfo.description}
+        canonical={categoryInfo.canonical}
+        schema={perfumesSchema}
+      />
+
+      <h1 className="sr-only">{categoryInfo.heading} - متجر رشة عطر</h1>
 
       {/* ========= BREADCRUMB ========= */}
       <div className="pp-breadcrumb-bar">
         <div className="pp-container">
-          <div className="pp-breadcrumb">
+          <nav className="pp-breadcrumb" aria-label="مسار التنقل">
             <Link to="/">الرئيسية</Link>
             <span className="pp-breadcrumb-sep">/</span>
-            <span className="pp-breadcrumb-current">العطور</span>
-          </div>
+            {selectedCategory && selectedCategory !== 'all' && selectedCategory !== 'full' ? (
+              <>
+                <Link to="/perfumes">العطور</Link>
+                <span className="pp-breadcrumb-sep">/</span>
+                <span className="pp-breadcrumb-current">{categoryInfo.heading}</span>
+              </>
+            ) : (
+              <span className="pp-breadcrumb-current">العطور</span>
+            )}
+          </nav>
         </div>
       </div>
 
@@ -481,6 +586,8 @@ export default function PerfumesPage({
                         <img
                           src={product.image}
                           alt={product.name}
+                          loading="lazy"
+                          decoding="async"
                           className={`pp-card-image ${imgLoaded[product.id] ? 'pp-img-visible' : 'pp-img-hidden'}`}
                           onLoad={() => setImgLoaded(prev => ({ ...prev, [product.id]: true }))}
                           onError={() => setImgLoaded(prev => ({ ...prev, [product.id]: true }))}
@@ -546,7 +653,11 @@ export default function PerfumesPage({
                         )}
                       </div>
                       <div className="pp-card-name-row">
-                        <h3 className="pp-card-name" title={product.name}>{product.name}</h3>
+                        <h3 className="pp-card-name" title={product.name}>
+                          <Link to={`/product/${product.id}`}>
+                            {product.name}
+                          </Link>
+                        </h3>
                         <div className="pp-rating-badge" aria-label={`تقييم ${(Number(product.rating) || 4.8).toFixed(1)} من 5`}>
                           <span className="pp-rating-val">({(Number(product.rating) || 4.8).toFixed(1)})</span>
                           <span className="pp-rating-star">★</span>
@@ -647,6 +758,53 @@ export default function PerfumesPage({
               </button>
             </div>
           )}
+        </div>
+      </section>
+
+      {/* ========= SEO CATEGORY EDITORIAL GUIDE & SEARCH INTENT ========= */}
+      <section className="pp-seo-guide-section" aria-label="دليل التصنيف">
+        <div className="pp-container">
+          <div className="pp-seo-guide-card">
+            <div className="pp-seo-guide-header">
+              <h2 className="pp-seo-guide-title">{categoryInfo.guideTitle}</h2>
+              <div className="pp-seo-guide-line" />
+              <p className="pp-seo-guide-intro">{categoryInfo.guideIntro}</p>
+            </div>
+
+            <div className="pp-seo-guide-grid">
+              <div className="pp-seo-guide-item">
+                <h3 className="pp-seo-guide-item-title">✦ أنواع الروائح والتركيبات</h3>
+                <p>{categoryInfo.scentTypes}</p>
+              </div>
+
+              <div className="pp-seo-guide-item">
+                <h3 className="pp-seo-guide-item-title">✦ المناسبات والأوقات الملائمة</h3>
+                <p>{categoryInfo.occasions}</p>
+              </div>
+
+              <div className="pp-seo-guide-item">
+                <h3 className="pp-seo-guide-item-title">✦ الفئات التي تلائمها هذه التشكيلة</h3>
+                <p>{categoryInfo.targetAudience}</p>
+              </div>
+
+              <div className="pp-seo-guide-item">
+                <h3 className="pp-seo-guide-item-title">✦ نصائح لاختيار العطر الأنسب</h3>
+                <p>{categoryInfo.howToChoose}</p>
+              </div>
+            </div>
+
+            {/* Internal Linking between related categories */}
+            <div className="pp-seo-guide-links">
+              <span className="pp-seo-guide-links-title">تصفح تصنيفات أخرى في متجر رشة عطر:</span>
+              <div className="pp-seo-guide-links-list">
+                <Link to="/perfumes?category=men" className="pp-seo-tag-link">عطور رجالية</Link>
+                <Link to="/perfumes?category=women" className="pp-seo-tag-link">عطور نسائية</Link>
+                <Link to="/perfumes?category=unisex" className="pp-seo-tag-link">عطور للجنسين</Link>
+                <Link to="/perfumes?category=luxury" className="pp-seo-tag-link">عطور النيش الفاخرة</Link>
+                <Link to="/collections" className="pp-seo-tag-link">المجموعات الكاملة</Link>
+              </div>
+            </div>
+          </div>
         </div>
       </section>
 

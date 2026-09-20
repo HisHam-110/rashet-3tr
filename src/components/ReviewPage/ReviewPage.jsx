@@ -49,7 +49,13 @@ export default function ReviewPage({ cartItems = [] }) {
     return isFreeAvailable ? 'free' : 'standard';
   }, [isFreeAvailable]);
 
-  const discount = 95;
+  const couponData = useMemo(() => {
+    try {
+      const saved = sessionStorage.getItem('rashet_coupon');
+      return saved ? JSON.parse(saved) : null;
+    } catch { return null; }
+  }, []);
+  const discount = couponData?.applied ? Math.round(subtotal * (couponData.percent / 100)) : 0;
   const shipping = shippingMethod === 'free' && isFreeAvailable ? 0 : 25;
   const total = Math.max(0, subtotal - discount + shipping);
 
@@ -218,10 +224,12 @@ export default function ReviewPage({ cartItems = [] }) {
               <span>المجموع الفرعي</span>
               <b>{subtotal} ر.س</b>
             </div>
-            <div>
-              <span>الخصم (RASHAT10)</span>
-              <b className="discount">-{discount} ر.س</b>
-            </div>
+            {discount > 0 && (
+              <div>
+                <span>الخصم ({couponData?.code || ''})</span>
+                <b className="discount">-{discount} ر.س</b>
+              </div>
+            )}
             <div>
               <span>الشحن</span>
               <b>{shipping ? `${shipping} ر.س` : 'مجاني'}</b>

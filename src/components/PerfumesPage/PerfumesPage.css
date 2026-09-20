@@ -1713,3 +1713,132 @@
   0% { opacity: 0.5; }
   100% { opacity: 1; }
 }
+
+/* ==============================================
+   SEO CATEGORY GUIDE & EDITORIAL SECTION
+   Clean, harmonious luxury design with high content value
+   ============================================== */
+.pp-seo-guide-section {
+  width: 100%;
+  padding: 40px 0 60px 0;
+  background-color: transparent;
+}
+
+.pp-seo-guide-card {
+  background: #ffffff;
+  border: 1px solid rgba(197, 168, 128, 0.35);
+  border-radius: 16px;
+  padding: 36px 32px;
+  box-shadow: 0 4px 18px rgba(35, 31, 29, 0.04);
+}
+
+.pp-seo-guide-header {
+  margin-bottom: 28px;
+}
+
+.pp-seo-guide-title {
+  font-size: 1.6rem;
+  font-weight: 800;
+  color: #231f1d;
+  margin: 0 0 10px;
+}
+
+.pp-seo-guide-line {
+  width: 50px;
+  height: 3px;
+  background: linear-gradient(90deg, #c5a880, #8c6d4f);
+  border-radius: 3px;
+  margin-bottom: 14px;
+}
+
+.pp-seo-guide-intro {
+  font-size: 1rem;
+  line-height: 1.8;
+  color: #554d45;
+  margin: 0;
+}
+
+.pp-seo-guide-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+  margin-bottom: 30px;
+}
+
+.pp-seo-guide-item {
+  background: #fdfaf6;
+  border: 1px solid rgba(229, 222, 210, 0.7);
+  border-radius: 12px;
+  padding: 20px;
+}
+
+.pp-seo-guide-item-title {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: #905b30;
+  margin: 0 0 10px;
+}
+
+.pp-seo-guide-item p {
+  font-size: 0.93rem;
+  line-height: 1.75;
+  color: #61574d;
+  margin: 0;
+}
+
+.pp-seo-guide-links {
+  border-top: 1px solid rgba(229, 222, 210, 0.6);
+  padding-top: 20px;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.pp-seo-guide-links-title {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: #3e352d;
+}
+
+.pp-seo-guide-links-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.pp-seo-tag-link {
+  display: inline-block;
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: #8c6d4f;
+  background: rgba(197, 168, 128, 0.12);
+  border: 1px solid rgba(197, 168, 128, 0.3);
+  padding: 5px 14px;
+  border-radius: 20px;
+  transition: all 0.25s ease;
+  text-decoration: none;
+}
+
+.pp-seo-tag-link:hover {
+  background: #c5a880;
+  color: #ffffff;
+  border-color: #c5a880;
+}
+
+@media (max-width: 768px) {
+  .pp-seo-guide-card {
+    padding: 24px 18px;
+  }
+  .pp-seo-guide-title {
+    font-size: 1.35rem;
+  }
+  .pp-seo-guide-grid {
+    grid-template-columns: 1fr;
+    gap: 14px;
+  }
+  .pp-seo-guide-links {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}

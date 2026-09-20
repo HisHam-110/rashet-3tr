@@ -2,6 +2,8 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import Footer from '../Footer/Footer';
 import Newsletter from '../Newsletter/Newsletter';
+import SEOHead from '../SEO/SEOHead';
+import { getBreadcrumbSchema } from '../../utils/seoConfig';
 import './AboutPage.css';
 
 import heroBg from '../../assets/images/Frame 1984077808.svg';
@@ -23,6 +25,16 @@ export default function AboutPage() {
 
   return (
     <div className="about-page" dir="rtl">
+      <SEOHead
+        title="عن متجر رشة عطر | قصة شغف بالروائح الفاخرة والأصالة"
+        description="تعرف على قصة متجر رشة عطر للعطور الفاخرة. انطلقنا من حب العطور لنقدم لعملائنا في السعودية ومصر أرقى التراكيب الأصلية والنيش بتفاصيل تصنع حضوراً لا يُنسى."
+        canonical="/about"
+        schema={getBreadcrumbSchema([
+          { name: 'الرئيسية', url: '/' },
+          { name: 'عن رشة عطر', url: '/about' },
+        ])}
+      />
+
       {/* 1. TOP HERO BANNER */}
       <section className="ab-hero-section" onClick={() => navigate('/perfumes')}>
         <img
@@ -44,10 +56,10 @@ export default function AboutPage() {
                 <span className="ab-badge-line"></span>
               </div>
 
-              <h2 className="ab-story-title">
+              <h1 className="ab-story-title">
                 رحلة شغف بدأت<br />
                 من حب العطور
-              </h2>
+              </h1>
 
               <p className="ab-story-paragraph">
                 بدأت رشة عطر من شغفنا الحقيقي بعالم العطور، ومن رغبتنا في تقديم تجربة مختلفة تجمع بين الجودة والأصالة، والاختيار الواسع الذي يلبي جميع الأذواق، نختار كل عطر بعناية لنقدم لك ما يستحق أن يكون جزءاً من ذاكرتك اليومية.

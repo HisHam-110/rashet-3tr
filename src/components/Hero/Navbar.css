@@ -207,10 +207,11 @@
 
 .nav-wishlist-btn {
   position: relative;
+  color: #0E0905;
+}
+
+.nav-wishlist-btn:hover {
   color: #905b30;
-  font-family: Arial, sans-serif;
-  font-size: 28px;
-  line-height: 1;
 }
 
 .nav-wishlist-badge {

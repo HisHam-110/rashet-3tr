@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate, Link } from 'react-router-dom';
 import Footer from '../Footer/Footer';
 import Newsletter from '../Newsletter/Newsletter';
+import SEOHead from '../SEO/SEOHead';
+import { getProductSchema, getBreadcrumbSchema } from '../../utils/seoConfig';
 import './ProductDetailPage.css';
 
 // Import images for notes & about banner
@@ -106,19 +108,36 @@ export default function ProductDetailPage({ onAddToCart, onToggleWishlist, wishl
     }
   };
 
+  const productSchema = getProductSchema(product);
+  const breadcrumbSchema = getBreadcrumbSchema([
+    { name: 'الرئيسية', url: '/' },
+    { name: 'العطور', url: '/perfumes' },
+    { name: product.name, url: `/product/${product.id}` },
+  ]);
+  const combinedSchema = [productSchema, breadcrumbSchema].filter(Boolean);
+
   return (
     <div className="pdp-page" dir="rtl">
+      <SEOHead
+        title={`${product.name} | السعر والتفاصيل | رشة عطر`}
+        description={`${product.name} من ${product.brand || 'رشة عطر'} بسعر ${product.price} ر.س. ${product.description || 'عطر فريد يعكس روح الأصالة والأناقة بتركيبات استثنائية وثبات عالٍ.'}`}
+        canonical={`/product/${product.id}`}
+        image={product.image || (product.images && product.images[0])}
+        type="product"
+        schema={combinedSchema}
+      />
+
       {/* ===== BREADCRUMB & HEADER TITLE ===== */}
       <div className="pdp-top-header pdp-full-width">
         <div className="pdp-container">
-          <div className="pdp-breadcrumb">
-            <span className="pdp-bc-link" onClick={() => navigate('/')}>الرئيسية</span>
+          <nav className="pdp-breadcrumb" aria-label="مسار التنقل">
+            <Link to="/" className="pdp-bc-link">الرئيسية</Link>
             <span className="pdp-bc-sep">/</span>
-            <span className="pdp-bc-link" onClick={() => navigate('/perfumes')}>العطور</span>
+            <Link to="/perfumes" className="pdp-bc-link">العطور</Link>
             <span className="pdp-bc-sep">/</span>
-            <span className="pdp-bc-current">التفاصيل</span>
-          </div>
-          <h1 className="pdp-page-title">العطور</h1>
+            <span className="pdp-bc-current">{product.name}</span>
+          </nav>
+          <div className="pdp-page-title" aria-hidden="true">العطور</div>
         </div>
       </div>
 
@@ -139,7 +158,7 @@ export default function ProductDetailPage({ onAddToCart, onToggleWishlist, wishl
                     <path d="M20.84 4.61C19.84 3.61 18.49 3.05 17.09 3.05C15.69 3.05 14.34 3.61 13.34 4.61L12 5.95L10.66 4.61C8.58 2.53 5.21 2.53 3.13 4.61C1.05 6.69 1.05 10.06 3.13 12.14L12 21L20.87 12.14C22.95 10.06 22.95 6.69 20.84 4.61Z" />
                   </svg>
                 </button>
-                <img src={thumbs[activeThumb]} alt={product.name} className="pdp-main-img" />
+                <img src={thumbs[activeThumb]} alt={`${product.name} - ${product.brand || 'رشة عطر'}`} className="pdp-main-img" decoding="async" />
               </div>
               <div className="pdp-thumbs-grid">
                 {thumbs.map((img, i) => (
@@ -147,8 +166,9 @@ export default function ProductDetailPage({ onAddToCart, onToggleWishlist, wishl
                     key={i}
                     className={`pdp-thumb-card ${activeThumb === i ? 'active' : ''}`}
                     onClick={() => setActiveThumb(i)}
+                    aria-label={`عرض صورة ${i + 1} لـ ${product.name}`}
                   >
-                    <img src={img} alt={`Thumbnail ${i + 1}`} />
+                    <img src={img} alt={`${product.name} - صورة ${i + 1}`} loading="lazy" decoding="async" />
                   </button>
                 ))}
               </div>
@@ -157,7 +177,7 @@ export default function ProductDetailPage({ onAddToCart, onToggleWishlist, wishl
             {/* LEFT SIDE: PRODUCT DETAILS BOX */}
             <div className="pdp-details-col">
               <span className="pdp-brand-name">{product.brand || 'توم فورد'}</span>
-              <h2 className="pdp-product-title">{product.name}</h2>
+              <h1 className="pdp-product-title">{product.name}</h1>
 
               {/* Rating */}
               <div className="pdp-rating-row">
@@ -324,16 +344,16 @@ export default function ProductDetailPage({ onAddToCart, onToggleWishlist, wishl
       >
         <div className="pdp-about-fullwidth-wrap">
           <div className="pdp-about-banner-text">
-            <h2 className="pdp-about-banner-title">عن العطر</h2>
+            <h2 className="pdp-about-banner-title">عن {product.name}</h2>
             <p className="pdp-about-banner-p">
-              يُعد عطر عود وود من توم فورد أحد أكثر العطور تميزاً في مجموعة Private Blend. يأسرك هذا العطر بمزيجه الدخاني الغامض من العود النادر، يُضفي خشب الورد الفاخر والهيل لمسة من التوابل الدخانية التي تمهد الطريق لمزيج غني من خشب الصندل ونجيل الهند.
+              {product.description || `يُعد ${product.name} من ${product.brand || 'رشة عطر'} أحد أكثر العطور تميزاً وتفرداً. يأسرك هذا العطر بتركيبته العطرية الفاخرة التي تم ابتكارها لتمنحك حضوراً واثقاً وثباتاً ممتازاً يدوم طوال اليوم.`}
             </p>
             <p className="pdp-about-banner-p">
-              تكتمل هذه التحفة العطرية بلمسات دافئة من حبوب التونكا والعنبر، مما يمنحه ثباتاً استثنائياً وجاذبية لا تُقاوم. صُمم هذا العطر خصيصاً للباحثين عن التفرد والأناقة الكلاسيكية بلمسة عصرية جريئة.
+              {`تم اختيار مكونات ${product.name} بعناية فائقة لتنسجم مع كيمياء البشرة، مع تركيز عالٍ من الزيوت العطرية النقية يمنحك تجربة عطرية ساحرة تلائم جميع مناسباتك الراقية واليومية في السعودية ومصر.`}
             </p>
           </div>
           <div className="pdp-about-banner-img-wrap">
-            <img src={aboutOudPhoto} alt="عن العطر" />
+            <img src={aboutOudPhoto} alt={`مكونات ونوتات عطر ${product.name}`} loading="lazy" decoding="async" />
           </div>
         </div>
       </section>

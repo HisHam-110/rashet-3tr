@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import Footer from '../Footer/Footer';
+import SEOHead from '../SEO/SEOHead';
+import { getBreadcrumbSchema } from '../../utils/seoConfig';
 import './PrivacyPolicyPage.css';
 
 import perfumeSmokeBg from '../../assets/images/dartistana_create_a_professional_product_shoot_of_3_perfume_bot_3e6bf181-e7e3-410a-96fa-977eb5e88c24 1.svg';
@@ -26,6 +28,15 @@ export default function PrivacyPolicyPage() {
 
   return (
     <div className="privacy-page" dir="rtl">
+      <SEOHead
+        title="سياسة الخصوصية وحماية البيانات | متجر رشة عطر"
+        description="تعرف على سياسة الخصوصية وحماية البيانات في متجر رشة عطر. نلتزم بأعلى معايير الأمان والسرية لحماية خصوصية بيانات عملائنا."
+        canonical="/privacy-policy"
+        schema={getBreadcrumbSchema([
+          { name: 'الرئيسية', url: '/' },
+          { name: 'سياسة الخصوصية', url: '/privacy-policy' },
+        ])}
+      />
 
       {/* Hero Banner Section (EXACT MATCH TO USER SCREENSHOT) */}
       <section className="prp-hero-section">
@@ -33,11 +44,11 @@ export default function PrivacyPolicyPage() {
           <div className="prp-hero-card">
             <div className="prp-hero-text">
               {/* Breadcrumb inside the card at top right */}
-              <div className="prp-hero-breadcrumb">
-                <span className="prp-bc-link" onClick={() => navigate('/')}>الرئيسية</span>
+              <nav className="prp-hero-breadcrumb" aria-label="مسار التنقل">
+                <Link to="/" className="prp-bc-link">الرئيسية</Link>
                 <span className="prp-bc-sep">/</span>
                 <span className="prp-bc-current">سياسة الخصوصية</span>
-              </div>
+              </nav>
 
               {/* Title */}
               <div className="prp-title-row">

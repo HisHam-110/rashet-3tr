@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import SEOHead from '../SEO/SEOHead';
 import './WishlistPage.css';
 import { productsData } from '../../data/perfumesData';
 import { productsApi } from '../../services/storeApi';
@@ -52,9 +53,15 @@ export default function WishlistPage({ products: propProducts = [], wishlistIds 
 
   return (
     <main className="wishlist-page" dir="rtl">
+      <SEOHead
+        title="قائمة المفضلة | متجر رشة عطر"
+        robots="noindex, nofollow"
+      />
       <div className="wishlist-container">
         <div className="wishlist-heading">
-          <p>الرئيسية / المفضلة</p>
+          <nav aria-label="مسار التنقل">
+            <p><Link to="/">الرئيسية</Link> / المفضلة</p>
+          </nav>
           <h1>المفضلة</h1>
         </div>
         {favorites.length ? (

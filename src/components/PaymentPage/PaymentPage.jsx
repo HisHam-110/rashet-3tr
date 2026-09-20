@@ -39,7 +39,13 @@ export default function PaymentPage({ cartItems = [] }) {
   });
 
   const shipping = shippingMethod === 'free' && isFreeAvailable ? 0 : 25;
-  const discount = 95; // Matching default/applied sample coupon or 0
+  const couponData = useMemo(() => {
+    try {
+      const saved = sessionStorage.getItem('rashet_coupon');
+      return saved ? JSON.parse(saved) : null;
+    } catch { return null; }
+  }, []);
+  const discount = couponData?.applied ? Math.round(subtotal * (couponData.percent / 100)) : 0;
   const total = Math.max(0, subtotal - discount + shipping);
 
   const [paymentError, setPaymentError] = useState('');
@@ -388,10 +394,12 @@ export default function PaymentPage({ cartItems = [] }) {
                 <b>{subtotal} ر.س</b>
               </div>
 
-              <div className="summary-calc-row discount-row">
-                <span>كوبون الخصم</span>
-                <b>-{discount} ر.س</b>
-              </div>
+              {discount > 0 && (
+                <div className="summary-calc-row discount-row">
+                  <span>كوبون الخصم</span>
+                  <b>-{discount} ر.س</b>
+                </div>
+              )}
 
               <div className="summary-calc-row">
                 <span>الشحن</span>

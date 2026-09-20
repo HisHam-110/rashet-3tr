@@ -1,6 +1,7 @@
 import React, { useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Footer from '../Footer/Footer';
+import SEOHead from '../SEO/SEOHead';
 import './CheckoutPage.css';
 
 import { checkoutApi } from '../../services/storeApi';
@@ -37,7 +38,13 @@ export default function CheckoutPage({ cartItems = [] }) {
     return subtotal >= 1000 ? 'free' : 'standard';
   });
 
-  const discount = 95; // Default discount for presentation matching
+  const couponData = useMemo(() => {
+    try {
+      const saved = sessionStorage.getItem('rashet_coupon');
+      return saved ? JSON.parse(saved) : null;
+    } catch { return null; }
+  }, []);
+  const discount = couponData?.applied ? Math.round(subtotal * (couponData.percent / 100)) : 0;
   const shipping = method === 'free' && isFreeAvailable ? 0 : 25;
   const total = Math.max(0, subtotal - discount + shipping);
 
@@ -110,6 +117,10 @@ export default function CheckoutPage({ cartItems = [] }) {
 
   return (
     <div className="checkout-page" dir="rtl">
+      <SEOHead
+        title="إتمام الطلب | متجر رشة عطر"
+        robots="noindex, nofollow"
+      />
       <main className="checkout-container">
 
         {/* ── Breadcrumb ── */}
@@ -321,10 +332,12 @@ export default function CheckoutPage({ cartItems = [] }) {
                 <b>{subtotal} ر.س</b>
               </div>
 
-              <div className="summary-line discount-line">
-                <span>كوبون الخصم</span>
-                <b>-{discount} ر.س</b>
-              </div>
+              {discount > 0 && (
+                <div className="summary-line discount-line">
+                  <span>كوبون الخصم</span>
+                  <b>-{discount} ر.س</b>
+                </div>
+              )}
 
               <div className="summary-line">
                 <span>الشحن</span>

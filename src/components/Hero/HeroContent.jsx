@@ -10,7 +10,7 @@ export default function HeroContent({ onCtaClick }) {
       </h1>
 
       <p className="hero-subtext">
-        اكتشف عالمًا من العطور الفاخرة المصممة خصيصًا لك
+        متجر رشة عطر | وجهتك الأولى لأرقى العطور الفاخرة، النيش، والعود الأصيل
       </p>
 
       <HeroCTA onClick={onCtaClick} />

@@ -1,0 +1,30 @@
+# Robots.txt for https://rashet-etr-hesham.growfet.com
+# Allow all search engine crawlers to discover and index public store content
+User-agent: *
+Allow: /
+Allow: /perfumes
+Allow: /product/
+Allow: /collections
+Allow: /about
+Allow: /contact
+Allow: /privacy-policy
+Allow: /returns-policy
+
+# Allow crawler access to all styling, scripts, and media
+Allow: /*.js$
+Allow: /*.css$
+Allow: /*.svg$
+Allow: /*.png$
+Allow: /*.jpg$
+Allow: /*.jpeg$
+Allow: /*.webp$
+
+# Disallow private user funnels, checkout, cart and API endpoints
+Disallow: /cart
+Disallow: /checkout
+Disallow: /checkout/
+Disallow: /wishlist
+Disallow: /api/
+
+# Sitemap location
+Sitemap: https://rashet-etr-hesham.growfet.com/sitemap.xml

@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import Footer from '../Footer/Footer';
+import SEOHead from '../SEO/SEOHead';
+import { getBreadcrumbSchema } from '../../utils/seoConfig';
 import './ContactPage.css';
 
 import { formsApi } from '../../services/storeApi';
@@ -44,14 +46,24 @@ export default function ContactPage({ showToast }) {
 
   return (
     <div className="contact-page-wrapper" dir="rtl">
+      <SEOHead
+        title="تواصل معنا | خدمة عملاء متجر رشة عطر"
+        description="تواصل مع فريق خدمة عملاء متجر رشة عطر لأي استفسار حول العطور الفاخرة، الشحن، أو الطلبات الخاصة. نحن هنا دائماً لمساعدتك."
+        canonical="/contact"
+        schema={getBreadcrumbSchema([
+          { name: 'الرئيسية', url: '/' },
+          { name: 'تواصل معنا', url: '/contact' },
+        ])}
+      />
+
       {/* Top Header & Breadcrumb */}
       <div className="cn-top-bar">
         <div className="cn-container">
-          <div className="cn-breadcrumb">
-            <span className="cn-bc-link" onClick={() => navigate('/')}>الرئيسية</span>
+          <nav className="cn-breadcrumb" aria-label="مسار التنقل">
+            <Link to="/" className="cn-bc-link">الرئيسية</Link>
             <span className="cn-bc-sep">/</span>
             <span className="cn-bc-current">تواصل معنا</span>
-          </div>
+          </nav>
         </div>
       </div>
 

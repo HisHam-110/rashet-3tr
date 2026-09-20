@@ -13,7 +13,7 @@ export default function Footer() {
             <img src={logo} alt="رشة عطر" />
           </div>
           <p className="footer-brand-text">
-            في رشة عطر، نقدم تجربة عطرية تجمع بين الفخامة والأناقة، لتجد العطر الذي يعبر عن شخصيتك.
+            متجر رشة عطر - وجهتك المعتمدة لأرقى العطور الفاخرة، النيش، والعود الأصلي في السعودية ومصر، بتركيبات استثنائية وثبات يدوم طويلاً.
           </p>
         </div>
 
@@ -78,7 +78,7 @@ export default function Footer() {
       {/* FOOTER BOTTOM */}
       <div className="footer-bottom">
         <p>
-          صنع بإتقان على يد <a href="#">Growfet</a> | 2026
+          صنع بإتقان على يد <a href="https://www.growfet.com"target="_blank">Growfet</a> | 2026
         </p>
       </div>
     </footer>

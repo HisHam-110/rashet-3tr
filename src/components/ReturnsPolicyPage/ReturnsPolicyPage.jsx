@@ -1,6 +1,8 @@
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import Footer from '../Footer/Footer';
+import SEOHead from '../SEO/SEOHead';
+import { getBreadcrumbSchema } from '../../utils/seoConfig';
 import './ReturnsPolicyPage.css';
 
 import returnsPolicyHero from '../../assets/images/returns-policy-hero.svg';
@@ -20,14 +22,24 @@ export default function ReturnsPolicyPage() {
 
   return (
     <div className="returns-page" dir="rtl">
+      <SEOHead
+        title="سياسة الاسترجاع والاستبدال | متجر رشة عطر"
+        description="تعرف على شروط وسياسة الاسترجاع والاستبدال المرنة في متجر رشة عطر. نضمن لك تجربة تسوق آمنة ومريحة مع سهولة الإرجاع والاستبدال."
+        canonical="/returns-policy"
+        schema={getBreadcrumbSchema([
+          { name: 'الرئيسية', url: '/' },
+          { name: 'سياسة الاسترجاع والاستبدال', url: '/returns-policy' },
+        ])}
+      />
+
       {/* Top Header & Breadcrumb */}
       <div className="rep-top-bar">
         <div className="rep-container">
-          <div className="rep-breadcrumb">
-            <span className="rep-bc-link" onClick={() => navigate('/')}>الرئيسية</span>
+          <nav className="rep-breadcrumb" aria-label="مسار التنقل">
+            <Link to="/" className="rep-bc-link">الرئيسية</Link>
             <span className="rep-bc-sep">/</span>
             <span className="rep-bc-current">سياسة الاسترجاع والاستبدال</span>
-          </div>
+          </nav>
         </div>
       </div>
 

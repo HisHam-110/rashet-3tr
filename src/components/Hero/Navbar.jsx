@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import logoImg from '../../assets/images/1 1.svg';
+import favourateIcon from '../../assets/images/vector-favourate.svg';
 import './Navbar.css';
 
 export default function Navbar({
@@ -211,7 +212,11 @@ export default function Navbar({
             aria-label="المفضلة"
             title="المفضلة"
           >
-            <span aria-hidden="true">♡</span>
+            <img
+              src={favourateIcon}
+              alt="المفضلة"
+              className="nav-svg-icon"
+            />
             {wishlistCount > 0 && <span className="nav-wishlist-badge">{wishlistCount}</span>}
           </button>
 

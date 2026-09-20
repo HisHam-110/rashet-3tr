@@ -203,6 +203,8 @@ export default function FeaturedProducts({
                         src={cardImg} 
                         alt={product.name} 
                         className="card-media-img"
+                        loading="lazy"
+                        decoding="async"
                         draggable="false"
                       />
                     )}

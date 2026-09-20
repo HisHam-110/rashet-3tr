@@ -32,9 +32,12 @@ import ContactPage from './components/ContactPage/ContactPage';
 import AboutPage from './components/AboutPage/AboutPage';
 import WishlistPage from './components/WishlistPage/WishlistPage';
 import NotFoundPage from './components/NotFoundPage/NotFoundPage';
+import FAQSection from './components/FAQ/FAQSection';
 
 import { productsApi, cartApi, wishlistApi, authApi } from './services/storeApi';
 import { session } from './services/apiClient';
+import SEOHead from './components/SEO/SEOHead';
+import { getOrganizationAndWebSiteSchema } from './utils/seoConfig';
 
 function App() {
   const [products, setProducts] = useState([]);
@@ -296,6 +299,12 @@ function App() {
           path="/"
           element={
             <>
+              <SEOHead
+                title="رشة عطر | عالم العطور الفاخرة والأصلية"
+                description="متجر رشة عطر يقدم أرقى تشكيلات العطور الفاخرة والنيش والعود بتركيبات استثنائية وثبات عالٍ. استمتع بتجربة تسوق فريدة وتوصيل سريع لكافة المناطق."
+                canonical="/"
+                schema={getOrganizationAndWebSiteSchema()}
+              />
               {/* 2. Hero Banner Section */}
               <Hero onExploreClick={() => navigate('/collections')} />
 
@@ -340,7 +349,10 @@ function App() {
               {/* 9. Latest Articles Section */}
               <LatestArticles />
 
-              {/* 10. Footer Section */}
+              {/* 10. FAQ Section with FAQPage Schema */}
+              <FAQSection />
+
+              {/* 11. Footer Section */}
               <Footer />
             </>
           }
