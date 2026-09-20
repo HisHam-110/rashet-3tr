@@ -50,6 +50,7 @@ export default function SEOHead({
     // 2. Standard Meta Tags
     setMetaTag('name', 'description', metaDesc);
     setMetaTag('name', 'robots', robots);
+    setMetaTag('name', 'google-site-verification', 'PMQRPcJ7pDEcbTYfWIUdCpR_6ml0SXgeaNQndtzUDoU');
 
     // 3. Canonical Link
     let canonicalLink = document.querySelector('link[rel="canonical"]');
